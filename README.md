@@ -1,5 +1,17 @@
-# secgate
+## Requirements
+- Python 3.10+
+- Terraform (binary)
 
+## Install (권장)
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip install sec-gate
+
+## Install (비권장)
+pip install sec-gate
+
+# secgate
 sec-gate/
 ├─ pyproject.toml
 ├─ README.md

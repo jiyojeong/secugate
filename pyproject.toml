@@ -1,3 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name ="secgate"
 version="0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+  "checkov>=3.0.0,>4.0.0"
+]
+
+
+[project.scripts]
+sec-gate = "secgate.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
