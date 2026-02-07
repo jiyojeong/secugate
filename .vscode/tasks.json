@@ -1,0 +1,64 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Pipeline: Run SecGate",
+            "type": "shell",
+            "command": "${command:python.interpreterPath}",
+            "args": [
+                "-m",
+                "secgate.cli",
+                "run"
+            ],
+            "problemMatcher": [],
+            "detail": "Runs the main SecGate analysis pipeline to generate artifacts."
+        },
+        {
+            "label": "Git: Add Artifacts",
+            "type": "shell",
+            "command": "git add artifacts/",
+            "problemMatcher": [],
+            "detail": "Stages changes in the 'artifacts/' directory. (git add)"
+        },
+        {
+            "label": "Git: Commit if Changed",
+            "type": "shell",
+            "command": "git diff-index --quiet HEAD -- artifacts/ || git commit -m '${input:commitMessage}'",
+            "problemMatcher": [],
+            "detail": "Commits only if there are staged changes in artifacts/. (git commit)"
+        },
+        {
+            "label": "Git: Push Commits",
+            "type": "shell",
+            "command": "git push",
+            "problemMatcher": [],
+            "detail": "Pushes committed changes to the remote repository. (git push)"
+        },
+        {
+            "label": "Pipeline: Run, Add, Commit, and Push",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Pipeline: Run SecGate",
+                "Git: Add Artifacts",
+                "Git: Commit if Changed",
+                "Git: Push Commits"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Runs the full pipeline, then adds, commits (with prompt), and pushes artifacts."
+        }
+    ],
+    "inputs": [
+        {
+            "id": "commitMessage",
+            "type": "promptString",
+            "description": "Enter your commit message",
+            "default": "chore: Update artifacts"
+        }
+    ]
+}

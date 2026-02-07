@@ -1,13 +1,27 @@
 # Local .terraform directories
 .terraform/
+# =================================================================
+# General
+# =================================================================
+# OS-generated files
+.DS_Store
+.DS_Store?
 
 # .tfstate files
 *.tfstate
 *.tfstate.*
+# =================================================================
+# Python
+# =================================================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
 
 # Crash log files
 crash.log
 crash.*.log
+# Pytest
+.pytest_cache/
 
 # Exclude all .tfvars files, which are likely to contain sensitive data, such as
 # password, private keys, and other secrets. These should not be part of version 
@@ -15,6 +29,9 @@ crash.*.log
 # to change depending on the environment.
 *.tfvars
 *.tfvars.json
+# Virtual environment folders
+venv/
+.venv/
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
@@ -35,3 +52,9 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+# =================================================================
+# Project-specific
+# =================================================================
+# Generated data files from scripts
+mapped_vectors.json
+terraformaws.cvs
