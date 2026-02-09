@@ -11,6 +11,10 @@ pip install sec-gate
 ## Install (비권장)
 pip install sec-gate
 
+## 실행코드(PoC 2026-02-09)
+python3 main.py run --tf ./inputs/terraform --out ./artifacts
+
+
 # secgate
 sec-gate/
 ├─ pyproject.toml
