@@ -1,3 +1,4 @@
 {
-    "github.copilot.nextEditSuggestions.enabled": false
+    "github.copilot.nextEditSuggestions.enabled": false,
+    "python.defaultInterpreterPath": "/home/jiyoon/secugate/.venv/bin/python"
 }

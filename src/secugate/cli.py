@@ -6,6 +6,12 @@ from secugate.pipeline import run_pipeline
 app = typer.Typer(add_completion=False)
 
 
+@app.callback()
+def main() -> None:
+    """SecuGate CLI."""
+    return
+
+
 @app.command()
 def run(
     tf: Path = typer.Option(..., "--tf", exists=True, file_okay=False, dir_okay=True),

@@ -4,18 +4,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Pipeline: Run secugate",
-            "type": "shell",
-            "command": "${command:python.interpreterPath}",
-            "args": [
-                "-m",
-                "secugate.cli",
-                "run"
-            ],
-            "problemMatcher": [],
-            "detail": "Runs the main secugate analysis pipeline to generate artifacts."
-        },
-        {
             "label": "Git: Add Artifacts",
             "type": "shell",
             "command": "git add artifacts/",
@@ -35,22 +23,6 @@
             "command": "git push",
             "problemMatcher": [],
             "detail": "Pushes committed changes to the remote repository. (git push)"
-        },
-        {
-            "label": "Pipeline: Run, Add, Commit, and Push",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "Pipeline: Run secugate",
-                "Git: Add Artifacts",
-                "Git: Commit if Changed",
-                "Git: Push Commits"
-            ],
-            "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "detail": "Runs the full pipeline, then adds, commits (with prompt), and pushes artifacts."
         }
     ],
     "inputs": [

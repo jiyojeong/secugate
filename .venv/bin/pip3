@@ -1,4 +1,4 @@
-#!/home/jiyoon/secgate/.venv/bin/python3
+#!/home/jiyoon/secugate/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
