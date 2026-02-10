@@ -15,14 +15,14 @@ pip install sec-gate
 python3 main.py run --tf ./inputs/terraform --out ./artifacts
 
 
-# secgate
+# secugate
 sec-gate/
 ├─ pyproject.toml
 ├─ README.md
 ├─ .gitignore
 ├─ artifacts/
 └─ src/
-   └─ secgate/
+   └─ secugate/
       ├─ __init__.py
       ├─ cli.py
       ├─ pipeline.py

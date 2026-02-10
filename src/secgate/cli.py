@@ -1,7 +1,7 @@
 from pathlib import Path
 import typer  # deprecate 확인
 
-from secgate.pipeline import run_pipeline
+from secugate.pipeline import run_pipeline
 
 app = typer.Typer(add_completion=False)
 

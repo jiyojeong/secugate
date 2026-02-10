@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from secgate.runners.terraform import build_tfplan_json
-from secgate.runners.checkov import build_checkov_on_tf_json
+from secugate.runners.terraform import build_tfplan_json
+from secugate.runners.checkov import build_checkov_on_tf_json
 
 def run_pipeline(terraform_dir: Path, output_dir: Path, k8s_dir: Path | None = None) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)

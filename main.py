@@ -1,4 +1,4 @@
-from secgate.cli import app
+from secugate.cli import app
 
 if __name__=="__main__":
     app()

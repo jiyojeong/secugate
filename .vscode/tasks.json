@@ -4,16 +4,16 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Pipeline: Run SecGate",
+            "label": "Pipeline: Run secugate",
             "type": "shell",
             "command": "${command:python.interpreterPath}",
             "args": [
                 "-m",
-                "secgate.cli",
+                "secugate.cli",
                 "run"
             ],
             "problemMatcher": [],
-            "detail": "Runs the main SecGate analysis pipeline to generate artifacts."
+            "detail": "Runs the main secugate analysis pipeline to generate artifacts."
         },
         {
             "label": "Git: Add Artifacts",
@@ -40,7 +40,7 @@
             "label": "Pipeline: Run, Add, Commit, and Push",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Pipeline: Run SecGate",
+                "Pipeline: Run secugate",
                 "Git: Add Artifacts",
                 "Git: Commit if Changed",
                 "Git: Push Commits"

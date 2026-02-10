@@ -1,4 +1,4 @@
-# src/secgate/parsers/checkov.py
+# src/secugate/parsers/checkov.py
 from __future__ import annotations
 
 import json
