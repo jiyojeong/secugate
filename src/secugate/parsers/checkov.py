@@ -73,7 +73,7 @@ def parse_checkov_json(path: Path, framework: str) -> list[Finding]:
         ("passed_checks", "PASS"),
         ("skipped_checks", "SKIP"),
     ]
-      
+
     for bucket_name, result in buckets:
         checks = root.get(bucket_name) or []
         if not isinstance(checks, list):
@@ -133,3 +133,108 @@ def parse_checkov_json(path: Path, framework: str) -> list[Finding]:
             )
 
     return findings
+
+
+def merge_checkov_results(
+    plan_json_path: Path, hcl_json_path: Path, output_path: Path
+) -> None:
+    """
+    Merges Checkov plan and HCL scan results.
+
+    It enriches findings from the plan scan with source code location details
+    from the HCL scan. When a finding in the plan scan lacks precise location
+    (e.g., file path points to tfplan.json), it looks for a corresponding
+    finding (same check_id and resource) in the HCL scan and copies over
+    the location fields.
+    """
+    plan_data = _load_json(plan_json_path)  # This should be a dict
+
+    # Load HCL JSON which might be a dict or a list of dicts
+    try:
+        hcl_data_raw = json.loads(hcl_json_path.read_text(encoding="utf-8"))
+    except Exception as e:
+        raise ValueError(f"Failed to load or parse JSON from {hcl_json_path}") from e
+
+    hcl_data: dict[str, Any]
+    if isinstance(hcl_data_raw, dict):
+        hcl_data = hcl_data_raw
+    elif isinstance(hcl_data_raw, list):
+        # Find the result for the 'terraform' (HCL) scan type
+        hcl_results = [
+            r
+            for r in hcl_data_raw
+            if isinstance(r, dict) and r.get("check_type") == "terraform"
+        ]
+        if not hcl_results:
+            raise ValueError(
+                f"Could not find 'terraform' check type in the list at {hcl_json_path}"
+            )
+        hcl_data = hcl_results[0]
+    else:
+        raise ValueError(
+            f"Unexpected JSON root type in {hcl_json_path}: {type(hcl_data_raw).__name__}"
+        )
+
+    # Checkov 결과는 'results' 키 아래에 중첩될 수 있습니다.
+    plan_root = plan_data.get("results")
+    if not isinstance(plan_root, dict):
+        plan_root = plan_data
+
+    hcl_root = hcl_data.get("results")
+    if not isinstance(hcl_root, dict):
+        hcl_root = hcl_data
+
+    plan_failed = plan_root.get("failed_checks") or []
+    hcl_failed = hcl_root.get("failed_checks") or []
+
+    EVIDENCE_FIELDS = [
+        "repo_file_path",
+        "file_path",
+        "file_abs_path",
+        "file_line_range",
+        "code_block",
+        "definition_context_file_path",
+        "breadcrumbs",
+    ]
+
+    def needs_evidence(finding: dict[str, Any]) -> bool:
+        """plan 스캔 결과에 위치 정보 보강이 필요한지 확인합니다."""
+        repo_file_path = (finding.get("repo_file_path") or "").lower()
+        file_line_range = finding.get("file_line_range")
+        code_block = finding.get("code_block")
+
+        if repo_file_path.endswith("tfplan.json"):
+            return True
+        if isinstance(file_line_range, list) and file_line_range == [0, 0]:
+            return True
+        if isinstance(code_block, list) and not code_block:
+            return True
+        return False
+
+    def build_hcl_index(
+        hcl_findings: list[dict[str, Any]],
+    ) -> dict[tuple[str, str], dict[str, Any]]:
+        """빠른 조회를 위해 HCL 스캔 결과를 (check_id, resource) 키로 인덱싱합니다."""
+        index: dict[tuple[str, str], dict[str, Any]] = {}
+        for finding in hcl_findings:
+            check_id = finding.get("check_id")
+            resource = finding.get("resource")
+            if check_id and resource:
+                index[(str(check_id), str(resource))] = finding
+        return index
+
+    hcl_index = build_hcl_index(hcl_failed)
+
+    for plan_finding in plan_failed:
+        key = (plan_finding.get("check_id"), plan_finding.get("resource"))
+        hcl_finding = hcl_index.get(key)
+        if not hcl_finding:
+            continue
+
+        if needs_evidence(plan_finding):
+            for field in EVIDENCE_FIELDS:
+                evidence = hcl_finding.get(field)
+                if evidence not in (None, [], "", {}):
+                    plan_finding[field] = evidence
+
+    output_path.write_text(json.dumps(plan_data, ensure_ascii=False, indent=2))

@@ -8,7 +8,7 @@ def build_tfplan_json(terraform_dir: Path, out_json: Path) -> None:
     out_json = out_json.resolve()
     out_json.parent.mkdir(parents=True, exist_ok=True)
 
-    plan_bin = out_json.parent / "tfplan.bin"
+    plan_bin = terraform_dir / ".secugate.tfplan.bin"
 
     # init
     run_cmd(["terraform", "init"], cwd=terraform_dir)
