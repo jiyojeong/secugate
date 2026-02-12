@@ -1,6 +1,6 @@
-?## Requirements
+## Requirements
 - Python 3.10+
-- Terraform (binary)
+- Terraform dir
 
 ## Install (권장)
 
@@ -65,3 +65,16 @@ sec-gate/
 │ └─ decision.json 
 │
 └─ src/
+
+
+
+## report 구성
+- asset: (예) aws_s3_bucket.sls_deployment_bucket_name
+- evidence: file_path/line/code_block
+- issue: 규칙명 + 요약
+- attack_scenario: 공격 플로우(단계별)
+- impact: 데이터 유출/권한상승/서비스중단 등
+- mitigation: Terraform 수정 가이드(가능하면 코드 스니펫)
+- side_effects: 성능/비용/호환성/운영 영향
+- validation: 적용 후 확인 방법
+- priority: severity + 노출도 기반

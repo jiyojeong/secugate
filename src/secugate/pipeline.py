@@ -8,7 +8,6 @@ def run_pipeline(
     terraform_dir: Path,
     output_dir: Path,
     k8s_dir: Path | None = None,
-    repo_root_for_plan_enrichment: Path | None = None,
 ) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -20,7 +19,7 @@ def run_pipeline(
     run_checkov_on_tfplan(
         tfplan_json=tfplan_json,
         out_json=checkov_tf_json,
-        repo_root_for_plan_enrichment=repo_root_for_plan_enrichment or terraform_dir,
+        repo_root=terraform_dir,
     )
 
     return {
