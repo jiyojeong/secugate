@@ -37,7 +37,7 @@ def _load_json(path: Path) -> dict[str, Any]:
         text = path.read_text(encoding="utf-8", errors="replace")
 
     try:
-        data = json.loads(text) #디버깅
+        data = json.loads(text)  # 디버깅
     except json.JSONDecodeError as e:
         raise ValueError(f"Invalid JSON in {path}: {e}") from e
 
@@ -73,7 +73,7 @@ def parse_checkov_json(path: Path, framework: str) -> list[Finding]:
         ("passed_checks", "PASS"),
         ("skipped_checks", "SKIP"),
     ]
-
+      
     for bucket_name, result in buckets:
         checks = root.get(bucket_name) or []
         if not isinstance(checks, list):
@@ -93,13 +93,18 @@ def parse_checkov_json(path: Path, framework: str) -> list[Finding]:
             check_name = _safe_str(_pick(c, "check_name", "name"), default="")
 
             # Resource key varies by framework / output mode
-            resource = _safe_str(_pick(c, "resource", "resource_name", "entity"), default="UNKNOWN_RESOURCE")
+            resource = _safe_str(
+                _pick(c, "resource", "resource_name", "entity"),
+                default="UNKNOWN_RESOURCE",
+            )
 
             file_path = _pick(c, "file_path", "file", "file_abs_path")
             file_line_range = _pick(c, "file_line_range", "file_line", "line_range")
+            code_block = _pick(c, "code_block")
 
             severity = _pick(c, "severity")
             guideline = _pick(c, "guideline", "guideline_url")
+            repo_file_path = _pick(c, "repo_file_path")
 
             findings.append(
                 Finding(
@@ -109,9 +114,21 @@ def parse_checkov_json(path: Path, framework: str) -> list[Finding]:
                     result=result,  # type: ignore[arg-type]
                     resource=resource,
                     file_path=_safe_str(file_path) if file_path is not None else None,
-                    file_line_range=_safe_str(file_line_range) if file_line_range is not None else None,
+                    repo_file_path=(
+                        _safe_str(repo_file_path)
+                        if repo_file_path is not None
+                        else None
+                    ),
+                    file_line_range=(
+                        _safe_str(file_line_range)
+                        if file_line_range is not None
+                        else None
+                    ),
                     severity=_safe_str(severity) if severity is not None else None,
                     guideline=_safe_str(guideline) if guideline is not None else None,
+                    code_block=(
+                        _safe_str(code_block) if code_block is not None else None
+                    ),
                 )
             )
 

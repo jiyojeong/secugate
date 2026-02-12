@@ -20,8 +20,10 @@ def run_checkov_on_tfplan(
         str(tfplan_json),
         "-o",
         "json",
+        "--quiet",
         "--repo-root-for-plan-enrichment",
         str(repo_root),
+        "--deep-analysis",
     ]
-    res = run_cmd(cmd, cwd=tfplan_json.parent, capture_output=True, allow_error=True)
+    res = run_cmd(cmd, cwd=str(repo_root), capture_output=True, allow_error=True)
     out_json.write_text(res, encoding="utf-8")
