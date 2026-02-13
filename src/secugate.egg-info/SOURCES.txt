@@ -15,4 +15,5 @@ src/secugate.egg-info/top_level.txt
 src/secugate/parsers/checkov.py
 src/secugate/runners/checkov.py
 src/secugate/runners/terraform.py
+src/secugate/utils/caching.py
 src/secugate/utils/subprocess.py

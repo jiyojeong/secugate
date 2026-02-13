@@ -237,4 +237,15 @@ def merge_checkov_results(
                 if evidence not in (None, [], "", {}):
                     plan_finding[field] = evidence
 
+    # Reformat code_block for better readability
+    for finding in plan_failed:
+        code_block = finding.get("code_block")
+        if isinstance(code_block, list) and code_block:
+            # Check if it's the list-of-lists format from checkov
+            if isinstance(code_block[0], list) and len(code_block[0]) == 2:
+                # Reformat to a list of strings for better readability in pretty-printed JSON.
+                # Each line is a separate string element in the list.
+                reformatted_code = [line.rstrip("\n\r") for _, line in code_block]
+                finding["code_block"] = reformatted_code
+
     output_path.write_text(json.dumps(plan_data, ensure_ascii=False, indent=2))

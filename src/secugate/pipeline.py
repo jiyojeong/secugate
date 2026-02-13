@@ -1,24 +1,57 @@
+import shutil
 from pathlib import Path
+import typer
 
-from secugate.runners.terraform import build_tfplan_json
-from secugate.runners.checkov import run_checkov_on_tfplan, run_checkov_on_hcl
 from secugate.parsers.checkov import merge_checkov_results
+from secugate.runners.checkov import run_checkov_on_hcl, run_checkov_on_tfplan
+from secugate.runners.terraform import build_tfplan_json
+from secugate.utils.caching import calculate_dir_hash
 
 
 def run_pipeline(
     terraform_dir: Path,
     output_dir: Path,
     k8s_dir: Path | None = None,
+    no_cache: bool = False,
 ) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
-
     terraform_dir = terraform_dir.resolve()
+
+    # --- Caching Logic Start ---
+    dir_hash = calculate_dir_hash(terraform_dir)
+    cache_root = output_dir / ".cache"
+    cache_dir = cache_root / dir_hash
+
+    # Define final output paths
     tfplan_json = output_dir / "tfplan.json"
     checkov_plan_json = output_dir / "checkov_plan.json"
     checkov_hcl_json = output_dir / "checkov_hcl.json"
     checkov_merged_json = output_dir / "checkov_merged.json"
 
-    # 1. Terraform Plan 실행하여 tfplan.json 생성
+    # Define cached artifact paths
+    cached_tfplan_json = cache_dir / "tfplan.json"
+    cached_checkov_plan_json = cache_dir / "checkov_plan.json"
+    cached_checkov_hcl_json = cache_dir / "checkov_hcl.json"
+    cached_checkov_merged_json = cache_dir / "checkov_merged.json"
+
+    if not no_cache and cached_checkov_merged_json.is_file():
+        typer.echo(f"Cache hit for hash: {dir_hash[:12]}")
+        typer.echo("Restoring artifacts from cache...")
+        shutil.copy(cached_tfplan_json, tfplan_json)
+        shutil.copy(cached_checkov_plan_json, checkov_plan_json)
+        shutil.copy(cached_checkov_hcl_json, checkov_hcl_json)
+        shutil.copy(cached_checkov_merged_json, checkov_merged_json)
+
+        return {
+            "tfplan_json": str(tfplan_json),
+            "checkov_tf_json": str(checkov_merged_json),
+        }
+
+    if not no_cache:
+        typer.echo(f"Cache miss for hash: {dir_hash[:12]}")
+        cache_dir.mkdir(parents=True, exist_ok=True)
+    # --- Caching Logic End ---
+
     build_tfplan_json(terraform_dir=terraform_dir, out_json=tfplan_json)
 
     # 2. Plan 파일 기반으로 Checkov 스캔 실행
@@ -40,6 +73,15 @@ def run_pipeline(
         hcl_json_path=checkov_hcl_json,
         output_path=checkov_merged_json,
     )
+
+    # --- Caching Logic Start ---
+    if not no_cache:
+        typer.echo("Saving artifacts to cache.")
+        shutil.copy(tfplan_json, cached_tfplan_json)
+        shutil.copy(checkov_plan_json, cached_checkov_plan_json)
+        shutil.copy(checkov_hcl_json, cached_checkov_hcl_json)
+        shutil.copy(checkov_merged_json, cached_checkov_merged_json)
+    # --- Caching Logic End ---
 
     return {
         "tfplan_json": str(tfplan_json),

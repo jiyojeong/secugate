@@ -19,6 +19,9 @@ def run(
     k8s: Path | None = typer.Option(
         None, "--k8s", exists=True, file_okay=False, dir_okay=True
     ),
+    no_cache: bool = typer.Option(
+        False, "--no-cache", help="Disable caching of results."
+    ),
 ):
     """
     실행: Terraform Plan ->Checkov ->write artifacts
@@ -28,6 +31,7 @@ def run(
         terraform_dir=tf,
         output_dir=out,
         k8s_dir=k8s,
+        no_cache=no_cache,
     )
     typer.echo(
         f"ok: tfplan={result['tfplan_json']} checkov={result['checkov_tf_json']}"

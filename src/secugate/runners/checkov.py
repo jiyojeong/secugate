@@ -46,6 +46,8 @@ def run_checkov_on_hcl(
         "checkov",
         "-d",
         str(terraform_dir),
+        "--framework",
+        "terraform",
         "-o",
         "json",
         "--quiet",
