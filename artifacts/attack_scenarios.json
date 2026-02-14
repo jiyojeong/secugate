@@ -1,0 +1,416 @@
+{
+  "version": 1,
+  "source": "artifacts/checkov_merged.json",
+  "rules": "/home/jiyoon/secugate/src/secugate/rules/attack_mapping.json",
+  "summary": {
+    "failed_findings": 26,
+    "mapped_findings": 23,
+    "capabilities": 7,
+    "atomic_ids": 5,
+    "scenarios": 3,
+    "unmapped_check_ids": 3
+  },
+  "capabilities": [
+    {
+      "capability": "compute_public_exposure",
+      "finding_count": 4,
+      "checks": {
+        "CKV_AWS_88": 1,
+        "CKV_AWS_24": 1,
+        "CKV_AWS_260": 1,
+        "CKV_AWS_130": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_88",
+          "resource": "aws_instance.super_critical_security_server",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            39,
+            62
+          ],
+          "check_name": "EC2 instance should not have public IP."
+        },
+        {
+          "check_id": "CKV_AWS_24",
+          "resource": "aws_security_group.ec2_server",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            1,
+            37
+          ],
+          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+        },
+        {
+          "check_id": "CKV_AWS_260",
+          "resource": "aws_security_group.ec2_server",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            1,
+            37
+          ],
+          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80"
+        },
+        {
+          "check_id": "CKV_AWS_130",
+          "resource": "aws_subnet.public",
+          "file_path": "/vpc.tf",
+          "file_line_range": [
+            18,
+            27
+          ],
+          "check_name": "Ensure VPC subnets do not assign public IP by default"
+        }
+      ]
+    },
+    {
+      "capability": "iam_overprivileged_policy",
+      "finding_count": 13,
+      "checks": {
+        "CKV_AWS_355": 2,
+        "CKV_AWS_287": 1,
+        "CKV_AWS_289": 2,
+        "CKV_AWS_286": 2,
+        "CKV_AWS_63": 1,
+        "CKV_AWS_62": 1,
+        "CKV_AWS_290": 2,
+        "CKV_AWS_288": 1,
+        "CKV2_AWS_40": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_355",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions"
+        },
+        {
+          "check_id": "CKV_AWS_287",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "check_name": "Ensure IAM policies does not allow credentials exposure"
+        },
+        {
+          "check_id": "CKV_AWS_289",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+        },
+        {
+          "check_id": "CKV_AWS_286",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "check_name": "Ensure IAM policies does not allow privilege escalation"
+        },
+        {
+          "check_id": "CKV_AWS_63",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's actions"
+        },
+        {
+          "check_id": "CKV_AWS_62",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "check_name": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created"
+        },
+        {
+          "check_id": "CKV_AWS_290",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "check_name": "Ensure IAM policies does not allow write access without constraints"
+        },
+        {
+          "check_id": "CKV_AWS_288",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "check_name": "Ensure IAM policies does not allow data exfiltration"
+        },
+        {
+          "check_id": "CKV_AWS_355",
+          "resource": "aws_iam_policy.kerrigan_policy",
+          "file_path": "/iam.tf",
+          "file_line_range": [
+            10,
+            44
+          ],
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions"
+        },
+        {
+          "check_id": "CKV_AWS_289",
+          "resource": "aws_iam_policy.kerrigan_policy",
+          "file_path": "/iam.tf",
+          "file_line_range": [
+            10,
+            44
+          ],
+          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+        },
+        {
+          "check_id": "CKV_AWS_286",
+          "resource": "aws_iam_policy.kerrigan_policy",
+          "file_path": "/iam.tf",
+          "file_line_range": [
+            10,
+            44
+          ],
+          "check_name": "Ensure IAM policies does not allow privilege escalation"
+        },
+        {
+          "check_id": "CKV_AWS_290",
+          "resource": "aws_iam_policy.kerrigan_policy",
+          "file_path": "/iam.tf",
+          "file_line_range": [
+            10,
+            44
+          ],
+          "check_name": "Ensure IAM policies does not allow write access without constraints"
+        },
+        {
+          "check_id": "CKV2_AWS_40",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "check_name": "Ensure AWS IAM policy does not allow full IAM privileges"
+        }
+      ]
+    },
+    {
+      "capability": "iam_user_direct_access",
+      "finding_count": 2,
+      "checks": {
+        "CKV_AWS_273": 1,
+        "CKV_AWS_40": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_273",
+          "resource": "aws_iam_user.kerrigan",
+          "file_path": "/iam.tf",
+          "file_line_range": [
+            1,
+            4
+          ],
+          "check_name": "Ensure access is controlled through SSO and not AWS IAM defined users"
+        },
+        {
+          "check_id": "CKV_AWS_40",
+          "resource": "aws_iam_user_policy_attachment.kerrigan_attachment",
+          "file_path": "/iam.tf",
+          "file_line_range": [
+            46,
+            49
+          ],
+          "check_name": "Ensure IAM policies are attached only to groups or roles (Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges.)"
+        }
+      ]
+    },
+    {
+      "capability": "instance_profile_missing",
+      "finding_count": 1,
+      "checks": {
+        "CKV2_AWS_41": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV2_AWS_41",
+          "resource": "aws_instance.super_critical_security_server",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            39,
+            62
+          ],
+          "check_name": "Ensure an IAM role is attached to EC2 instance"
+        }
+      ]
+    },
+    {
+      "capability": "metadata_hardening_missing",
+      "finding_count": 1,
+      "checks": {
+        "CKV_AWS_79": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_79",
+          "resource": "aws_instance.super_critical_security_server",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            39,
+            62
+          ],
+          "check_name": "Ensure Instance Metadata Service Version 1 is not enabled"
+        }
+      ]
+    },
+    {
+      "capability": "network_visibility_missing",
+      "finding_count": 1,
+      "checks": {
+        "CKV2_AWS_11": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV2_AWS_11",
+          "resource": "aws_vpc.vpc",
+          "file_path": "/vpc.tf",
+          "file_line_range": [
+            1,
+            8
+          ],
+          "check_name": "Ensure VPC flow logging is enabled in all VPCs"
+        }
+      ]
+    },
+    {
+      "capability": "open_egress",
+      "finding_count": 1,
+      "checks": {
+        "CKV_AWS_382": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_382",
+          "resource": "aws_security_group.ec2_server",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            1,
+            37
+          ],
+          "check_name": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1"
+        }
+      ]
+    }
+  ],
+  "atomic_coverage": [
+    {
+      "atomic_id": "T1041",
+      "capabilities": [
+        "open_egress"
+      ],
+      "name": "외부로의 자유로운 데이터 유출 경로",
+      "confidence": "medium"
+    },
+    {
+      "atomic_id": "T1078.004",
+      "capabilities": [
+        "iam_overprivileged_policy",
+        "iam_user_direct_access",
+        "instance_profile_missing"
+      ],
+      "name": "IAM 정책 오남용을 통한 계정/권한 악용",
+      "confidence": "high"
+    },
+    {
+      "atomic_id": "T1098.003",
+      "capabilities": [
+        "iam_overprivileged_policy"
+      ],
+      "name": "IAM 정책 오남용을 통한 계정/권한 악용",
+      "confidence": "high"
+    },
+    {
+      "atomic_id": "T1190",
+      "capabilities": [
+        "compute_public_exposure"
+      ],
+      "name": "공개 서비스/호스트 노출을 통한 초기 접근",
+      "confidence": "medium"
+    },
+    {
+      "atomic_id": "T1552",
+      "capabilities": [
+        "metadata_hardening_missing"
+      ],
+      "name": "메타데이터 자격증명 수집 위험",
+      "confidence": "medium"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "aws_initial_access_to_iam_abuse",
+      "title": "공개 EC2 노출 후 IAM 권한 악용",
+      "description": "공개된 컴퓨트 자산에서 초기 접근 후 과도한 IAM 권한으로 권한 상승/지속성 확보",
+      "score": "high",
+      "matched_capabilities": [
+        "compute_public_exposure",
+        "iam_overprivileged_policy"
+      ],
+      "atomic_chain": [
+        "T1190",
+        "T1098.003"
+      ],
+      "evidence_count": 17
+    },
+    {
+      "id": "aws_credential_collection_and_exfiltration",
+      "title": "자격증명 수집 후 외부 유출",
+      "description": "IMDS 하드닝 미흡 및 개방형 egress를 이용해 수집한 자격증명/데이터를 외부로 유출",
+      "score": "high",
+      "matched_capabilities": [
+        "metadata_hardening_missing",
+        "open_egress"
+      ],
+      "atomic_chain": [
+        "T1552",
+        "T1041"
+      ],
+      "evidence_count": 2
+    },
+    {
+      "id": "aws_identity_persistence_via_iam_user",
+      "title": "IAM 사용자 기반 지속성",
+      "description": "IAM 사용자와 직접 정책 부여를 악용해 장기 접근 경로를 유지",
+      "score": "high",
+      "matched_capabilities": [
+        "iam_user_direct_access",
+        "iam_overprivileged_policy"
+      ],
+      "atomic_chain": [
+        "T1078.004",
+        "T1098.003"
+      ],
+      "evidence_count": 15
+    }
+  ],
+  "unmapped_check_ids": [
+    "CKV2_AWS_12",
+    "CKV_AWS_126",
+    "CKV_AWS_135"
+  ]
+}

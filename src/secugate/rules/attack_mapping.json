@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "normalize": [
+    {
+      "capability": "iam_overprivileged_policy",
+      "check_ids": [
+        "CKV_AWS_62",
+        "CKV_AWS_63",
+        "CKV_AWS_286",
+        "CKV_AWS_287",
+        "CKV_AWS_288",
+        "CKV_AWS_289",
+        "CKV_AWS_290",
+        "CKV_AWS_355",
+        "CKV2_AWS_40"
+      ]
+    },
+    {
+      "capability": "iam_user_direct_access",
+      "check_ids": [
+        "CKV_AWS_273",
+        "CKV_AWS_40"
+      ]
+    },
+    {
+      "capability": "compute_public_exposure",
+      "check_ids": [
+        "CKV_AWS_24",
+        "CKV_AWS_260",
+        "CKV_AWS_88",
+        "CKV_AWS_130"
+      ]
+    },
+    {
+      "capability": "open_egress",
+      "check_ids": [
+        "CKV_AWS_382"
+      ]
+    },
+    {
+      "capability": "metadata_hardening_missing",
+      "check_ids": [
+        "CKV_AWS_79"
+      ]
+    },
+    {
+      "capability": "instance_profile_missing",
+      "check_ids": [
+        "CKV2_AWS_41"
+      ]
+    },
+    {
+      "capability": "network_visibility_missing",
+      "check_ids": [
+        "CKV2_AWS_11"
+      ]
+    }
+  ],
+  "atomic_mappings": [
+    {
+      "capability": "iam_overprivileged_policy",
+      "atomic_ids": [
+        "T1098.003",
+        "T1078.004"
+      ],
+      "name": "IAM 정책 오남용을 통한 계정/권한 악용",
+      "confidence": "high"
+    },
+    {
+      "capability": "iam_user_direct_access",
+      "atomic_ids": [
+        "T1078.004"
+      ],
+      "name": "IAM 사용자 기반 장기 자격증명 악용",
+      "confidence": "high"
+    },
+    {
+      "capability": "compute_public_exposure",
+      "atomic_ids": [
+        "T1190"
+      ],
+      "name": "공개 서비스/호스트 노출을 통한 초기 접근",
+      "confidence": "medium"
+    },
+    {
+      "capability": "open_egress",
+      "atomic_ids": [
+        "T1041"
+      ],
+      "name": "외부로의 자유로운 데이터 유출 경로",
+      "confidence": "medium"
+    },
+    {
+      "capability": "metadata_hardening_missing",
+      "atomic_ids": [
+        "T1552"
+      ],
+      "name": "메타데이터 자격증명 수집 위험",
+      "confidence": "medium"
+    },
+    {
+      "capability": "instance_profile_missing",
+      "atomic_ids": [
+        "T1078.004"
+      ],
+      "name": "인스턴스 역할 거버넌스 부재",
+      "confidence": "low"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "aws_initial_access_to_iam_abuse",
+      "title": "공개 EC2 노출 후 IAM 권한 악용",
+      "description": "공개된 컴퓨트 자산에서 초기 접근 후 과도한 IAM 권한으로 권한 상승/지속성 확보",
+      "requires_capabilities": [
+        "compute_public_exposure",
+        "iam_overprivileged_policy"
+      ],
+      "atomic_chain": [
+        "T1190",
+        "T1098.003"
+      ],
+      "score": "high"
+    },
+    {
+      "id": "aws_credential_collection_and_exfiltration",
+      "title": "자격증명 수집 후 외부 유출",
+      "description": "IMDS 하드닝 미흡 및 개방형 egress를 이용해 수집한 자격증명/데이터를 외부로 유출",
+      "requires_capabilities": [
+        "metadata_hardening_missing",
+        "open_egress"
+      ],
+      "atomic_chain": [
+        "T1552",
+        "T1041"
+      ],
+      "score": "high"
+    },
+    {
+      "id": "aws_identity_persistence_via_iam_user",
+      "title": "IAM 사용자 기반 지속성",
+      "description": "IAM 사용자와 직접 정책 부여를 악용해 장기 접근 경로를 유지",
+      "requires_capabilities": [
+        "iam_user_direct_access",
+        "iam_overprivileged_policy"
+      ],
+      "atomic_chain": [
+        "T1078.004",
+        "T1098.003"
+      ],
+      "score": "high"
+    }
+  ]
+}

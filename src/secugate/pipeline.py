@@ -2,6 +2,7 @@ import shutil
 from pathlib import Path
 import typer
 
+from secugate.attack_scenarios import generate_attack_scenarios
 from secugate.parsers.checkov import merge_checkov_results
 from secugate.runners.checkov import run_checkov_on_hcl, run_checkov_on_tfplan
 from secugate.runners.terraform import build_tfplan_json
@@ -27,12 +28,14 @@ def run_pipeline(
     checkov_plan_json = output_dir / "checkov_plan.json"
     checkov_hcl_json = output_dir / "checkov_hcl.json"
     checkov_merged_json = output_dir / "checkov_merged.json"
+    attack_scenarios_json = output_dir / "attack_scenarios.json"
 
     # Define cached artifact paths
     cached_tfplan_json = cache_dir / "tfplan.json"
     cached_checkov_plan_json = cache_dir / "checkov_plan.json"
     cached_checkov_hcl_json = cache_dir / "checkov_hcl.json"
     cached_checkov_merged_json = cache_dir / "checkov_merged.json"
+    cached_attack_scenarios_json = cache_dir / "attack_scenarios.json"
 
     if not no_cache and cached_checkov_merged_json.is_file():
         typer.echo(f"Cache hit for hash: {dir_hash[:12]}")
@@ -41,10 +44,12 @@ def run_pipeline(
         shutil.copy(cached_checkov_plan_json, checkov_plan_json)
         shutil.copy(cached_checkov_hcl_json, checkov_hcl_json)
         shutil.copy(cached_checkov_merged_json, checkov_merged_json)
+        shutil.copy(cached_attack_scenarios_json, attack_scenarios_json)
 
         return {
             "tfplan_json": str(tfplan_json),
             "checkov_tf_json": str(checkov_merged_json),
+            "attack_scenarios_json": str(attack_scenarios_json),
         }
 
     if not no_cache:
@@ -73,6 +78,10 @@ def run_pipeline(
         hcl_json_path=checkov_hcl_json,
         output_path=checkov_merged_json,
     )
+    generate_attack_scenarios(
+        checkov_merged_json_path=checkov_merged_json,
+        output_path=attack_scenarios_json,
+    )
 
     # --- Caching Logic Start ---
     if not no_cache:
@@ -81,9 +90,11 @@ def run_pipeline(
         shutil.copy(checkov_plan_json, cached_checkov_plan_json)
         shutil.copy(checkov_hcl_json, cached_checkov_hcl_json)
         shutil.copy(checkov_merged_json, cached_checkov_merged_json)
+        shutil.copy(attack_scenarios_json, cached_attack_scenarios_json)
     # --- Caching Logic End ---
 
     return {
         "tfplan_json": str(tfplan_json),
         "checkov_tf_json": str(checkov_merged_json),
+        "attack_scenarios_json": str(attack_scenarios_json),
     }

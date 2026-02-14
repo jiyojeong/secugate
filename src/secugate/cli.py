@@ -34,7 +34,10 @@ def run(
         no_cache=no_cache,
     )
     typer.echo(
-        f"ok: tfplan={result['tfplan_json']} checkov={result['checkov_tf_json']}"
+        "ok: "
+        f"tfplan={result['tfplan_json']} "
+        f"checkov={result['checkov_tf_json']} "
+        f"attack_scenarios={result['attack_scenarios_json']}"
     )
 
 
