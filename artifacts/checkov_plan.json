@@ -874,15 +874,15 @@
                         }
                     },
                     "evaluated_keys": [
-                        "egress/from_port",
-                        "resource_type",
-                        "ingress/from_port",
                         "egress/protocol",
+                        "ingress/to_port",
                         "ingress/self",
                         "egress/to_port",
+                        "egress/from_port",
                         "egress/cidr_blocks",
-                        "ingress/to_port",
-                        "ingress/protocol"
+                        "ingress/from_port",
+                        "ingress/protocol",
+                        "resource_type"
                     ]
                 },
                 "code_block": [],
@@ -942,8 +942,8 @@
                         }
                     },
                     "evaluated_keys": [
-                        "resource_type",
-                        "networking"
+                        "networking",
+                        "resource_type"
                     ]
                 },
                 "code_block": [],
@@ -1099,9 +1099,9 @@
                         }
                     },
                     "evaluated_keys": [
-                        "policy/Statement[?(@/Effect == Allow)]/Action[*]",
+                        "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]",
                         "statement[?(@/effect == Allow)]/actions[*]",
-                        "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
+                        "policy/Statement[?(@/Effect == Allow)]/Action[*]"
                     ]
                 },
                 "code_block": [],

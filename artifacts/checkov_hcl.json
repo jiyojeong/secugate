@@ -242,7 +242,7 @@
                             "module_connection": false
                         }
                     ],
-                    "name": [
+                    "description": [
                         {
                             "type": "tfvar",
                             "name": "cgid",
@@ -282,7 +282,7 @@
                             "module_connection": false
                         }
                     ],
-                    "description": [
+                    "name": [
                         {
                             "type": "tfvar",
                             "name": "cgid",
@@ -544,7 +544,7 @@
                             "module_connection": false
                         }
                     ],
-                    "name": [
+                    "description": [
                         {
                             "type": "tfvar",
                             "name": "cgid",
@@ -584,7 +584,7 @@
                             "module_connection": false
                         }
                     ],
-                    "description": [
+                    "name": [
                         {
                             "type": "tfvar",
                             "name": "cgid",
@@ -845,7 +845,7 @@
                             "module_connection": false
                         }
                     ],
-                    "name": [
+                    "description": [
                         {
                             "type": "tfvar",
                             "name": "cgid",
@@ -885,7 +885,7 @@
                             "module_connection": false
                         }
                     ],
-                    "description": [
+                    "name": [
                         {
                             "type": "tfvar",
                             "name": "cgid",
@@ -1147,7 +1147,7 @@
                             "module_connection": false
                         }
                     ],
-                    "name": [
+                    "description": [
                         {
                             "type": "tfvar",
                             "name": "cgid",
@@ -1187,7 +1187,7 @@
                             "module_connection": false
                         }
                     ],
-                    "description": [
+                    "name": [
                         {
                             "type": "tfvar",
                             "name": "cgid",
@@ -3898,20 +3898,6 @@
                 "check_len": null,
                 "definition_context_file_path": "/home/jiyoon/testterraform/vpc.tf",
                 "breadcrumbs": {
-                    "availability_zone": [
-                        {
-                            "type": "tfvar",
-                            "name": "region",
-                            "path": "/home/jiyoon/testterraform/terraform.tfvars",
-                            "module_connection": false
-                        },
-                        {
-                            "type": "variable",
-                            "name": "region",
-                            "path": "/home/jiyoon/testterraform/variables.tf",
-                            "module_connection": false
-                        }
-                    ],
                     "tags.Name": [
                         {
                             "type": "tfvar",
@@ -3929,6 +3915,20 @@
                             "type": "resource",
                             "name": "aws_iam_role.ec2_meek_role",
                             "path": "/home/jiyoon/testterraform/iam_meek.tf",
+                            "module_connection": false
+                        }
+                    ],
+                    "availability_zone": [
+                        {
+                            "type": "tfvar",
+                            "name": "region",
+                            "path": "/home/jiyoon/testterraform/terraform.tfvars",
+                            "module_connection": false
+                        },
+                        {
+                            "type": "variable",
+                            "name": "region",
+                            "path": "/home/jiyoon/testterraform/variables.tf",
                             "module_connection": false
                         }
                     ]
@@ -3961,15 +3961,15 @@
                         }
                     },
                     "evaluated_keys": [
-                        "resource_type",
-                        "ingress/self",
-                        "ingress/from_port",
-                        "egress/from_port",
-                        "egress/to_port",
-                        "egress/cidr_blocks",
-                        "ingress/protocol",
                         "egress/protocol",
-                        "ingress/to_port"
+                        "ingress/self",
+                        "ingress/to_port",
+                        "egress/to_port",
+                        "ingress/protocol",
+                        "egress/from_port",
+                        "resource_type",
+                        "egress/cidr_blocks",
+                        "ingress/from_port"
                     ]
                 },
                 "code_block": [
@@ -4084,8 +4084,8 @@
                         }
                     },
                     "evaluated_keys": [
-                        "resource_type",
-                        "networking"
+                        "networking",
+                        "resource_type"
                     ]
                 },
                 "code_block": [
@@ -4152,156 +4152,6 @@
                 "definition_context_file_path": "/home/jiyoon/testterraform/vpc.tf",
                 "breadcrumbs": {
                     "tags.Name": [
-                        {
-                            "type": "tfvar",
-                            "name": "cgid",
-                            "path": "/home/jiyoon/testterraform/terraform.tfvars",
-                            "module_connection": false
-                        },
-                        {
-                            "type": "variable",
-                            "name": "cgid",
-                            "path": "/home/jiyoon/testterraform/variables.tf",
-                            "module_connection": false
-                        },
-                        {
-                            "type": "resource",
-                            "name": "aws_iam_role.ec2_meek_role",
-                            "path": "/home/jiyoon/testterraform/iam_meek.tf",
-                            "module_connection": false
-                        }
-                    ]
-                }
-            },
-            {
-                "check_id": "CKV2_AWS_40",
-                "bc_check_id": "BC_AWS_IAM_73",
-                "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
-                "check_result": {
-                    "result": "FAILED",
-                    "entity": {
-                        "aws_iam_policy": {
-                            "ec2_mighty_policy": {
-                                "__end_line__": 35,
-                                "__start_line__": 21,
-                                "description": [
-                                    "CloudGoat demo123 EC2 Mighty Policy"
-                                ],
-                                "name": [
-                                    "cg-ec2-mighty-policy"
-                                ],
-                                "policy": [
-                                    {
-                                        "Version": "2012-10-17",
-                                        "Statement": [
-                                            {
-                                                "Action": "*",
-                                                "Effect": "Allow",
-                                                "Resource": "*"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "__address__": "aws_iam_policy.ec2_mighty_policy"
-                            }
-                        }
-                    },
-                    "evaluated_keys": [
-                        "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]",
-                        "policy/Statement[?(@/Effect == Allow)]/Action[*]",
-                        "statement[?(@/effect == Allow)]/actions[*]"
-                    ]
-                },
-                "code_block": [
-                    [
-                        21,
-                        "resource \"aws_iam_policy\" \"ec2_mighty_policy\" {\n"
-                    ],
-                    [
-                        22,
-                        "  name        = \"cg-ec2-mighty-policy\"\n"
-                    ],
-                    [
-                        23,
-                        "  description = \"CloudGoat ${var.cgid} EC2 Mighty Policy\"\n"
-                    ],
-                    [
-                        24,
-                        "\n"
-                    ],
-                    [
-                        25,
-                        "  policy = jsonencode({\n"
-                    ],
-                    [
-                        26,
-                        "    Version = \"2012-10-17\"\n"
-                    ],
-                    [
-                        27,
-                        "    Statement = [\n"
-                    ],
-                    [
-                        28,
-                        "      {\n"
-                    ],
-                    [
-                        29,
-                        "        Action   = \"*\"\n"
-                    ],
-                    [
-                        30,
-                        "        Effect   = \"Allow\"\n"
-                    ],
-                    [
-                        31,
-                        "        Resource = \"*\"\n"
-                    ],
-                    [
-                        32,
-                        "      }\n"
-                    ],
-                    [
-                        33,
-                        "    ]\n"
-                    ],
-                    [
-                        34,
-                        "  })\n"
-                    ],
-                    [
-                        35,
-                        "}\n"
-                    ]
-                ],
-                "file_path": "/iam_mighty.tf",
-                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-                "repo_file_path": "/iam_mighty.tf",
-                "file_line_range": [
-                    21,
-                    35
-                ],
-                "resource": "aws_iam_policy.ec2_mighty_policy",
-                "evaluations": null,
-                "check_class": "checkov.common.graph.checks_infra.base_check",
-                "fixed_definition": null,
-                "entity_tags": null,
-                "caller_file_path": null,
-                "caller_file_line_range": null,
-                "resource_address": null,
-                "severity": null,
-                "bc_category": null,
-                "benchmarks": null,
-                "description": null,
-                "short_description": null,
-                "vulnerability_details": null,
-                "connected_node": null,
-                "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-40",
-                "details": [],
-                "check_len": null,
-                "definition_context_file_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-                "breadcrumbs": {
-                    "description": [
                         {
                             "type": "tfvar",
                             "name": "cgid",
@@ -4530,6 +4380,156 @@
                         }
                     ],
                     "tags.Name": [
+                        {
+                            "type": "tfvar",
+                            "name": "cgid",
+                            "path": "/home/jiyoon/testterraform/terraform.tfvars",
+                            "module_connection": false
+                        },
+                        {
+                            "type": "variable",
+                            "name": "cgid",
+                            "path": "/home/jiyoon/testterraform/variables.tf",
+                            "module_connection": false
+                        },
+                        {
+                            "type": "resource",
+                            "name": "aws_iam_role.ec2_meek_role",
+                            "path": "/home/jiyoon/testterraform/iam_meek.tf",
+                            "module_connection": false
+                        }
+                    ]
+                }
+            },
+            {
+                "check_id": "CKV2_AWS_40",
+                "bc_check_id": "BC_AWS_IAM_73",
+                "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
+                "check_result": {
+                    "result": "FAILED",
+                    "entity": {
+                        "aws_iam_policy": {
+                            "ec2_mighty_policy": {
+                                "__end_line__": 35,
+                                "__start_line__": 21,
+                                "description": [
+                                    "CloudGoat demo123 EC2 Mighty Policy"
+                                ],
+                                "name": [
+                                    "cg-ec2-mighty-policy"
+                                ],
+                                "policy": [
+                                    {
+                                        "Version": "2012-10-17",
+                                        "Statement": [
+                                            {
+                                                "Action": "*",
+                                                "Effect": "Allow",
+                                                "Resource": "*"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "__address__": "aws_iam_policy.ec2_mighty_policy"
+                            }
+                        }
+                    },
+                    "evaluated_keys": [
+                        "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]",
+                        "policy/Statement[?(@/Effect == Allow)]/Action[*]",
+                        "statement[?(@/effect == Allow)]/actions[*]"
+                    ]
+                },
+                "code_block": [
+                    [
+                        21,
+                        "resource \"aws_iam_policy\" \"ec2_mighty_policy\" {\n"
+                    ],
+                    [
+                        22,
+                        "  name        = \"cg-ec2-mighty-policy\"\n"
+                    ],
+                    [
+                        23,
+                        "  description = \"CloudGoat ${var.cgid} EC2 Mighty Policy\"\n"
+                    ],
+                    [
+                        24,
+                        "\n"
+                    ],
+                    [
+                        25,
+                        "  policy = jsonencode({\n"
+                    ],
+                    [
+                        26,
+                        "    Version = \"2012-10-17\"\n"
+                    ],
+                    [
+                        27,
+                        "    Statement = [\n"
+                    ],
+                    [
+                        28,
+                        "      {\n"
+                    ],
+                    [
+                        29,
+                        "        Action   = \"*\"\n"
+                    ],
+                    [
+                        30,
+                        "        Effect   = \"Allow\"\n"
+                    ],
+                    [
+                        31,
+                        "        Resource = \"*\"\n"
+                    ],
+                    [
+                        32,
+                        "      }\n"
+                    ],
+                    [
+                        33,
+                        "    ]\n"
+                    ],
+                    [
+                        34,
+                        "  })\n"
+                    ],
+                    [
+                        35,
+                        "}\n"
+                    ]
+                ],
+                "file_path": "/iam_mighty.tf",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "repo_file_path": "/iam_mighty.tf",
+                "file_line_range": [
+                    21,
+                    35
+                ],
+                "resource": "aws_iam_policy.ec2_mighty_policy",
+                "evaluations": null,
+                "check_class": "checkov.common.graph.checks_infra.base_check",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-40",
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "breadcrumbs": {
+                    "description": [
                         {
                             "type": "tfvar",
                             "name": "cgid",

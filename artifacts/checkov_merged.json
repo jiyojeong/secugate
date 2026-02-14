@@ -1637,7 +1637,7 @@
               "module_connection": false
             }
           ],
-          "name": [
+          "description": [
             {
               "type": "tfvar",
               "name": "cgid",
@@ -1677,7 +1677,7 @@
               "module_connection": false
             }
           ],
-          "description": [
+          "name": [
             {
               "type": "tfvar",
               "name": "cgid",
@@ -1826,7 +1826,7 @@
               "module_connection": false
             }
           ],
-          "name": [
+          "description": [
             {
               "type": "tfvar",
               "name": "cgid",
@@ -1866,7 +1866,7 @@
               "module_connection": false
             }
           ],
-          "description": [
+          "name": [
             {
               "type": "tfvar",
               "name": "cgid",
@@ -2015,7 +2015,7 @@
               "module_connection": false
             }
           ],
-          "name": [
+          "description": [
             {
               "type": "tfvar",
               "name": "cgid",
@@ -2055,7 +2055,7 @@
               "module_connection": false
             }
           ],
-          "description": [
+          "name": [
             {
               "type": "tfvar",
               "name": "cgid",
@@ -2126,20 +2126,6 @@
         "check_len": null,
         "definition_context_file_path": "/home/jiyoon/testterraform/vpc.tf",
         "breadcrumbs": {
-          "availability_zone": [
-            {
-              "type": "tfvar",
-              "name": "region",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "region",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
           "tags.Name": [
             {
               "type": "tfvar",
@@ -2157,6 +2143,20 @@
               "type": "resource",
               "name": "aws_iam_role.ec2_meek_role",
               "path": "/home/jiyoon/testterraform/iam_meek.tf",
+              "module_connection": false
+            }
+          ],
+          "availability_zone": [
+            {
+              "type": "tfvar",
+              "name": "region",
+              "path": "/home/jiyoon/testterraform/terraform.tfvars",
+              "module_connection": false
+            },
+            {
+              "type": "variable",
+              "name": "region",
+              "path": "/home/jiyoon/testterraform/variables.tf",
               "module_connection": false
             }
           ]
@@ -2189,15 +2189,15 @@
             }
           },
           "evaluated_keys": [
-            "egress/from_port",
-            "resource_type",
-            "ingress/from_port",
             "egress/protocol",
+            "ingress/to_port",
             "ingress/self",
             "egress/to_port",
+            "egress/from_port",
             "egress/cidr_blocks",
-            "ingress/to_port",
-            "ingress/protocol"
+            "ingress/from_port",
+            "ingress/protocol",
+            "resource_type"
           ]
         },
         "code_block": [
@@ -2288,8 +2288,8 @@
             }
           },
           "evaluated_keys": [
-            "resource_type",
-            "networking"
+            "networking",
+            "resource_type"
           ]
         },
         "code_block": [
@@ -2543,9 +2543,9 @@
             }
           },
           "evaluated_keys": [
-            "policy/Statement[?(@/Effect == Allow)]/Action[*]",
+            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]",
             "statement[?(@/effect == Allow)]/actions[*]",
-            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
+            "policy/Statement[?(@/Effect == Allow)]/Action[*]"
           ]
         },
         "code_block": [
