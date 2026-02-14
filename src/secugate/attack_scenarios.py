@@ -123,10 +123,102 @@ def _build_scenarios(
     return output
 
 
+def _line_range_text(value: Any) -> str:
+    if isinstance(value, list) and len(value) == 2:
+        return f"{value[0]}-{value[1]}"
+    return "-"
+
+
+def _render_markdown_report(result: dict[str, Any]) -> str:
+    summary = result.get("summary", {})
+    lines: list[str] = []
+
+    lines.append("# Attack Scenarios Report")
+    lines.append("")
+    lines.append("## Summary")
+    lines.append("")
+    lines.append(f"- Failed findings: {summary.get('failed_findings', 0)}")
+    lines.append(f"- Mapped findings: {summary.get('mapped_findings', 0)}")
+    lines.append(f"- Capabilities: {summary.get('capabilities', 0)}")
+    lines.append(f"- Atomic IDs: {summary.get('atomic_ids', 0)}")
+    lines.append(f"- Scenarios: {summary.get('scenarios', 0)}")
+    lines.append(f"- Unmapped check IDs: {summary.get('unmapped_check_ids', 0)}")
+    lines.append("")
+
+    lines.append("## Scenarios")
+    lines.append("")
+    scenarios = result.get("scenarios") or []
+    if not scenarios:
+        lines.append("- No matched scenarios")
+    else:
+        for scenario in scenarios:
+            lines.append(
+                f"### {scenario.get('title', scenario.get('id', 'unknown_scenario'))}"
+            )
+            lines.append("")
+            lines.append(f"- ID: `{scenario.get('id', '-')}`")
+            lines.append(f"- Score: `{scenario.get('score', '-')}`")
+            lines.append(
+                f"- Atomic chain: {', '.join(scenario.get('atomic_chain') or ['-'])}"
+            )
+            lines.append(
+                f"- Matched capabilities: {', '.join(scenario.get('matched_capabilities') or ['-'])}"
+            )
+            lines.append(f"- Evidence count: {scenario.get('evidence_count', 0)}")
+            description = scenario.get("description")
+            if description:
+                lines.append(f"- Description: {description}")
+            lines.append("")
+
+    lines.append("## Capabilities")
+    lines.append("")
+    capabilities = result.get("capabilities") or []
+    if not capabilities:
+        lines.append("- No mapped capabilities")
+    else:
+        for cap in capabilities:
+            lines.append(f"### `{cap.get('capability', '-')}`")
+            lines.append("")
+            lines.append(f"- Findings: {cap.get('finding_count', 0)}")
+
+            checks = cap.get("checks") or {}
+            if checks:
+                check_summary = ", ".join(
+                    f"{check_id}({count})"
+                    for check_id, count in sorted(checks.items(), key=lambda x: x[0])
+                )
+                lines.append(f"- Checks: {check_summary}")
+            else:
+                lines.append("- Checks: -")
+
+            evidence = cap.get("evidence") or []
+            lines.append("- Evidence preview:")
+            for item in evidence[:5]:
+                lines.append(
+                    f"  - `{item.get('check_id', '-')}` {item.get('resource', '-')} "
+                    f"({item.get('file_path', '-')}:{_line_range_text(item.get('file_line_range'))})"
+                )
+            if len(evidence) > 5:
+                lines.append(f"  - ... and {len(evidence) - 5} more")
+            lines.append("")
+
+    lines.append("## Unmapped Check IDs")
+    lines.append("")
+    unmapped = result.get("unmapped_check_ids") or []
+    if not unmapped:
+        lines.append("- None")
+    else:
+        for check_id in unmapped:
+            lines.append(f"- `{check_id}`")
+    lines.append("")
+    return "\n".join(lines)
+
+
 def generate_attack_scenarios(
     checkov_merged_json_path: Path,
     output_path: Path,
     rules_path: Path | None = None,
+    markdown_output_path: Path | None = None,
 ) -> dict[str, Any]:
     checkov_json = _load_json(checkov_merged_json_path)
     rules = _load_rules(rules_path or _default_rules_path())
@@ -176,4 +268,9 @@ def generate_attack_scenarios(
     }
 
     output_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+    if markdown_output_path is not None:
+        markdown_output_path.write_text(
+            _render_markdown_report(result),
+            encoding="utf-8",
+        )
     return result
