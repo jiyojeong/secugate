@@ -15,6 +15,8 @@ pip install sec-gate
 python3 main.py run --tf ./inputs/terraform --out ./artifacts
 python3 main.py run --tf ./inputs/terraform --out ./artifacts --repo-root-for-plan-enrichment ./inputs/terraform
 python3 main.py run --tf ./inputs/terraform --out ./artifacts --rules ./src/secugate/rules/checkov_id_scenarios.json
+python3 -m src.secugate.validate_fail_examples --file ./artifacts/checkov_fail_examples.json
+python3 -m src.secugate.validate_fail_examples --file ./artifacts/checkov_fail_examples.json --require-filled
 
 
 # secugate

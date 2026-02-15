@@ -1,0 +1,11 @@
+{
+  "CKV2_AWS_1": {
+    "weakness_id": "WEAK_NET_SEGMENTATION_NOT_ENFORCED",
+    "attack_path_template": "IA(초기침투) -> DS(내부 스캔) -> LM(내부망이동) -> Col/Ex(내부 데이터 접근/유출)",
+    "risk_score_template": {
+      "base": 45,
+      "severity": "MEDIUM",
+      "reason": "네트워크 세그멘테이션 통제가 적용되지 않아 내부 확산 위험이 증가함"
+    }
+  }
+}
