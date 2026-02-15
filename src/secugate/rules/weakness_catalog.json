@@ -1,0 +1,12 @@
+{
+  "WEAK_NET_SEGMENTATION_NOT_ENFORCED": {
+    "attack_path": "IA(초기침투) -> DS(내부 스캔) -> LM(내부망이동) -> Col/Ex(내부 데이터 접근/유출)",
+    "risk": { "base": 45, "severity": "MEDIUM" },
+    "reason": "네트워크 세그멘테이션 통제가 적용되지 않아 내부 확산 위험이 증가함"
+  },
+  "WEAK_PUBLIC_EXPOSURE": {
+    "attack_path": "IA(초기침투) -> Ex(외부 노출 악용) -> Col/Ex(내부 데이터 접근/유출)",
+    "risk": { "base": 60, "severity": "HIGH" },
+    "reason": "불필요한 외부 노출로 원격 공격 표면이 증가함"
+  }
+}
