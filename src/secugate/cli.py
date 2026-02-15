@@ -16,6 +16,14 @@ def main() -> None:
 def run(
     tf: Path = typer.Option(..., "--tf", exists=True, file_okay=False, dir_okay=True),
     out: Path = typer.Option(Path("./artifacts"), "--out"),
+    rules: Path | None = typer.Option(
+        None,
+        "--rules",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        help="Path to attack scenario mapping rules JSON.",
+    ),
     k8s: Path | None = typer.Option(
         None, "--k8s", exists=True, file_okay=False, dir_okay=True
     ),
@@ -30,6 +38,7 @@ def run(
     result = run_pipeline(
         terraform_dir=tf,
         output_dir=out,
+        scenario_rules_path=rules,
         k8s_dir=k8s,
         no_cache=no_cache,
     )

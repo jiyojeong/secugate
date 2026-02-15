@@ -96,25 +96,45 @@ def _atomic_coverage(
 def _build_scenarios(
     capabilities: dict[str, list[dict[str, Any]]],
     scenarios: list[dict[str, Any]],
+    check_id_counter: Counter[str],
 ) -> list[dict[str, Any]]:
     output: list[dict[str, Any]] = []
 
     for scenario in scenarios:
-        required = [str(x) for x in (scenario.get("requires_capabilities") or []) if x]
-        if not required:
+        required_caps = [
+            str(x) for x in (scenario.get("requires_capabilities") or []) if x
+        ]
+        required_checks = [str(x) for x in (scenario.get("requires_check_ids") or []) if x]
+
+        if not required_caps and not required_checks:
             continue
 
-        if not all(cap in capabilities for cap in required):
+        if required_caps and not all(cap in capabilities for cap in required_caps):
             continue
 
-        evidence_count = sum(len(capabilities[cap]) for cap in required)
+        if required_checks and not all(
+            check_id in check_id_counter for check_id in required_checks
+        ):
+            continue
+
+        cap_evidence_count = (
+            sum(len(capabilities[cap]) for cap in required_caps) if required_caps else 0
+        )
+        check_evidence_count = (
+            sum(check_id_counter[check_id] for check_id in required_checks)
+            if required_checks
+            else 0
+        )
+        evidence_count = max(cap_evidence_count, check_evidence_count)
+
         output.append(
             {
                 "id": scenario.get("id"),
                 "title": scenario.get("title"),
                 "description": scenario.get("description"),
                 "score": scenario.get("score", "medium"),
-                "matched_capabilities": required,
+                "matched_capabilities": required_caps,
+                "matched_check_ids": required_checks,
                 "atomic_chain": scenario.get("atomic_chain") or [],
                 "evidence_count": evidence_count,
             }
@@ -163,6 +183,9 @@ def _render_markdown_report(result: dict[str, Any]) -> str:
             )
             lines.append(
                 f"- Matched capabilities: {', '.join(scenario.get('matched_capabilities') or ['-'])}"
+            )
+            lines.append(
+                f"- Matched check IDs: {', '.join(scenario.get('matched_check_ids') or ['-'])}"
             )
             lines.append(f"- Evidence count: {scenario.get('evidence_count', 0)}")
             description = scenario.get("description")
@@ -228,17 +251,30 @@ def generate_attack_scenarios(
         failed_checks, rules["normalize"]
     )
 
-    atomic = _atomic_coverage(capabilities, rules["atomic_mappings"])
-    scenarios = _build_scenarios(capabilities, rules["scenarios"])
-
     failed_check_ids = [
         str(item.get("check_id", "")).strip()
         for item in failed_checks
         if str(item.get("check_id", "")).strip()
     ]
     check_id_counter = Counter(failed_check_ids)
+    scenario_required_check_ids = {
+        str(check_id).strip()
+        for scenario in rules["scenarios"]
+        for check_id in (scenario.get("requires_check_ids") or [])
+        if str(check_id).strip()
+    }
+    scenario_matched_check_ids = {
+        check_id for check_id in scenario_required_check_ids if check_id in check_id_counter
+    }
+    mapped_check_ids = matched_check_ids | scenario_matched_check_ids
+
+    atomic = _atomic_coverage(capabilities, rules["atomic_mappings"])
+    scenarios = _build_scenarios(capabilities, rules["scenarios"], check_id_counter)
     unmapped_check_ids = sorted(
-        [check_id for check_id in check_id_counter if check_id not in matched_check_ids]
+        [check_id for check_id in check_id_counter if check_id not in mapped_check_ids]
+    )
+    mapped_findings = sum(
+        count for check_id, count in check_id_counter.items() if check_id in mapped_check_ids
     )
 
     result: dict[str, Any] = {
@@ -247,7 +283,7 @@ def generate_attack_scenarios(
         "rules": str((rules_path or _default_rules_path()).resolve()),
         "summary": {
             "failed_findings": len(failed_checks),
-            "mapped_findings": sum(len(items) for items in capabilities.values()),
+            "mapped_findings": mapped_findings,
             "capabilities": len(capabilities),
             "atomic_ids": len(atomic),
             "scenarios": len(scenarios),

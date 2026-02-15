@@ -14,6 +14,7 @@ def run_pipeline(
     output_dir: Path,
     k8s_dir: Path | None = None,
     no_cache: bool = False,
+    scenario_rules_path: Path | None = None,
 ) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
     terraform_dir = terraform_dir.resolve()
@@ -46,13 +47,21 @@ def run_pipeline(
         shutil.copy(cached_checkov_plan_json, checkov_plan_json)
         shutil.copy(cached_checkov_hcl_json, checkov_hcl_json)
         shutil.copy(cached_checkov_merged_json, checkov_merged_json)
-        shutil.copy(cached_attack_scenarios_json, attack_scenarios_json)
-        if cached_attack_scenarios_md.is_file():
-            shutil.copy(cached_attack_scenarios_md, attack_scenarios_md)
+        if scenario_rules_path is None and cached_attack_scenarios_json.is_file():
+            shutil.copy(cached_attack_scenarios_json, attack_scenarios_json)
+            if cached_attack_scenarios_md.is_file():
+                shutil.copy(cached_attack_scenarios_md, attack_scenarios_md)
+            else:
+                generate_attack_scenarios(
+                    checkov_merged_json_path=checkov_merged_json,
+                    output_path=attack_scenarios_json,
+                    markdown_output_path=attack_scenarios_md,
+                )
         else:
             generate_attack_scenarios(
                 checkov_merged_json_path=checkov_merged_json,
                 output_path=attack_scenarios_json,
+                rules_path=scenario_rules_path,
                 markdown_output_path=attack_scenarios_md,
             )
 
@@ -92,6 +101,7 @@ def run_pipeline(
     generate_attack_scenarios(
         checkov_merged_json_path=checkov_merged_json,
         output_path=attack_scenarios_json,
+        rules_path=scenario_rules_path,
         markdown_output_path=attack_scenarios_md,
     )
 
@@ -102,8 +112,9 @@ def run_pipeline(
         shutil.copy(checkov_plan_json, cached_checkov_plan_json)
         shutil.copy(checkov_hcl_json, cached_checkov_hcl_json)
         shutil.copy(checkov_merged_json, cached_checkov_merged_json)
-        shutil.copy(attack_scenarios_json, cached_attack_scenarios_json)
-        shutil.copy(attack_scenarios_md, cached_attack_scenarios_md)
+        if scenario_rules_path is None:
+            shutil.copy(attack_scenarios_json, cached_attack_scenarios_json)
+            shutil.copy(attack_scenarios_md, cached_attack_scenarios_md)
     # --- Caching Logic End ---
 
     return {

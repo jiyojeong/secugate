@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "normalize": [],
+  "atomic_mappings": [],
+  "scenarios": [
+    {
+      "id": "aws_public_ssh_then_iam_escalation",
+      "title": "공개 SSH 이후 IAM 권한 상승",
+      "description": "외부 SSH 노출 자산에 대한 초기 접근 이후 관리자급 IAM 정책 오남용으로 권한 상승 가능",
+      "requires_check_ids": [
+        "CKV_AWS_24",
+        "CKV_AWS_62"
+      ],
+      "atomic_chain": [
+        "T1190",
+        "T1098.003"
+      ],
+      "score": "high"
+    },
+    {
+      "id": "aws_imds_credentials_and_exfiltration",
+      "title": "IMDS 자격증명 수집 후 외부 유출",
+      "description": "IMDSv1 활성화 상태와 전방위 egress 허용이 결합되어 자격증명/데이터 유출 위험 증가",
+      "requires_check_ids": [
+        "CKV_AWS_79",
+        "CKV_AWS_382"
+      ],
+      "atomic_chain": [
+        "T1552",
+        "T1041"
+      ],
+      "score": "high"
+    },
+    {
+      "id": "aws_iam_user_persistence_path",
+      "title": "IAM 사용자 직접 정책 기반 지속성",
+      "description": "IAM 사용자 사용과 사용자 직접 정책 부여, 권한상승 가능한 정책이 결합된 지속성 경로",
+      "requires_check_ids": [
+        "CKV_AWS_273",
+        "CKV_AWS_40",
+        "CKV_AWS_286"
+      ],
+      "atomic_chain": [
+        "T1078.004",
+        "T1098.003"
+      ],
+      "score": "high"
+    },
+    {
+      "id": "aws_visibility_blindspot_with_default_sg",
+      "title": "가시성 공백과 기본 SG 위험",
+      "description": "VPC Flow Logs 부재와 기본 보안그룹 미제한 조합으로 원격 접근 행위 탐지/분석 난이도 증가",
+      "requires_check_ids": [
+        "CKV2_AWS_11",
+        "CKV2_AWS_12"
+      ],
+      "atomic_chain": [
+        "T1046",
+        "T1021"
+      ],
+      "score": "medium"
+    },
+    {
+      "id": "aws_public_web_to_data_egress",
+      "title": "공개 웹 노출 후 데이터 반출",
+      "description": "공개 HTTP 인바운드와 전방위 egress 허용이 결합된 데이터 반출 경로",
+      "requires_check_ids": [
+        "CKV_AWS_260",
+        "CKV_AWS_382"
+      ],
+      "atomic_chain": [
+        "T1190",
+        "T1041"
+      ],
+      "score": "medium"
+    }
+  ]
+}

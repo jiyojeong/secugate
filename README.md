@@ -14,6 +14,7 @@ pip install sec-gate
 ## 실행코드(PoC 2026-02-09)
 python3 main.py run --tf ./inputs/terraform --out ./artifacts
 python3 main.py run --tf ./inputs/terraform --out ./artifacts --repo-root-for-plan-enrichment ./inputs/terraform
+python3 main.py run --tf ./inputs/terraform --out ./artifacts --rules ./src/secugate/rules/checkov_id_scenarios.json
 
 
 # secugate
