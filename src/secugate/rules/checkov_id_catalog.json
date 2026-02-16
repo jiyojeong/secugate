@@ -47,7 +47,12 @@
   "vectors": [
     {
       "vector": "initial_access_public_exposure",
-      "weakness_ids": [],
+      "weakness_ids": [
+        "WEAK_PUBLIC_EXPOSURE",
+        "WEAK_UNRESTRICTED_EGRESS",
+        "WEAK_DATA_ENCRYPTION_IN_TRANSIT",
+        "WEAK_LOGGING_MONITORING_GAPS"
+      ],
       "check_ids": [
         "CKV2_AWS_6",
         "CKV2_AWS_28",
