@@ -1,4 +1,3 @@
-//weakness_id->attack_path/risk/reason
 {
   "WEAK_NET_SEGMENTATION_NOT_ENFORCED": {
     "title":"네트워크 세그멘테이션 통제 미적용",

@@ -1,4 +1,3 @@
-//check_id랑 weakness_id 매핑
 {
   "CKV2_AWS_1": {
     "platform": "aws_tf",
