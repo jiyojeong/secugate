@@ -1,4 +1,27 @@
 {
+  "WEAK_PUBLIC_EXPOSURE": {
+    "title": "불필요한 외부 노출",
+    "category": "network",
+    "attack_path": "IA(초기침투) -> Ex(외부 노출 악용) -> Col/Ex(내부 데이터 접근/유출)",
+    "risk": { "base": 60, "severity": "HIGH" },
+    "reason": "불필요한 외부 노출로 원격 공격 표면이 증가함",
+    "what_it_means": [
+      "인터넷에서 직접 접근 가능한 자산/포트/서비스가 늘어나 공격 표면이 증가"
+    ],
+    "how_to_validate": [
+      "SG/NACL 인바운드에 0.0.0.0/0 또는 ::/0 노출 여부",
+      "Public subnet(IGW route) 여부",
+      "관리 포트(22/3389 등) 또는 민감 서비스 직접 노출 여부"
+    ],
+    "false_positive_notes": [
+      "ALB/WAF/Zero Trust 등 앞단 통제가 강하면 실제 악용 난이도가 낮아질 수 있음"
+    ],
+    "default_mitigations": [
+      "인터넷 노출은 ALB/WAF 등 앞단으로 집약",
+      "관리 접근은 VPN/SSM/Zero Trust로 제한",
+      "원칙: 필요한 포트만, 필요한 소스만 허용"
+    ]
+  },
   "WEAK_NET_SEGMENTATION_NOT_ENFORCED": {
     "title":"네트워크 세그멘테이션 통제 미적용",
     "category": "network",
@@ -24,29 +47,54 @@
       "aws_tf": "```hcl\nresource \"aws_network_acl_association\" \"this\" {\n  for_each       = toset(var.subnet_ids)\n  network_acl_id = aws_network_acl.this.id\n  subnet_id      = each.value\n}\n```"
     }
   },
-  "WEAK_PUBLIC_EXPOSURE": {
-    "title": "불필요한 외부 노출",
+  "WEAK_UNRESTRICTED_EGRESS": {
+    "title": "과도한 아웃바운드(egress) 허용",
     "category": "network",
-    "attack_path": "IA(초기침투) -> Ex(외부 노출 악용) -> Col/Ex(내부 데이터 접근/유출)",
-    "risk": { "base": 60, "severity": "HIGH" },
-    "reason": "불필요한 외부 노출로 원격 공격 표면이 증가함",
-
+    "attack_path": "IA(초기침투) -> DS(내부탐색) -> Col/Ex(외부 노출 악용)",
+    "risk": { "base": 55, "severity": "HIGH" },
+    "reason": "침해 후 C2/데이터 유출 경로 노출 위험 늘어남",
     "what_it_means": [
-      "인터넷에서 직접 접근 가능한 자산/포트/서비스가 늘어나 공격 표면이 증가"
-    ],
-    "how_to_validate": [
-      "SG/NACL 인바운드에 0.0.0.0/0 또는 ::/0 노출 여부",
-      "Public subnet(IGW route) 여부",
-      "관리 포트(22/3389 등) 또는 민감 서비스 직접 노출 여부"
+       "서브넷 단위 차단/허용 정책이 기대대로 적용되지 않아 내부 동서 트래픽 통제가 약해질 수 있음"
+     ],
+    "how_to_validate":[
+       "SG egress가 0.0.0.0/0 전체 허용인지",
+       "NAT/IGW를 통한 외부 통신 경로가 존재하는지",
+       "Egress 프록시/Firewall/도메인 기반 제어가 있는지"
     ],
     "false_positive_notes": [
-      "ALB/WAF/Zero Trust 등 앞단 통제가 강하면 실제 악용 난이도가 낮아질 수 있음"
+      "업무상 외부 API호출이 많아 egress를 넓게 잡는 경우가 있으나, 통제/관측 동반돼야함"
     ],
-
     "default_mitigations": [
-      "인터넷 노출은 ALB/WAF 등 앞단으로 집약",
-      "관리 접근은 VPN/SSM/Zero Trust로 제한",
-      "원칙: 필요한 포트만, 필요한 소스만 허용"
-    ]
+      "아웃바운드 목적직/포트 최소화",
+      "VPC 엔드포인트로 인터넷 경유 최소화",
+      "Flow Logs/IDS로 egress 가시성 확보"
+    ],
+    "mitigation_snippets": {
+      "aws_tf": ""
+    }
+ },
+ "WEAK_IDENTITY_OVERPERMISSIVE": {
+    "title": "IAM 과도권한(최소권한 미준수)",
+    "category": "identity",
+    "attack_path":"IA(초기침투) -> DS(권한/자원 탐색) -> PE(권한상승) -> Col/Ex(내부 데이터 접근/유출)",
+    "risk": { "base": 70, "severity": "HIGH" },
+    "reason": "광범위한 권한(*, AdministratorAcess 등)으로 권한상승/횡적 확산 가능성",
+    "what_it_means":[""],
+    "how_to_validate":[
+      "정책에 action/resource 와일드카드 사용 여부",
+      "AssumeRole 권한 범위 및 Trust Policy 조건 존재여부",
+      "권한 경계(Permissions Boundary)/SCP로 제한하는지 여부"
+    ],
+    "false_positive_notes":[
+      "운영 자동화/배포 계정에 일시적으로 넓은 권한 부여될 수 있으나, 강한 통제가 필요"
+    ],
+    "default_mitigations":[
+      "정책 최소권한(리소스/조건 기반)으로 축소",
+      "AssumeRole은 조건(MFA/sourceIP/ExternalID)로 강화",
+      "Boundary/scp로 상한선 적용"
+    ],
+    "mitigation_snippets": {
+      "aws_tf": ""
+    }
   }
 }
