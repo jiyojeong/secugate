@@ -1,7 +1,9 @@
+//requires_check_ids조합 ->시나리오+atomic chain+score
 {
   "version": 1,
   "normalize": [],
   "atomic_mappings": [],
+  "platform": "aws_tf",
   "scenarios": [
     {
       "id": "aws_public_ssh_then_iam_escalation",
@@ -11,6 +13,9 @@
         "CKV_AWS_24",
         "CKV_AWS_62"
       ],
+      "optional_check_ids": ["string"],
+      "weakness_chain": ["WEAK_PUBLIC_EXPOSURE", "WEAK_IDENTITY_OVERPERMISSIVE"],
+      "attack_path": "IA(초기침투) -> Ex(외부 노출 악용) -> PE(권한상승) -> Col/Ex(내부 데이터 접근/유출)",
       "atomic_chain": [
         "T1190",
         "T1098.003"

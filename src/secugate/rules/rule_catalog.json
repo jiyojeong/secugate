@@ -1,9 +1,27 @@
+//check_id랑 weakness_id 매핑
 {
   "CKV2_AWS_1": {
-    "weakness_id": "WEAK_NET_SEGMENTATION_NOT_ENFORCED"
+    "platform": "aws_tf",
+    "weakness_id": "WEAK_NET_SEGMENTATION_NOT_ENFORCED",
+    "risk_score_override": { "base": 0, "severity": "LOW|MEDIUM|HIGH|CRITICAL", "reason": "string" },
+    "attack_path_override": "string",
+    "mitigation_override": "string",
+    "tags": ["string"]
   },
   "CKV_AWS_20": {
+    "platform": "aws_tf",
     "weakness_id": "WEAK_PUBLIC_EXPOSURE",
-    "risk_score_override": { "base": 70, "severity": "HIGH" }
-  }
+    "risk_score_override": { "base": 0, "severity": "LOW|MEDIUM|HIGH|CRITICAL", "reason": "string" },
+    "attack_path_override": "string",
+    "mitigation_override": "string",
+    "tags": ["string"]
+  },
+  "CKV_K8S_21": { 
+    "platform": "k8s_manifest", 
+    "weakness_id": "WEAK_K8S_POD_PRIVILEGE_ESCALATION",
+    "risk_score_override": { "base": 0, "severity": "LOW|MEDIUM|HIGH|CRITICAL", "reason": "string" },
+    "attack_path_override": "string",
+    "mitigation_override": "string",
+    "tags": ["string"]
+   }
 }

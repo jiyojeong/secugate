@@ -1,12 +1,53 @@
+//weakness_id->attack_path/risk/reason
 {
   "WEAK_NET_SEGMENTATION_NOT_ENFORCED": {
+    "title":"네트워크 세그멘테이션 통제 미적용",
+    "category": "network",
     "attack_path": "IA(초기침투) -> DS(내부 스캔) -> LM(내부망이동) -> Col/Ex(내부 데이터 접근/유출)",
     "risk": { "base": 45, "severity": "MEDIUM" },
-    "reason": "네트워크 세그멘테이션 통제가 적용되지 않아 내부 확산 위험이 증가함"
+    "reason": "네트워크 세그멘테이션 통제가 적용되지 않아 내부 확산 위험이 증가함",
+    "what_it_means": [
+      "서브넷 단위 차단/허용 정책이 기대대로 적용되지 않아 내부 동서 트래픽 통제가 약해질 수 있음"
+    ],
+    "how_to_validate": [
+      "Terraform에서 aws_network_acl_association 존재 여부 확인",
+      "서브넷이 의도한 NACL(커스텀)과 연결되어 있는지 확인",
+      "보완 통제(SG/Firewall/Flow Logs)가 있는지 확인"
+    ],
+     "false_positive_notes": [
+      "조직이 NACL을 통제로 사용하지 않고 SG/Firewall로만 통제하는 설계라면 영향도가 낮을 수 있음"
+    ],
+    "default_mitigations": [
+      "NACL을 사용하는 설계라면 서브넷에 association을 강제",
+      "주 통제는 SG 최소권한으로 두고, NACL은 보조 레이어로 운용"
+    ],
+    "mitigation_snippets": {
+      "aws_tf": "```hcl\nresource \"aws_network_acl_association\" \"this\" {\n  for_each       = toset(var.subnet_ids)\n  network_acl_id = aws_network_acl.this.id\n  subnet_id      = each.value\n}\n```"
+    }
   },
   "WEAK_PUBLIC_EXPOSURE": {
+    "title": "불필요한 외부 노출",
+    "category": "network",
     "attack_path": "IA(초기침투) -> Ex(외부 노출 악용) -> Col/Ex(내부 데이터 접근/유출)",
     "risk": { "base": 60, "severity": "HIGH" },
-    "reason": "불필요한 외부 노출로 원격 공격 표면이 증가함"
+    "reason": "불필요한 외부 노출로 원격 공격 표면이 증가함",
+
+    "what_it_means": [
+      "인터넷에서 직접 접근 가능한 자산/포트/서비스가 늘어나 공격 표면이 증가"
+    ],
+    "how_to_validate": [
+      "SG/NACL 인바운드에 0.0.0.0/0 또는 ::/0 노출 여부",
+      "Public subnet(IGW route) 여부",
+      "관리 포트(22/3389 등) 또는 민감 서비스 직접 노출 여부"
+    ],
+    "false_positive_notes": [
+      "ALB/WAF/Zero Trust 등 앞단 통제가 강하면 실제 악용 난이도가 낮아질 수 있음"
+    ],
+
+    "default_mitigations": [
+      "인터넷 노출은 ALB/WAF 등 앞단으로 집약",
+      "관리 접근은 VPN/SSM/Zero Trust로 제한",
+      "원칙: 필요한 포트만, 필요한 소스만 허용"
+    ]
   }
 }

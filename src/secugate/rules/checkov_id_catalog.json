@@ -1,3 +1,4 @@
+//공격벡터 구분 카타로그? 매핑 위한 물밑작업...불필요할 수도 있음.
 {
   "version": 1,
   "source": "/home/jiyoon/secgate/mapped_vectors.json",
@@ -47,6 +48,7 @@
   "vectors": [
     {
       "vector": "initial_access_public_exposure",
+      "weakness_ids": [],
       "check_ids": [
         "CKV2_AWS_6",
         "CKV2_AWS_28",
@@ -101,6 +103,7 @@
     },
     {
       "vector": "privilege_escalation_and_persistence",
+      "weakness_ids": [],
       "check_ids": [
         "CKV2_AWS_15",
         "CKV2_AWS_19",
@@ -132,6 +135,7 @@
     },
     {
       "vector": "credential_access_and_secrets",
+      "weakness_ids": [],
       "check_ids": [
         "CKV2_AWS_36",
         "CKV2_AWS_57",
@@ -159,6 +163,7 @@
     },
     {
       "vector": "defense_evasion_and_visibility_gaps",
+      "weakness_ids": [],
       "check_ids": [
         "CKV2_AWS_3",
         "CKV2_AWS_4",
@@ -226,6 +231,7 @@
     },
     {
       "vector": "collection_and_exfiltration",
+      "weakness_ids": [],
       "check_ids": [
         "CKV2_AWS_50",
         "CKV2_AWS_60",
@@ -251,6 +257,7 @@
     },
     {
       "vector": "lateral_movement_remote_access",
+      "weakness_ids": [],
       "check_ids": [
         "CKV2_AWS_5",
         "CKV2_AWS_7",
@@ -261,6 +268,7 @@
     },
     {
       "vector": "impact_and_resilience",
+      "weakness_ids": [],
       "check_ids": [
         "CKV2_AWS_8",
         "CKV2_AWS_9",
@@ -290,6 +298,7 @@
     },
     {
       "vector": "execution_and_compute_abuse",
+      "weakness_ids": [],
       "check_ids": [
         "CKV2_AWS_2",
         "CKV2_AWS_41",
@@ -326,6 +335,7 @@
     },
     {
       "vector": "data_protection_and_encryption_posture",
+      "weakness_ids": [],
       "check_ids": [
         "CKV2_AWS_20",
         "CKV2_AWS_34",
@@ -430,6 +440,7 @@
     },
     {
       "vector": "non_attack_operational_hardening",
+      "weakness_ids": [],
       "check_ids": [
         "CKV2_AWS_1",
         "CKV2_AWS_14",
