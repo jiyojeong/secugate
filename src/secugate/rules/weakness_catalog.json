@@ -2,7 +2,7 @@
   "WEAK_PUBLIC_EXPOSURE": {
     "title": "불필요한 외부 노출",
     "category": "network",
-    "attack_path": "IA(초기침투) -> Ex(외부 노출 악용) -> Col/Ex(내부 데이터 접근/유출)",
+    "attack_path": "IA(초기침투) -> EX(외부 노출 악용) -> Col/EX(내부 데이터 접근/유출)",
     "risk": { "base": 60, "severity": "HIGH" },
     "reason": "불필요한 외부 노출로 원격 공격 표면이 증가함",
     "what_it_means": [
@@ -25,7 +25,7 @@
   "WEAK_NET_SEGMENTATION_NOT_ENFORCED": {
     "title":"네트워크 세그멘테이션 통제 미적용",
     "category": "network",
-    "attack_path": "IA(초기침투) -> DS(내부 스캔) -> LM(내부망이동) -> Col/Ex(내부 데이터 접근/유출)",
+    "attack_path": "IA(초기침투) -> DS(내부 스캔) -> LM(내부망이동) -> Col/EX(내부 데이터 접근/유출)",
     "risk": { "base": 45, "severity": "MEDIUM" },
     "reason": "네트워크 세그멘테이션 통제가 적용되지 않아 내부 확산 위험이 증가함",
     "what_it_means": [
@@ -50,7 +50,7 @@
   "WEAK_UNRESTRICTED_EGRESS": {
     "title": "과도한 아웃바운드(egress) 허용",
     "category": "network",
-    "attack_path": "IA(초기침투) -> DS(내부탐색) -> Col/Ex(외부 노출 악용)",
+    "attack_path": "IA(초기침투) -> DS(내부탐색) -> Col/EX(외부 전송/유출)",
     "risk": { "base": 55, "severity": "HIGH" },
     "reason": "침해 후 C2/데이터 유출 경로 노출 위험 늘어남",
     "what_it_means": [
@@ -76,10 +76,10 @@
  "WEAK_IDENTITY_OVERPERMISSIVE": {
     "title": "IAM 과도권한(최소권한 미준수)",
     "category": "identity",
-    "attack_path":"IA(초기침투) -> DS(권한/자원 탐색) -> PE(권한상승) -> Col/Ex(내부 데이터 접근/유출)",
+    "attack_path":"IA(초기침투) -> DS(권한/자원 탐색) -> PE(권한상승) -> Col/EX(내부 데이터 접근/유출)",
     "risk": { "base": 70, "severity": "HIGH" },
     "reason": "광범위한 권한(*, AdministratorAcess 등)으로 권한상승/횡적 확산 가능성",
-    "what_it_means":[""],
+    "what_it_means":["사용자/역할이 필요 이상의 리소스·액션에 접근 가능하여 권한 상승 및 확산 가능"],
     "how_to_validate":[
       "정책에 action/resource 와일드카드 사용 여부",
       "AssumeRole 권한 범위 및 Trust Policy 조건 존재여부",
@@ -120,10 +120,10 @@
       "aws_tf": ""
     }
   },
-  "WEAK_LOGING_MONITORING_GAPS": {
+  "WEAK_LOGGING_MONITORING_GAPS": {
     "title": "로깅/모니터링 공백",
     "category": "logging",
-    "attack_path": "IA(초기침투) -> Pers(지속) -> Col/Ex(장기침해/유출)",
+    "attack_path": "IA(초기침투) -> Pers(지속) -> Col/EX(장기침해/유출)",
     "risk": { "base": 50, "severity": "MEDIUM" },
     "reason": "침해 탐지/추적이 어려워져 장기 침해 위험",
     "what_it_means":[""],
@@ -146,7 +146,7 @@
   "WEAK_BACKUP_RECOVERY_GAPS":{
     "title": "백업/복구 체계 미흡",
     "category": "resilience",
-    "attack_path": "IA(초기침투) -> IMP(파괴/암호화) -> Col/Ex(장기침해/유출)",
+    "attack_path": "IA(초기침투) -> IMP(파괴/암호화) -> Col/EX(장기침해/유출)",
     "risk": { "base": 45, "severity": "MEDIUM" },
     "how_to_validate": [
       "RDS/EBS/S3 버전관리/스냅샷/백업 정책 존재 여부",
@@ -167,7 +167,7 @@
   "WEAK_METADATA_IMDS_HARDENING": {
     "title": "인스턴스 메타데이터(IMDS) 하드닝 미흡",
     "category": "identity",   
-    "attack_path": "IA(초기침투) -> DS(IMDS접근) -> PE(역할 자격증명 탈취) -> Col/Ex",
+    "attack_path": "IA(초기침투) -> DS(IMDS접근) -> PE(역할 자격증명 탈취) -> Col/EX",
     "risk": { "base": 60, "severity": "HIGH" },
     "reason": "SSRF/침해 시 인스턴스 역할 자격증명 탈취로 권한 확대 가능",
     "how_to_validate": [

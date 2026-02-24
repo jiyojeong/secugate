@@ -12,7 +12,6 @@
         "CKV_AWS_24",
         "CKV_AWS_62"
       ],
-      "optional_check_ids": ["string"],
       "weakness_chain": ["WEAK_PUBLIC_EXPOSURE", "WEAK_IDENTITY_OVERPERMISSIVE"],
       "attack_path": "IA(초기침투) -> Ex(외부 노출 악용) -> PE(권한상승) -> Col/Ex(내부 데이터 접근/유출)",
       "atomic_chain": [
