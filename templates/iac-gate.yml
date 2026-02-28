@@ -1,0 +1,76 @@
+name: iac-gate
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    env:
+      TF_DIR: ./inputs/terraform
+      RULES_PATH: ./src/secugate/rules/checkov_fail_condition.json
+      OUT_DIR: ./artifacts
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install project
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Run secugate
+        run: |
+          python main.py run \
+            --tf "${TF_DIR}" \
+            --out "${OUT_DIR}" \
+            --rules "${RULES_PATH}" \
+            --no-cache
+
+      - name: Security gate on attack scenarios
+        run: |
+          python - <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          p = Path("./artifacts/attack_scenarios.json")
+          if not p.is_file():
+              print("FAIL: missing artifacts/attack_scenarios.json")
+              sys.exit(1)
+
+          d = json.loads(p.read_text(encoding="utf-8"))
+          scenarios = d.get("scenarios") or []
+          summary = d.get("summary") or {}
+          unmapped = d.get("unmapped_check_ids") or []
+
+          # Gate policy (edit for your org)
+          fail_scores = {"high"}
+          max_unmapped = 0
+          deny_unmapped = {"CKV_AWS_24", "CKV_AWS_382"}
+
+          bad_scenarios = [s for s in scenarios if str(s.get("score", "")).lower() in fail_scores]
+          unmapped_count = int(summary.get("unmapped_check_ids", len(unmapped)))
+          denied_hits = sorted(deny_unmapped.intersection(set(unmapped)))
+
+          failed = False
+          if bad_scenarios:
+              failed = True
+              print("FAIL: high scenarios:", [f"{s.get('id')}({s.get('score')})" for s in bad_scenarios])
+          if unmapped_count > max_unmapped:
+              failed = True
+              print(f"FAIL: unmapped_check_ids exceeded: {unmapped_count} > {max_unmapped}")
+          if denied_hits:
+              failed = True
+              print("FAIL: denied unmapped check IDs:", denied_hits)
+
+          if failed:
+              sys.exit(1)
+          print("PASS: iac gate")
+          PY

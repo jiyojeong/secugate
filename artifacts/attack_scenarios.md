@@ -17,6 +17,7 @@
 - Score: `high`
 - Atomic chain: T1190, T1098.003
 - Matched capabilities: sg_ingress_ssh_open, iam_policy_admin_or_wildcard
+- Matched check IDs: -
 - Evidence count: 6
 - Description: 공개 SSH 인바운드 노출 자산 초기 접근 이후 관리자급/와일드카드 IAM 정책으로 권한 상승 또는 지속성 확보
 
@@ -26,6 +27,7 @@
 - Score: `high`
 - Atomic chain: T1552, T1041
 - Matched capabilities: imdsv1_enabled, sg_egress_all_open
+- Matched check IDs: -
 - Evidence count: 2
 - Description: IMDSv1 활성화와 전방위 egress 허용 조합으로 수집 자격증명/데이터 외부 반출 위험 증가
 
@@ -35,6 +37,7 @@
 - Score: `high`
 - Atomic chain: T1078.004, T1098.003
 - Matched capabilities: iam_user_present, iam_policy_attached_to_user, iam_policy_privilege_escalation
+- Matched check IDs: -
 - Evidence count: 4
 - Description: IAM 사용자 사용과 사용자 직접 정책 부여가 결합되면 장기 자격증명 기반 지속성이 강화됨
 
@@ -44,6 +47,7 @@
 - Score: `medium`
 - Atomic chain: T1046, T1021
 - Matched capabilities: vpc_flow_logs_disabled, default_sg_not_restricted
+- Matched check IDs: -
 - Evidence count: 2
 - Description: VPC 플로우 로그 미설정 상태에서 기본 보안그룹이 트래픽을 제한하지 않으면 원격 접근 활동 탐지/분석이 어려워짐
 

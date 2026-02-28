@@ -525,6 +525,7 @@
         "sg_ingress_ssh_open",
         "iam_policy_admin_or_wildcard"
       ],
+      "matched_check_ids": [],
       "atomic_chain": [
         "T1190",
         "T1098.003"
@@ -540,6 +541,7 @@
         "imdsv1_enabled",
         "sg_egress_all_open"
       ],
+      "matched_check_ids": [],
       "atomic_chain": [
         "T1552",
         "T1041"
@@ -556,6 +558,7 @@
         "iam_policy_attached_to_user",
         "iam_policy_privilege_escalation"
       ],
+      "matched_check_ids": [],
       "atomic_chain": [
         "T1078.004",
         "T1098.003"
@@ -571,6 +574,7 @@
         "vpc_flow_logs_disabled",
         "default_sg_not_restricted"
       ],
+      "matched_check_ids": [],
       "atomic_chain": [
         "T1046",
         "T1021"
