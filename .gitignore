@@ -58,3 +58,10 @@ terraform.rc
 # Generated data files from scripts
 mapped_vectors.json
 terraformaws.cvs
+#추가
+.cache/
+.work/
+artifacts/*
+#제외
+!artifacts/report_example.md
+!artifacts/decision_example.json

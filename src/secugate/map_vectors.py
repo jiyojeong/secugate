@@ -10,17 +10,17 @@ CheckIdVectorMap: TypeAlias = dict[str, dict[str, str]]
 
 def map_vectors_by_check_id(file_path: Path) -> CheckIdVectorMap:
     """
-    Reads a vulnerability file and maps vectors (resources) to each check_id.
+    취약점 파일을 읽어 각 check_id에 벡터(리소스)를 매핑.
 
     Args:
-        file_path: The path to the vulnerability file.
+        file_path: 취약점 파일 경로.
 
     Returns:
-        A dictionary where keys are check_ids and values are dicts of {vector: description}.
+        키는 check_id, 값은 {vector: description} 형태인 딕셔너리.
 
     Raises:
-        FileNotFoundError: If the file_path does not exist.
-        Exception: For other parsing errors.
+        FileNotFoundError: file_path가 존재하지 않음.
+        Exception: 그 외 파싱 오류가 발생.
     """
     vectors_by_id = defaultdict(dict)
 
