@@ -20,7 +20,15 @@ source .venv/bin/activate
 python3 main.py run --tf ./inputs/terraform --out ./artifacts
 
 # secugate
-Terraform → Checkov analysis → Finding normalization → Capability mapping → Scenario detection → Risk scoring → CI decision generation
+```
+Terraform 
+→ Checkov analysis 
+→ Finding normalization 
+→ Capability mapping 
+→ MITRE Tactic Mapping 
+→ Scenario detection 
+→ Risk scoring for CI decision generation
+```
 
 # Outputs
 ```

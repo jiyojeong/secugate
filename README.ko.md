@@ -17,6 +17,16 @@ pip install sec-gate
 # 실행코드(PoC 2026-02-09)
 python3 main.py run --tf ./inputs/terraform --out ./artifacts
 
+# secugate
+```
+Terraform 
+→ Checkov analysis 
+→ Finding normalization 
+→ Capability mapping 
+→ MITRE Tactic Mapping 
+→ Scenario detection 
+→ Risk scoring for CI decision generation
+```
 # 출력물
 ```
 artifacts/
