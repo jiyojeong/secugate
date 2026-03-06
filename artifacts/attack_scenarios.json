@@ -20,13 +20,18 @@
       "evidence": [
         {
           "check_id": "CKV2_AWS_41",
+          "check_name": "Ensure an IAM role is attached to EC2 instance",
+          "resource_address": "aws_instance.super_critical_security_server",
           "resource": "aws_instance.super_critical_security_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
           "file_path": "/ec2.tf",
           "file_line_range": [
             39,
             62
           ],
-          "check_name": "Ensure an IAM role is attached to EC2 instance"
+          "evaluated_keys": [
+            "iam_instance_profile"
+          ]
         }
       ]
     },
@@ -39,13 +44,18 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_88",
+          "check_name": "EC2 instance should not have public IP.",
+          "resource_address": "aws_instance.super_critical_security_server",
           "resource": "aws_instance.super_critical_security_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
           "file_path": "/ec2.tf",
           "file_line_range": [
             39,
             62
           ],
-          "check_name": "EC2 instance should not have public IP."
+          "evaluated_keys": [
+            "associate_public_ip_address"
+          ]
         }
       ]
     },
@@ -58,13 +68,16 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_273",
+          "check_name": "Ensure access is controlled through SSO and not AWS IAM defined users",
+          "resource_address": "aws_iam_user.kerrigan",
           "resource": "aws_iam_user.kerrigan",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
           "file_path": "/iam.tf",
           "file_line_range": [
             1,
             4
           ],
-          "check_name": "Ensure access is controlled through SSO and not AWS IAM defined users"
+          "evaluated_keys": []
         }
       ]
     },
@@ -80,53 +93,82 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_355",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         },
         {
           "check_id": "CKV_AWS_63",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's actions",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's actions"
+          "evaluated_keys": [
+            "policy",
+            "inline_policy"
+          ]
         },
         {
           "check_id": "CKV_AWS_62",
+          "check_name": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created"
+          "evaluated_keys": [
+            "policy",
+            "inline_policy"
+          ]
         },
         {
           "check_id": "CKV_AWS_355",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+          "resource_address": "aws_iam_policy.kerrigan_policy",
           "resource": "aws_iam_policy.kerrigan_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
           "file_path": "/iam.tf",
           "file_line_range": [
             10,
             44
           ],
-          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         },
         {
           "check_id": "CKV2_AWS_40",
+          "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure AWS IAM policy does not allow full IAM privileges"
+          "evaluated_keys": [
+            "policy/Statement[?(@/Effect == Allow)]/Action[*]",
+            "statement[?(@/effect == Allow)]/actions[*]",
+            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
+          ]
         }
       ]
     },
@@ -139,13 +181,18 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_79",
+          "check_name": "Ensure Instance Metadata Service Version 1 is not enabled",
+          "resource_address": "aws_instance.super_critical_security_server",
           "resource": "aws_instance.super_critical_security_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
           "file_path": "/ec2.tf",
           "file_line_range": [
             39,
             62
           ],
-          "check_name": "Ensure Instance Metadata Service Version 1 is not enabled"
+          "evaluated_keys": [
+            "metadata_options/[0]/http_tokens"
+          ]
         }
       ]
     },
@@ -158,23 +205,33 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_286",
+          "check_name": "Ensure IAM policies does not allow privilege escalation",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure IAM policies does not allow privilege escalation"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         },
         {
           "check_id": "CKV_AWS_286",
+          "check_name": "Ensure IAM policies does not allow privilege escalation",
+          "resource_address": "aws_iam_policy.kerrigan_policy",
           "resource": "aws_iam_policy.kerrigan_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
           "file_path": "/iam.tf",
           "file_line_range": [
             10,
             44
           ],
-          "check_name": "Ensure IAM policies does not allow privilege escalation"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         }
       ]
     },
@@ -187,13 +244,19 @@
       "evidence": [
         {
           "check_id": "CKV2_AWS_11",
+          "check_name": "Ensure VPC flow logging is enabled in all VPCs",
+          "resource_address": "aws_vpc.vpc",
           "resource": "aws_vpc.vpc",
+          "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
           "file_path": "/vpc.tf",
           "file_line_range": [
             1,
             8
           ],
-          "check_name": "Ensure VPC flow logging is enabled in all VPCs"
+          "evaluated_keys": [
+            "networking",
+            "resource_type"
+          ]
         }
       ]
     },
@@ -206,13 +269,21 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_260",
+          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80",
+          "resource_address": "aws_security_group.ec2_server",
           "resource": "aws_security_group.ec2_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
           "file_path": "/ec2.tf",
           "file_line_range": [
             1,
             37
           ],
-          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80"
+          "evaluated_keys": [
+            "ingress/[2]/from_port",
+            "ingress/[2]/to_port",
+            "ingress/[2]/cidr_blocks",
+            "ingress/[2]/ipv6_cidr_blocks"
+          ]
         }
       ]
     },
@@ -225,13 +296,21 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_24",
+          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22",
+          "resource_address": "aws_security_group.ec2_server",
           "resource": "aws_security_group.ec2_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
           "file_path": "/ec2.tf",
           "file_line_range": [
             1,
             37
           ],
-          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+          "evaluated_keys": [
+            "ingress/[0]/from_port",
+            "ingress/[0]/to_port",
+            "ingress/[0]/cidr_blocks",
+            "ingress/[0]/ipv6_cidr_blocks"
+          ]
         }
       ]
     },
@@ -244,13 +323,26 @@
       "evidence": [
         {
           "check_id": "CKV2_AWS_12",
+          "check_name": "Ensure the default security group of every VPC restricts all traffic",
+          "resource_address": "aws_vpc.vpc",
           "resource": "aws_vpc.vpc",
+          "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
           "file_path": "/vpc.tf",
           "file_line_range": [
             1,
             8
           ],
-          "check_name": "Ensure the default security group of every VPC restricts all traffic"
+          "evaluated_keys": [
+            "ingress/protocol",
+            "ingress/from_port",
+            "egress/from_port",
+            "ingress/to_port",
+            "egress/protocol",
+            "ingress/self",
+            "egress/cidr_blocks",
+            "egress/to_port",
+            "resource_type"
+          ]
         }
       ]
     },
@@ -263,23 +355,33 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_289",
+          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         },
         {
           "check_id": "CKV_AWS_289",
+          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+          "resource_address": "aws_iam_policy.kerrigan_policy",
           "resource": "aws_iam_policy.kerrigan_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
           "file_path": "/iam.tf",
           "file_line_range": [
             10,
             44
           ],
-          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         }
       ]
     },
@@ -292,23 +394,33 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_290",
+          "check_name": "Ensure IAM policies does not allow write access without constraints",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure IAM policies does not allow write access without constraints"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         },
         {
           "check_id": "CKV_AWS_290",
+          "check_name": "Ensure IAM policies does not allow write access without constraints",
+          "resource_address": "aws_iam_policy.kerrigan_policy",
           "resource": "aws_iam_policy.kerrigan_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
           "file_path": "/iam.tf",
           "file_line_range": [
             10,
             44
           ],
-          "check_name": "Ensure IAM policies does not allow write access without constraints"
+          "evaluated_keys": [
+            "policy/Statement/[1]/Action"
+          ]
         }
       ]
     },
@@ -321,13 +433,18 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_40",
+          "check_name": "Ensure IAM policies are attached only to groups or roles (Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges.)",
+          "resource_address": "aws_iam_user_policy_attachment.kerrigan_attachment",
           "resource": "aws_iam_user_policy_attachment.kerrigan_attachment",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
           "file_path": "/iam.tf",
           "file_line_range": [
             46,
             49
           ],
-          "check_name": "Ensure IAM policies are attached only to groups or roles (Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges.)"
+          "evaluated_keys": [
+            "user"
+          ]
         }
       ]
     },
@@ -340,13 +457,18 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_130",
+          "check_name": "Ensure VPC subnets do not assign public IP by default",
+          "resource_address": "aws_subnet.public",
           "resource": "aws_subnet.public",
+          "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
           "file_path": "/vpc.tf",
           "file_line_range": [
             18,
             27
           ],
-          "check_name": "Ensure VPC subnets do not assign public IP by default"
+          "evaluated_keys": [
+            "map_public_ip_on_launch"
+          ]
         }
       ]
     },
@@ -359,13 +481,21 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_382",
+          "check_name": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+          "resource_address": "aws_security_group.ec2_server",
           "resource": "aws_security_group.ec2_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
           "file_path": "/ec2.tf",
           "file_line_range": [
             1,
             37
           ],
-          "check_name": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1"
+          "evaluated_keys": [
+            "egress/[0]/from_port",
+            "egress/[0]/to_port",
+            "egress/[0]/cidr_blocks",
+            "egress/[0]/ipv6_cidr_blocks"
+          ]
         }
       ]
     }

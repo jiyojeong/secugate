@@ -20,6 +20,20 @@ VECTOR_STAGE_RANK: dict[str, int] = {
     "data_protection_and_encryption_posture": 3,
 }
 
+STAGE_LABELS: dict[int, str] = {
+    0: "initial_access",
+    1: "privilege_or_credential_expansion",
+    2: "execution_or_visibility_control",
+    3: "impact_or_exfiltration",
+}
+
+STAGE_LABELS_KO: dict[int, str] = {
+    0: "초기 접근/노출",
+    1: "권한·자격 확장",
+    2: "실행·탐지우회",
+    3: "영향·유출",
+}
+
 
 def _load_json(path: Path) -> dict[str, Any]:
     data = json.loads(path.read_text(encoding="utf-8"))
@@ -82,8 +96,16 @@ def _build_checkov_index(checkov_merged: dict[str, Any]) -> tuple[dict[str, list
                 "description": finding.get("description"),
                 "resource": rid,
                 "normalized_resource": node_id,
+                "resource_address": finding.get("resource_address") or finding.get("resource"),
+                "file_abs_path": finding.get("file_abs_path"),
                 "file_path": finding.get("file_path"),
                 "file_line_range": finding.get("file_line_range"),
+                "evaluated_keys": finding.get("evaluated_keys")
+                or (
+                    finding.get("check_result", {}).get("evaluated_keys")
+                    if isinstance(finding.get("check_result"), dict)
+                    else None
+                ),
             }
         )
 
@@ -171,6 +193,100 @@ def _stage_sequence_from_path(
     return compressed
 
 
+def _build_stage_details(
+    path_nodes: list[str],
+    node_findings: list[dict[str, Any]],
+    check_to_vector: dict[str, str],
+) -> list[dict[str, Any]]:
+    details: list[dict[str, Any]] = []
+    findings_by_node = {x["node"]: x["findings"] for x in node_findings if isinstance(x, dict) and "node" in x}
+
+    for node in path_nodes:
+        findings = findings_by_node.get(node, [])
+        if not findings:
+            continue
+
+        stage_to_checks: dict[int, set[str]] = {}
+        for f in findings:
+            cid = f.get("check_id")
+            if not isinstance(cid, str):
+                continue
+            vector = check_to_vector.get(cid)
+            if not vector:
+                continue
+            rank = VECTOR_STAGE_RANK.get(vector)
+            if rank is None:
+                continue
+            stage_to_checks.setdefault(rank, set()).add(cid)
+
+        for rank, cids in sorted(stage_to_checks.items()):
+            # 단계별 대표 증거 2개만 추출
+            evidence_preview: list[dict[str, Any]] = []
+            for f in findings:
+                cid = f.get("check_id")
+                if not isinstance(cid, str) or cid not in cids:
+                    continue
+                evidence_preview.append(
+                    {
+                        "check_id": cid,
+                        "check_name": f.get("check_name"),
+                        "resource_address": f.get("resource_address") or f.get("resource"),
+                        "file_abs_path": f.get("file_abs_path"),
+                        "evaluated_keys": f.get("evaluated_keys"),
+                    }
+                )
+            evidence_preview = evidence_preview[:2]
+            details.append(
+                {
+                    "stage_rank": rank,
+                    "stage": STAGE_LABELS.get(rank, f"stage_{rank}"),
+                    "resource": node,
+                    "check_ids": sorted(cids),
+                    "evidence_preview": evidence_preview,
+                }
+            )
+
+    return details
+
+
+def _build_scenario_text(path_nodes: list[str], stage_details: list[dict[str, Any]]) -> str:
+    # 리소스명을 넣은 한국어 시나리오 문장 생성
+    if not path_nodes:
+        return ""
+    entry = path_nodes[0]
+    target = path_nodes[-1]
+    if not stage_details:
+        return f"{entry}에서 시작해 {target}까지 도달 가능한 경로입니다."
+
+    parts: list[str] = []
+    for s in stage_details:
+        rank = s.get("stage_rank")
+        resource = s.get("resource")
+        stage_ko = STAGE_LABELS_KO.get(rank, str(s.get("stage", "단계")))
+        ev = s.get("evidence_preview", [])
+        if isinstance(ev, list) and ev:
+            e0 = ev[0]
+            check_name = e0.get("check_name") or e0.get("check_id") or "-"
+            resource_address = e0.get("resource_address") or resource or "-"
+            file_abs_path = e0.get("file_abs_path") or "-"
+            evaluated_keys = e0.get("evaluated_keys")
+            if isinstance(evaluated_keys, list):
+                eval_text = ", ".join(str(k) for k in evaluated_keys[:2])
+                if len(evaluated_keys) > 2:
+                    eval_text += f" 외 {len(evaluated_keys)-2}개"
+            else:
+                eval_text = "-"
+            parts.append(
+                f"{stage_ko} 단계: `{resource}`에서 `{check_name}` 발견 "
+                f"(resource_address={resource_address}, file_abs_path={file_abs_path}, evaluated_keys={eval_text})"
+            )
+        else:
+            parts.append(f"{stage_ko} 단계에서 `{resource}` 이슈가 관찰됩니다")
+
+    flow_text = ". ".join(parts)
+    return f"`{entry}`에서 시작해 `{target}`로 이어지는 경로입니다. {flow_text}."
+
+
 def _filter_and_annotate_paths(
     paths: list[dict[str, Any]],
     checkov_index: dict[str, list[dict[str, Any]]],
@@ -245,12 +361,15 @@ def _filter_and_annotate_paths(
             drop(item, "insufficient_stage_progress")
             continue
 
+        stage_details = _build_stage_details(path_nodes, node_findings, check_to_vector)
         enriched = dict(item)
         # unique check 기준으로 과대계산 방지
         enriched["finding_count"] = len(unique_check_ids)
         enriched["raw_finding_count"] = raw_finding_count
         enriched["check_ids"] = sorted(unique_check_ids)
         enriched["stage_sequence"] = stage_seq
+        enriched["stage_details"] = stage_details
+        enriched["attack_scenario"] = _build_scenario_text(path_nodes, stage_details)
         enriched["node_findings"] = node_findings
         validated.append(enriched)
 

@@ -14,8 +14,11 @@ logger = logging.getLogger(__name__)
 class FindingEvidence:
     check_id: str
     resource: Any
+    resource_address: Any
     file_path: Any
+    file_abs_path: Any
     file_line_range: Any
+    evaluated_keys: Any
     check_name: Any
 
 
@@ -169,6 +172,17 @@ def _extract_failed_findings(checkov_json: dict[str, Any]) -> list[dict[str, Any
     return findings
 
 
+def _extract_evaluated_keys(finding: dict[str, Any]) -> Any:
+    # checkov 버전에 따라 evaluated_keys 위치가 달라서 둘 다 확인
+    evaluated_keys = finding.get("evaluated_keys")
+    if evaluated_keys:
+        return evaluated_keys
+    check_result = finding.get("check_result")
+    if isinstance(check_result, dict):
+        return check_result.get("evaluated_keys")
+    return None
+
+
 def _map_findings_to_capabilities(
     failed_findings: list[dict[str, Any]], normalize_rules: list[NormalizeRule]
 ) -> tuple[dict[str, list[FindingEvidence]], set[str]]:
@@ -189,8 +203,11 @@ def _map_findings_to_capabilities(
                 FindingEvidence(
                     check_id=check_id,
                     resource=finding.get("resource"),
+                    resource_address=finding.get("resource_address"),
                     file_path=finding.get("repo_file_path") or finding.get("file_path"),
+                    file_abs_path=finding.get("file_abs_path"),
                     file_line_range=finding.get("file_line_range"),
+                    evaluated_keys=_extract_evaluated_keys(finding),
                     check_name=finding.get("check_name"),
                 )
             )
@@ -230,6 +247,7 @@ def _evaluate_scenario_matches(
     capabilities: dict[str, list[FindingEvidence]],
     scenario_rules: list[ScenarioRule],
     check_id_counter: Counter[str],
+    failed_findings: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
     output: list[dict[str, Any]] = []
 
@@ -259,6 +277,59 @@ def _evaluate_scenario_matches(
         )
         evidence_count = max(cap_evidence_count, check_evidence_count)
 
+        evidence_items: list[dict[str, Any]] = []
+        seen_keys: set[tuple[str, str, str]] = set()
+
+        for cap in scenario.requires_capabilities:
+            for item in capabilities.get(cap, []):
+                key = (
+                    str(item.check_id),
+                    str(item.resource_address or item.resource or ""),
+                    str(item.file_abs_path or item.file_path or ""),
+                )
+                if key in seen_keys:
+                    continue
+                seen_keys.add(key)
+                evidence_items.append(
+                    {
+                        "check_id": item.check_id,
+                        "check_name": item.check_name,
+                        "resource_address": item.resource_address,
+                        "resource": item.resource,
+                        "file_abs_path": item.file_abs_path,
+                        "file_path": item.file_path,
+                        "file_line_range": item.file_line_range,
+                        "evaluated_keys": item.evaluated_keys,
+                    }
+                )
+
+        if scenario.requires_check_ids:
+            required_ids = set(scenario.requires_check_ids)
+            for finding in failed_findings:
+                check_id = str(finding.get("check_id", "")).strip()
+                if check_id not in required_ids:
+                    continue
+                key = (
+                    check_id,
+                    str(finding.get("resource_address") or finding.get("resource") or ""),
+                    str(finding.get("file_abs_path") or finding.get("file_path") or ""),
+                )
+                if key in seen_keys:
+                    continue
+                seen_keys.add(key)
+                evidence_items.append(
+                    {
+                        "check_id": check_id,
+                        "check_name": finding.get("check_name"),
+                        "resource_address": finding.get("resource_address"),
+                        "resource": finding.get("resource"),
+                        "file_abs_path": finding.get("file_abs_path"),
+                        "file_path": finding.get("repo_file_path") or finding.get("file_path"),
+                        "file_line_range": finding.get("file_line_range"),
+                        "evaluated_keys": _extract_evaluated_keys(finding),
+                    }
+                )
+
         output.append(
             {
                 "id": scenario.scenario_id,
@@ -269,6 +340,7 @@ def _evaluate_scenario_matches(
                 "matched_check_ids": scenario.requires_check_ids,
                 "atomic_chain": scenario.atomic_chain,
                 "evidence_count": evidence_count,
+                "evidence": evidence_items,
             }
         )
 
@@ -324,6 +396,24 @@ def _render_markdown_report(result: dict[str, Any]) -> str:
             description = scenario.get("description")
             if description:
                 lines.append(f"- Description: {description}")
+            evidence = scenario.get("evidence") or []
+            lines.append("- Evidence preview:")
+            for item in evidence[:5]:
+                evaluated_keys = item.get("evaluated_keys")
+                if isinstance(evaluated_keys, list):
+                    eval_text = ", ".join(str(k) for k in evaluated_keys[:3])
+                    if len(evaluated_keys) > 3:
+                        eval_text += f" 외 {len(evaluated_keys)-3}개"
+                else:
+                    eval_text = "-"
+                lines.append(
+                    f"  - `{item.get('check_id', '-')}` {item.get('check_name', '-')}"
+                    f" | resource_address={item.get('resource_address', '-')}"
+                    f" | file_abs_path={item.get('file_abs_path', '-')}"
+                    f" | evaluated_keys={eval_text}"
+                )
+            if len(evidence) > 5:
+                lines.append(f"  - ... and {len(evidence) - 5} more")
             lines.append("")
 
     lines.append("## Capabilities")
@@ -350,9 +440,18 @@ def _render_markdown_report(result: dict[str, Any]) -> str:
             evidence = cap.get("evidence") or []
             lines.append("- Evidence preview:")
             for item in evidence[:5]:
+                evaluated_keys = item.get("evaluated_keys")
+                if isinstance(evaluated_keys, list):
+                    eval_text = ", ".join(str(k) for k in evaluated_keys[:3])
+                    if len(evaluated_keys) > 3:
+                        eval_text += f" 외 {len(evaluated_keys)-3}개"
+                else:
+                    eval_text = "-"
                 lines.append(
-                    f"  - `{item.get('check_id', '-')}` {item.get('resource', '-')} "
-                    f"({item.get('file_path', '-')}:{_line_range_text(item.get('file_line_range'))})"
+                    f"  - `{item.get('check_id', '-')}` {item.get('check_name', '-')}"
+                    f" | resource_address={item.get('resource_address', item.get('resource', '-'))}"
+                    f" | file_abs_path={item.get('file_abs_path', item.get('file_path', '-'))}"
+                    f" | evaluated_keys={eval_text}"
                 )
             if len(evidence) > 5:
                 lines.append(f"  - ... and {len(evidence) - 5} more")
@@ -404,7 +503,12 @@ def generate_attack_scenarios(
     mapped_check_ids = matched_check_ids | scenario_matched_check_ids
 
     atomic_coverage = _build_atomic_coverage(capabilities, rules.atomic_mappings)
-    scenarios = _evaluate_scenario_matches(capabilities, rules.scenarios, check_id_counter)
+    scenarios = _evaluate_scenario_matches(
+        capabilities,
+        rules.scenarios,
+        check_id_counter,
+        failed_findings=failed_findings,
+    )
     unmapped_check_ids = sorted(
         [check_id for check_id in check_id_counter if check_id not in mapped_check_ids]
     )
@@ -432,10 +536,13 @@ def generate_attack_scenarios(
                 "evidence": [
                     {
                         "check_id": item.check_id,
+                        "check_name": item.check_name,
+                        "resource_address": item.resource_address,
                         "resource": item.resource,
+                        "file_abs_path": item.file_abs_path,
                         "file_path": item.file_path,
                         "file_line_range": item.file_line_range,
-                        "check_name": item.check_name,
+                        "evaluated_keys": item.evaluated_keys,
                     }
                     for item in evidence_items
                 ],
