@@ -1,0 +1,4353 @@
+{
+  "version": 1,
+  "graph_type": "iac_graph",
+  "source": "/home/jiyoon/secugate/artifacts/tfplan.json",
+  "summary": {
+    "nodes": 18,
+    "edges": 16,
+    "dfs_all_paths": 288,
+    "bfs_shortest_paths": 76,
+    "iam_assume_role_edges": 0,
+    "iam_bfs_paths": 0,
+    "iam_dfs_paths": 0,
+    "max_path_depth": 6,
+    "undirected": true
+  },
+  "nodes": [
+    {
+      "id": "aws_iam_access_key.kerrigan",
+      "type": "aws_iam_access_key",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_iam_instance_profile.ec2_meek",
+      "type": "aws_iam_instance_profile",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_iam_policy.ec2_meek_policy",
+      "type": "aws_iam_policy",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_iam_policy.ec2_mighty_policy",
+      "type": "aws_iam_policy",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_iam_policy.kerrigan_policy",
+      "type": "aws_iam_policy",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_iam_role.ec2_meek_role",
+      "type": "aws_iam_role",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_iam_role.ec2_mighty_role",
+      "type": "aws_iam_role",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_iam_user.kerrigan",
+      "type": "aws_iam_user",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "type": "aws_iam_user_policy_attachment",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_instance.super_critical_security_server",
+      "type": "aws_instance",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_internet_gateway.internet_gateway",
+      "type": "aws_internet_gateway",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_route_table.public_subnet",
+      "type": "aws_route_table",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_route_table_association.public_subnet_route_association",
+      "type": "aws_route_table_association",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_security_group.ec2_server",
+      "type": "aws_security_group",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_subnet.public",
+      "type": "aws_subnet",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_vpc.vpc",
+      "type": "aws_vpc",
+      "mode": "managed",
+      "provider": "aws"
+    },
+    {
+      "id": "data.aws_ami.ubuntu",
+      "type": "aws_ami",
+      "mode": "data",
+      "provider": "aws"
+    },
+    {
+      "id": "data.aws_caller_identity.aws_account_id",
+      "type": "aws_caller_identity",
+      "mode": "data",
+      "provider": "aws"
+    }
+  ],
+  "edges": [
+    {
+      "from": "aws_iam_access_key.kerrigan",
+      "to": "aws_iam_user.kerrigan"
+    },
+    {
+      "from": "aws_iam_instance_profile.ec2_meek",
+      "to": "aws_iam_role.ec2_meek_role"
+    },
+    {
+      "from": "aws_iam_role.ec2_meek_role",
+      "to": "aws_iam_policy.ec2_meek_policy"
+    },
+    {
+      "from": "aws_iam_role.ec2_mighty_role",
+      "to": "aws_iam_policy.ec2_mighty_policy"
+    },
+    {
+      "from": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "to": "aws_iam_policy.kerrigan_policy"
+    },
+    {
+      "from": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "to": "aws_iam_user.kerrigan"
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_security_group.ec2_server"
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_subnet.public"
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "data.aws_ami.ubuntu"
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_vpc.vpc"
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_internet_gateway.internet_gateway"
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_vpc.vpc"
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_route_table.public_subnet"
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_subnet.public"
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_vpc.vpc"
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_vpc.vpc"
+    }
+  ],
+  "dfs_all_paths": [
+    {
+      "from": "aws_iam_access_key.kerrigan",
+      "to": "aws_iam_user.kerrigan",
+      "hops": 1,
+      "path": [
+        "aws_iam_access_key.kerrigan",
+        "aws_iam_user.kerrigan"
+      ]
+    },
+    {
+      "from": "aws_iam_instance_profile.ec2_meek",
+      "to": "aws_iam_role.ec2_meek_role",
+      "hops": 1,
+      "path": [
+        "aws_iam_instance_profile.ec2_meek",
+        "aws_iam_role.ec2_meek_role"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.ec2_meek_policy",
+      "to": "aws_iam_role.ec2_meek_role",
+      "hops": 1,
+      "path": [
+        "aws_iam_policy.ec2_meek_policy",
+        "aws_iam_role.ec2_meek_role"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.ec2_mighty_policy",
+      "to": "aws_iam_role.ec2_mighty_role",
+      "hops": 1,
+      "path": [
+        "aws_iam_policy.ec2_mighty_policy",
+        "aws_iam_role.ec2_mighty_role"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.kerrigan_policy",
+      "to": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "hops": 1,
+      "path": [
+        "aws_iam_policy.kerrigan_policy",
+        "aws_iam_user_policy_attachment.kerrigan_attachment"
+      ]
+    },
+    {
+      "from": "aws_iam_role.ec2_meek_role",
+      "to": "aws_iam_instance_profile.ec2_meek",
+      "hops": 1,
+      "path": [
+        "aws_iam_role.ec2_meek_role",
+        "aws_iam_instance_profile.ec2_meek"
+      ]
+    },
+    {
+      "from": "aws_iam_role.ec2_meek_role",
+      "to": "aws_iam_policy.ec2_meek_policy",
+      "hops": 1,
+      "path": [
+        "aws_iam_role.ec2_meek_role",
+        "aws_iam_policy.ec2_meek_policy"
+      ]
+    },
+    {
+      "from": "aws_iam_role.ec2_mighty_role",
+      "to": "aws_iam_policy.ec2_mighty_policy",
+      "hops": 1,
+      "path": [
+        "aws_iam_role.ec2_mighty_role",
+        "aws_iam_policy.ec2_mighty_policy"
+      ]
+    },
+    {
+      "from": "aws_iam_user.kerrigan",
+      "to": "aws_iam_access_key.kerrigan",
+      "hops": 1,
+      "path": [
+        "aws_iam_user.kerrigan",
+        "aws_iam_access_key.kerrigan"
+      ]
+    },
+    {
+      "from": "aws_iam_user.kerrigan",
+      "to": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "hops": 1,
+      "path": [
+        "aws_iam_user.kerrigan",
+        "aws_iam_user_policy_attachment.kerrigan_attachment"
+      ]
+    },
+    {
+      "from": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "to": "aws_iam_policy.kerrigan_policy",
+      "hops": 1,
+      "path": [
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_policy.kerrigan_policy"
+      ]
+    },
+    {
+      "from": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "to": "aws_iam_user.kerrigan",
+      "hops": 1,
+      "path": [
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_user.kerrigan"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_security_group.ec2_server",
+      "hops": 1,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_subnet.public",
+      "hops": 1,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 1,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_route_table.public_subnet",
+      "hops": 1,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_vpc.vpc",
+      "hops": 1,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 1,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 1,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_vpc.vpc",
+      "hops": 1,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_route_table.public_subnet",
+      "hops": 1,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_subnet.public",
+      "hops": 1,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 1,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_vpc.vpc",
+      "hops": 1,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 1,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 1,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_vpc.vpc",
+      "hops": 1,
+      "path": [
+        "aws_subnet.public",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 1,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_route_table.public_subnet",
+      "hops": 1,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_security_group.ec2_server",
+      "hops": 1,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_subnet.public",
+      "hops": 1,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 1,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_iam_access_key.kerrigan",
+      "to": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "hops": 2,
+      "path": [
+        "aws_iam_access_key.kerrigan",
+        "aws_iam_user.kerrigan",
+        "aws_iam_user_policy_attachment.kerrigan_attachment"
+      ]
+    },
+    {
+      "from": "aws_iam_instance_profile.ec2_meek",
+      "to": "aws_iam_policy.ec2_meek_policy",
+      "hops": 2,
+      "path": [
+        "aws_iam_instance_profile.ec2_meek",
+        "aws_iam_role.ec2_meek_role",
+        "aws_iam_policy.ec2_meek_policy"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.ec2_meek_policy",
+      "to": "aws_iam_instance_profile.ec2_meek",
+      "hops": 2,
+      "path": [
+        "aws_iam_policy.ec2_meek_policy",
+        "aws_iam_role.ec2_meek_role",
+        "aws_iam_instance_profile.ec2_meek"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.kerrigan_policy",
+      "to": "aws_iam_user.kerrigan",
+      "hops": 2,
+      "path": [
+        "aws_iam_policy.kerrigan_policy",
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_user.kerrigan"
+      ]
+    },
+    {
+      "from": "aws_iam_user.kerrigan",
+      "to": "aws_iam_policy.kerrigan_policy",
+      "hops": 2,
+      "path": [
+        "aws_iam_user.kerrigan",
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_policy.kerrigan_policy"
+      ]
+    },
+    {
+      "from": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "to": "aws_iam_access_key.kerrigan",
+      "hops": 2,
+      "path": [
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_user.kerrigan",
+        "aws_iam_access_key.kerrigan"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 2,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_vpc.vpc",
+      "hops": 2,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_vpc.vpc",
+      "hops": 2,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_route_table.public_subnet",
+      "hops": 2,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 2,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_security_group.ec2_server",
+      "hops": 2,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_subnet.public",
+      "hops": 2,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_vpc.vpc",
+      "hops": 2,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 2,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_security_group.ec2_server",
+      "hops": 2,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_subnet.public",
+      "hops": 2,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_subnet.public",
+      "hops": 2,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_vpc.vpc",
+      "hops": 2,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 2,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 2,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_vpc.vpc",
+      "hops": 2,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_vpc.vpc",
+      "hops": 2,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 2,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 2,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_subnet.public",
+      "hops": 2,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_subnet.public",
+      "hops": 2,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 2,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 2,
+      "path": [
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_route_table.public_subnet",
+      "hops": 2,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_route_table.public_subnet",
+      "hops": 2,
+      "path": [
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_security_group.ec2_server",
+      "hops": 2,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_security_group.ec2_server",
+      "hops": 2,
+      "path": [
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 2,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 2,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 2,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 2,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_route_table.public_subnet",
+      "hops": 2,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 2,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 2,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_security_group.ec2_server",
+      "hops": 2,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_subnet.public",
+      "hops": 2,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_iam_access_key.kerrigan",
+      "to": "aws_iam_policy.kerrigan_policy",
+      "hops": 3,
+      "path": [
+        "aws_iam_access_key.kerrigan",
+        "aws_iam_user.kerrigan",
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_policy.kerrigan_policy"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.kerrigan_policy",
+      "to": "aws_iam_access_key.kerrigan",
+      "hops": 3,
+      "path": [
+        "aws_iam_policy.kerrigan_policy",
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_user.kerrigan",
+        "aws_iam_access_key.kerrigan"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 3,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 3,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 3,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 3,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 3,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_security_group.ec2_server",
+      "hops": 3,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_subnet.public",
+      "hops": 3,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 3,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 3,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 3,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 3,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_security_group.ec2_server",
+      "hops": 3,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_subnet.public",
+      "hops": 3,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_subnet.public",
+      "hops": 3,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 3,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 3,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 3,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 3,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_security_group.ec2_server",
+      "hops": 3,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_subnet.public",
+      "hops": 3,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_vpc.vpc",
+      "hops": 3,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 3,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 3,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_route_table.public_subnet",
+      "hops": 3,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_security_group.ec2_server",
+      "hops": 3,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_security_group.ec2_server",
+      "hops": 3,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_security_group.ec2_server",
+      "hops": 3,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_subnet.public",
+      "hops": 3,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_vpc.vpc",
+      "hops": 3,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 3,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 3,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 3,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 3,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 3,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 3,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 3,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_vpc.vpc",
+      "hops": 3,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 3,
+      "path": [
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 3,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 3,
+      "path": [
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_route_table.public_subnet",
+      "hops": 3,
+      "path": [
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 3,
+      "path": [
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_vpc.vpc",
+      "hops": 3,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_vpc.vpc",
+      "hops": 3,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_route_table.public_subnet",
+      "hops": 3,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 3,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_security_group.ec2_server",
+      "hops": 3,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_subnet.public",
+      "hops": 3,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_subnet.public",
+      "hops": 3,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 3,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 3,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 3,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_vpc.vpc",
+      "hops": 3,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_vpc.vpc",
+      "hops": 3,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 4,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 4,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 4,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 4,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 4,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 4,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 4,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 4,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_vpc.vpc",
+      "hops": 4,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 4,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 4,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 4,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_route_table.public_subnet",
+      "hops": 4,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 4,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_security_group.ec2_server",
+      "hops": 4,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_subnet.public",
+      "hops": 4,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_subnet.public",
+      "hops": 4,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_vpc.vpc",
+      "hops": 4,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 4,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 4,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 4,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 4,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 4,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 4,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_security_group.ec2_server",
+      "hops": 4,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_security_group.ec2_server",
+      "hops": 4,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_security_group.ec2_server",
+      "hops": 4,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_subnet.public",
+      "hops": 4,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 4,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 4,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 4,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 4,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 4,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 4,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 4,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_route_table.public_subnet",
+      "hops": 4,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_security_group.ec2_server",
+      "hops": 4,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_subnet.public",
+      "hops": 4,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_vpc.vpc",
+      "hops": 4,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 4,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 4,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 4,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 4,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 4,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_subnet.public",
+      "hops": 4,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 4,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 4,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 4,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_route_table.public_subnet",
+      "hops": 4,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 4,
+      "path": [
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_security_group.ec2_server",
+      "hops": 4,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_vpc.vpc",
+      "hops": 4,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 4,
+      "path": [
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 4,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 4,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 4,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_subnet.public",
+      "hops": 4,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 4,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 4,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table.public_subnet",
+      "hops": 4,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table.public_subnet",
+      "hops": 4,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table.public_subnet",
+      "hops": 4,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_security_group.ec2_server",
+      "hops": 4,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_subnet.public",
+      "hops": 4,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 5,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 5,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 5,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 5,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_security_group.ec2_server",
+      "hops": 5,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_subnet.public",
+      "hops": 5,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_vpc.vpc",
+      "hops": 5,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 5,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 5,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_security_group.ec2_server",
+      "hops": 5,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_security_group.ec2_server",
+      "hops": 5,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_security_group.ec2_server",
+      "hops": 5,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_subnet.public",
+      "hops": 5,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 5,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 5,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 5,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 5,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 5,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_security_group.ec2_server",
+      "hops": 5,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_subnet.public",
+      "hops": 5,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_vpc.vpc",
+      "hops": 5,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 5,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 5,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 5,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 5,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 5,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_route_table.public_subnet",
+      "hops": 5,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_security_group.ec2_server",
+      "hops": 5,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_subnet.public",
+      "hops": 5,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 5,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 5,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 5,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 5,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 5,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 5,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 5,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 5,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 5,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_subnet.public",
+      "hops": 5,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_vpc.vpc",
+      "hops": 5,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 5,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 5,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_route_table.public_subnet",
+      "hops": 5,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 5,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_security_group.ec2_server",
+      "hops": 5,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 5,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_route_table.public_subnet",
+      "hops": 5,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_security_group.ec2_server",
+      "hops": 5,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 5,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 5,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 5,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 5,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table.public_subnet",
+      "hops": 5,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table.public_subnet",
+      "hops": 5,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 5,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 5,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 5,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_vpc.vpc",
+      "hops": 5,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 6,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_security_group.ec2_server",
+      "hops": 6,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_subnet.public",
+      "hops": 6,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 6,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_route_table.public_subnet",
+      "hops": 6,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 6,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_security_group.ec2_server",
+      "hops": 6,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_vpc.vpc",
+      "hops": 6,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 6,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 6,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 6,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 6,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 6,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_route_table.public_subnet",
+      "hops": 6,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_security_group.ec2_server",
+      "hops": 6,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_subnet.public",
+      "hops": 6,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 6,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 6,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 6,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 6,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 6,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_vpc.vpc",
+      "hops": 6,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 6,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 6,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 6,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 6,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 6,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_security_group.ec2_server",
+      "hops": 6,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 6,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 6,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table.public_subnet",
+      "hops": 6,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 6,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 6,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_security_group.ec2_server",
+      "hops": 6,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_subnet.public",
+      "hops": 6,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_vpc.vpc",
+      "hops": 6,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc"
+      ]
+    }
+  ],
+  "bfs_shortest_paths": [
+    {
+      "from": "aws_iam_access_key.kerrigan",
+      "to": "aws_iam_user.kerrigan",
+      "hops": 1,
+      "path": [
+        "aws_iam_access_key.kerrigan",
+        "aws_iam_user.kerrigan"
+      ]
+    },
+    {
+      "from": "aws_iam_instance_profile.ec2_meek",
+      "to": "aws_iam_role.ec2_meek_role",
+      "hops": 1,
+      "path": [
+        "aws_iam_instance_profile.ec2_meek",
+        "aws_iam_role.ec2_meek_role"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.ec2_meek_policy",
+      "to": "aws_iam_role.ec2_meek_role",
+      "hops": 1,
+      "path": [
+        "aws_iam_policy.ec2_meek_policy",
+        "aws_iam_role.ec2_meek_role"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.ec2_mighty_policy",
+      "to": "aws_iam_role.ec2_mighty_role",
+      "hops": 1,
+      "path": [
+        "aws_iam_policy.ec2_mighty_policy",
+        "aws_iam_role.ec2_mighty_role"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.kerrigan_policy",
+      "to": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "hops": 1,
+      "path": [
+        "aws_iam_policy.kerrigan_policy",
+        "aws_iam_user_policy_attachment.kerrigan_attachment"
+      ]
+    },
+    {
+      "from": "aws_iam_role.ec2_meek_role",
+      "to": "aws_iam_instance_profile.ec2_meek",
+      "hops": 1,
+      "path": [
+        "aws_iam_role.ec2_meek_role",
+        "aws_iam_instance_profile.ec2_meek"
+      ]
+    },
+    {
+      "from": "aws_iam_role.ec2_meek_role",
+      "to": "aws_iam_policy.ec2_meek_policy",
+      "hops": 1,
+      "path": [
+        "aws_iam_role.ec2_meek_role",
+        "aws_iam_policy.ec2_meek_policy"
+      ]
+    },
+    {
+      "from": "aws_iam_role.ec2_mighty_role",
+      "to": "aws_iam_policy.ec2_mighty_policy",
+      "hops": 1,
+      "path": [
+        "aws_iam_role.ec2_mighty_role",
+        "aws_iam_policy.ec2_mighty_policy"
+      ]
+    },
+    {
+      "from": "aws_iam_user.kerrigan",
+      "to": "aws_iam_access_key.kerrigan",
+      "hops": 1,
+      "path": [
+        "aws_iam_user.kerrigan",
+        "aws_iam_access_key.kerrigan"
+      ]
+    },
+    {
+      "from": "aws_iam_user.kerrigan",
+      "to": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "hops": 1,
+      "path": [
+        "aws_iam_user.kerrigan",
+        "aws_iam_user_policy_attachment.kerrigan_attachment"
+      ]
+    },
+    {
+      "from": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "to": "aws_iam_policy.kerrigan_policy",
+      "hops": 1,
+      "path": [
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_policy.kerrigan_policy"
+      ]
+    },
+    {
+      "from": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "to": "aws_iam_user.kerrigan",
+      "hops": 1,
+      "path": [
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_user.kerrigan"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_security_group.ec2_server",
+      "hops": 1,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_subnet.public",
+      "hops": 1,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 1,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_route_table.public_subnet",
+      "hops": 1,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_vpc.vpc",
+      "hops": 1,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 1,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 1,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_vpc.vpc",
+      "hops": 1,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_route_table.public_subnet",
+      "hops": 1,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_subnet.public",
+      "hops": 1,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 1,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_vpc.vpc",
+      "hops": 1,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 1,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 1,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_vpc.vpc",
+      "hops": 1,
+      "path": [
+        "aws_subnet.public",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 1,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_route_table.public_subnet",
+      "hops": 1,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_security_group.ec2_server",
+      "hops": 1,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_subnet.public",
+      "hops": 1,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 1,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_iam_access_key.kerrigan",
+      "to": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "hops": 2,
+      "path": [
+        "aws_iam_access_key.kerrigan",
+        "aws_iam_user.kerrigan",
+        "aws_iam_user_policy_attachment.kerrigan_attachment"
+      ]
+    },
+    {
+      "from": "aws_iam_instance_profile.ec2_meek",
+      "to": "aws_iam_policy.ec2_meek_policy",
+      "hops": 2,
+      "path": [
+        "aws_iam_instance_profile.ec2_meek",
+        "aws_iam_role.ec2_meek_role",
+        "aws_iam_policy.ec2_meek_policy"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.ec2_meek_policy",
+      "to": "aws_iam_instance_profile.ec2_meek",
+      "hops": 2,
+      "path": [
+        "aws_iam_policy.ec2_meek_policy",
+        "aws_iam_role.ec2_meek_role",
+        "aws_iam_instance_profile.ec2_meek"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.kerrigan_policy",
+      "to": "aws_iam_user.kerrigan",
+      "hops": 2,
+      "path": [
+        "aws_iam_policy.kerrigan_policy",
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_user.kerrigan"
+      ]
+    },
+    {
+      "from": "aws_iam_user.kerrigan",
+      "to": "aws_iam_policy.kerrigan_policy",
+      "hops": 2,
+      "path": [
+        "aws_iam_user.kerrigan",
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_policy.kerrigan_policy"
+      ]
+    },
+    {
+      "from": "aws_iam_user_policy_attachment.kerrigan_attachment",
+      "to": "aws_iam_access_key.kerrigan",
+      "hops": 2,
+      "path": [
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_user.kerrigan",
+        "aws_iam_access_key.kerrigan"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 2,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_vpc.vpc",
+      "hops": 2,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 2,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_security_group.ec2_server",
+      "hops": 2,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_subnet.public",
+      "hops": 2,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_security_group.ec2_server",
+      "hops": 2,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_subnet.public",
+      "hops": 2,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 2,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 2,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_vpc.vpc",
+      "hops": 2,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 2,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 2,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_subnet.public",
+      "hops": 2,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 2,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 2,
+      "path": [
+        "aws_subnet.public",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_route_table.public_subnet",
+      "hops": 2,
+      "path": [
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "aws_security_group.ec2_server",
+      "hops": 2,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_subnet.public",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 2,
+      "path": [
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 2,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 2,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_security_group.ec2_server",
+      "hops": 2,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_subnet.public",
+      "hops": 2,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public"
+      ]
+    },
+    {
+      "from": "aws_iam_access_key.kerrigan",
+      "to": "aws_iam_policy.kerrigan_policy",
+      "hops": 3,
+      "path": [
+        "aws_iam_access_key.kerrigan",
+        "aws_iam_user.kerrigan",
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_policy.kerrigan_policy"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.kerrigan_policy",
+      "to": "aws_iam_access_key.kerrigan",
+      "hops": 3,
+      "path": [
+        "aws_iam_policy.kerrigan_policy",
+        "aws_iam_user_policy_attachment.kerrigan_attachment",
+        "aws_iam_user.kerrigan",
+        "aws_iam_access_key.kerrigan"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 3,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "aws_instance.super_critical_security_server",
+      "to": "aws_route_table.public_subnet",
+      "hops": 3,
+      "path": [
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 3,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "aws_instance.super_critical_security_server",
+      "hops": 3,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "aws_security_group.ec2_server",
+      "hops": 3,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_route_table.public_subnet",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server"
+      ]
+    },
+    {
+      "from": "aws_route_table_association.public_subnet_route_association",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 3,
+      "path": [
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_security_group.ec2_server",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 3,
+      "path": [
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "aws_vpc.vpc",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 3,
+      "path": [
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table_association.public_subnet_route_association",
+      "hops": 3,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_subnet.public",
+        "aws_route_table_association.public_subnet_route_association"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_vpc.vpc",
+      "hops": 3,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_internet_gateway.internet_gateway",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 4,
+      "path": [
+        "aws_internet_gateway.internet_gateway",
+        "aws_vpc.vpc",
+        "aws_security_group.ec2_server",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "aws_route_table.public_subnet",
+      "to": "data.aws_ami.ubuntu",
+      "hops": 4,
+      "path": [
+        "aws_route_table.public_subnet",
+        "aws_route_table_association.public_subnet_route_association",
+        "aws_subnet.public",
+        "aws_instance.super_critical_security_server",
+        "data.aws_ami.ubuntu"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_internet_gateway.internet_gateway",
+      "hops": 4,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_internet_gateway.internet_gateway"
+      ]
+    },
+    {
+      "from": "data.aws_ami.ubuntu",
+      "to": "aws_route_table.public_subnet",
+      "hops": 4,
+      "path": [
+        "data.aws_ami.ubuntu",
+        "aws_instance.super_critical_security_server",
+        "aws_security_group.ec2_server",
+        "aws_vpc.vpc",
+        "aws_route_table.public_subnet"
+      ]
+    }
+  ],
+  "iam_analysis": {
+    "summary": {
+      "account_id": "960903838710",
+      "entities_total": 3,
+      "principal_nodes": 3,
+      "assume_role_edges": 0,
+      "bfs_paths": 0,
+      "dfs_paths": 0,
+      "max_depth": 6
+    },
+    "principals": [
+      {
+        "id": "aws_iam_role.ec2_meek_role",
+        "entity_type": "role",
+        "name": "cg-ec2-meek-role-demo123",
+        "arn": "arn:aws:iam::960903838710:role/cg-ec2-meek-role-demo123",
+        "policy_docs_count": 0
+      },
+      {
+        "id": "aws_iam_role.ec2_mighty_role",
+        "entity_type": "role",
+        "name": "cg-ec2-mighty-role-demo123",
+        "arn": "arn:aws:iam::960903838710:role/cg-ec2-mighty-role-demo123",
+        "policy_docs_count": 0
+      },
+      {
+        "id": "aws_iam_user.kerrigan",
+        "entity_type": "user",
+        "name": "kerrigan",
+        "arn": "arn:aws:iam::960903838710:user/kerrigan",
+        "policy_docs_count": 1
+      }
+    ],
+    "assume_role_edges": [],
+    "bfs_shortest_paths": [],
+    "dfs_all_paths": [],
+    "role_trust": {
+      "aws_iam_role.ec2_meek_role": [
+        {
+          "aws": [],
+          "service": [
+            "ec2.amazonaws.com"
+          ],
+          "federated": [],
+          "condition": null
+        }
+      ],
+      "aws_iam_role.ec2_mighty_role": [
+        {
+          "aws": [],
+          "service": [
+            "ec2.amazonaws.com"
+          ],
+          "federated": [],
+          "condition": null
+        }
+      ]
+    }
+  }
+}
