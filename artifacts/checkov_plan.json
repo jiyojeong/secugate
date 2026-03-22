@@ -874,15 +874,15 @@
                         }
                     },
                     "evaluated_keys": [
-                        "ingress/protocol",
-                        "ingress/from_port",
-                        "egress/from_port",
-                        "ingress/to_port",
-                        "egress/protocol",
-                        "ingress/self",
-                        "egress/cidr_blocks",
                         "egress/to_port",
-                        "resource_type"
+                        "egress/from_port",
+                        "resource_type",
+                        "ingress/from_port",
+                        "egress/cidr_blocks",
+                        "ingress/protocol",
+                        "egress/protocol",
+                        "ingress/to_port",
+                        "ingress/self"
                     ]
                 },
                 "code_block": [],

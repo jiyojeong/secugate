@@ -211,12 +211,12 @@ def _validate_examples(
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Validate artifacts/checkov_fail_examples.json consistency"
+        description="Validate rules/checkov_fail_examples.json consistency"
     )
     parser.add_argument(
         "--file",
         type=Path,
-        default=Path("artifacts/checkov_fail_examples.json"),
+        default=Path("src/secugate/rules/checkov_fail_examples.json"),
         help="Path to checkov fail examples JSON",
     )
     parser.add_argument(

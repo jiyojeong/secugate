@@ -5,7 +5,16 @@ import json
 from pathlib import Path
 from typing import Any
 
-NON_RUNTIME_PREFIXES = ("data.", "var.", "local.", "module.", "path.", "terraform.", "count.", "each.")
+NON_RUNTIME_PREFIXES = (
+    "data.",
+    "var.",
+    "local.",
+    "module.",
+    "path.",
+    "terraform.",
+    "count.",
+    "each.",
+)
 
 # 벡터(공격 단계) 순서
 VECTOR_STAGE_RANK: dict[str, int] = {
@@ -17,7 +26,7 @@ VECTOR_STAGE_RANK: dict[str, int] = {
     "defense_evasion_and_visibility_gaps": 2,
     "collection_and_exfiltration": 3,
     "impact_and_resilience": 3,
-    "data_protection_and_encryption_posture": 3,
+    "data_protection_and_encryption_posture": 2,
 }
 
 STAGE_LABELS: dict[int, str] = {
@@ -50,7 +59,10 @@ def _normalize_resource_id(resource_id: str) -> str | None:
 
     if parts[0] == "data" and len(parts) >= 3:
         return ".".join(parts[:3])
-    if parts[0] in {"var", "local", "path", "terraform", "count", "each"} and len(parts) >= 2:
+    if (
+        parts[0] in {"var", "local", "path", "terraform", "count", "each"}
+        and len(parts) >= 2
+    ):
         return ".".join(parts[:2])
     if parts[0] == "module":
         if len(parts) >= 4 and parts[2] in {"data"}:
@@ -64,9 +76,13 @@ def _normalize_resource_id(resource_id: str) -> str | None:
     return token
 
 
-def _build_checkov_index(checkov_merged: dict[str, Any]) -> tuple[dict[str, list[dict[str, Any]]], dict[str, Any]]:
+def _build_checkov_index(
+    checkov_merged: dict[str, Any],
+) -> tuple[dict[str, list[dict[str, Any]]], dict[str, Any]]:
     results = checkov_merged.get("results", {})
-    failed_checks = results.get("failed_checks", []) if isinstance(results, dict) else []
+    failed_checks = (
+        results.get("failed_checks", []) if isinstance(results, dict) else []
+    )
     if not isinstance(failed_checks, list):
         failed_checks = []
 
@@ -96,7 +112,8 @@ def _build_checkov_index(checkov_merged: dict[str, Any]) -> tuple[dict[str, list
                 "description": finding.get("description"),
                 "resource": rid,
                 "normalized_resource": node_id,
-                "resource_address": finding.get("resource_address") or finding.get("resource"),
+                "resource_address": finding.get("resource_address")
+                or finding.get("resource"),
                 "file_abs_path": finding.get("file_abs_path"),
                 "file_path": finding.get("file_path"),
                 "file_line_range": finding.get("file_line_range"),
@@ -166,7 +183,11 @@ def _stage_sequence_from_path(
     check_to_vector: dict[str, str],
 ) -> list[int]:
     # 경로 노드 순서대로 체크 벡터를 단계(rank) 시퀀스로 변환
-    findings_by_node = {x["node"]: x["findings"] for x in node_findings if isinstance(x, dict) and "node" in x}
+    findings_by_node = {
+        x["node"]: x["findings"]
+        for x in node_findings
+        if isinstance(x, dict) and "node" in x
+    }
     raw_ranks: list[int] = []
     for node in path_nodes:
         findings = findings_by_node.get(node, [])
@@ -199,7 +220,11 @@ def _build_stage_details(
     check_to_vector: dict[str, str],
 ) -> list[dict[str, Any]]:
     details: list[dict[str, Any]] = []
-    findings_by_node = {x["node"]: x["findings"] for x in node_findings if isinstance(x, dict) and "node" in x}
+    findings_by_node = {
+        x["node"]: x["findings"]
+        for x in node_findings
+        if isinstance(x, dict) and "node" in x
+    }
 
     for node in path_nodes:
         findings = findings_by_node.get(node, [])
@@ -230,7 +255,8 @@ def _build_stage_details(
                     {
                         "check_id": cid,
                         "check_name": f.get("check_name"),
-                        "resource_address": f.get("resource_address") or f.get("resource"),
+                        "resource_address": f.get("resource_address")
+                        or f.get("resource"),
                         "file_abs_path": f.get("file_abs_path"),
                         "evaluated_keys": f.get("evaluated_keys"),
                     }
@@ -249,7 +275,9 @@ def _build_stage_details(
     return details
 
 
-def _build_scenario_text(path_nodes: list[str], stage_details: list[dict[str, Any]]) -> str:
+def _build_scenario_text(
+    path_nodes: list[str], stage_details: list[dict[str, Any]]
+) -> str:
     # 리소스명을 넣은 한국어 시나리오 문장 생성
     if not path_nodes:
         return ""
@@ -299,13 +327,23 @@ def _filter_and_annotate_paths(
 
     def drop(item: dict[str, Any], reason: str) -> None:
         reasons[reason] = reasons.get(reason, 0) + 1
-        dropped.append({"from": item.get("from"), "to": item.get("to"), "hops": item.get("hops"), "reason": reason, "path": item.get("path")})
+        dropped.append(
+            {
+                "from": item.get("from"),
+                "to": item.get("to"),
+                "hops": item.get("hops"),
+                "reason": reason,
+                "path": item.get("path"),
+            }
+        )
 
     for item in paths:
         if not isinstance(item, dict):
             continue
         path_nodes = item.get("path", [])
-        if not isinstance(path_nodes, list) or not all(isinstance(n, str) for n in path_nodes):
+        if not isinstance(path_nodes, list) or not all(
+            isinstance(n, str) for n in path_nodes
+        ):
             continue
 
         # (1) 경로 유효성 필터
@@ -333,7 +371,9 @@ def _filter_and_annotate_paths(
             for f in findings:
                 # finding.resource 타입과 현재 node 타입이 일치하는 것만 통과
                 norm_res = f.get("normalized_resource")
-                norm_type = _resource_type(norm_res) if isinstance(norm_res, str) else None
+                norm_type = (
+                    _resource_type(norm_res) if isinstance(norm_res, str) else None
+                )
                 if norm_type != node_type:
                     continue
                 cid = f.get("check_id")
@@ -350,7 +390,9 @@ def _filter_and_annotate_paths(
             continue
 
         # (3) 공격 단계 정합성 필터
-        stage_seq = _stage_sequence_from_path(path_nodes, node_findings, check_to_vector)
+        stage_seq = _stage_sequence_from_path(
+            path_nodes, node_findings, check_to_vector
+        )
         if not stage_seq:
             drop(item, "no_attack_stage")
             continue
@@ -383,9 +425,15 @@ def _filter_and_annotate_paths(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Map Checkov failed checks to IaC graph paths.")
-    parser.add_argument("--graph", type=Path, required=True, help="Path to iac_graph.json")
-    parser.add_argument("--checkov-merged", type=Path, required=True, help="Path to checkov_merged.json")
+    parser = argparse.ArgumentParser(
+        description="Map Checkov failed checks to IaC graph paths."
+    )
+    parser.add_argument(
+        "--graph", type=Path, required=True, help="Path to iac_graph.json"
+    )
+    parser.add_argument(
+        "--checkov-merged", type=Path, required=True, help="Path to checkov_merged.json"
+    )
     parser.add_argument(
         "--checkov-id-catalog",
         type=Path,
@@ -398,7 +446,9 @@ def main() -> None:
         default=6,
         help="Max hops allowed for path validation",
     )
-    parser.add_argument("--output", type=Path, required=True, help="Output path for mapped json")
+    parser.add_argument(
+        "--output", type=Path, required=True, help="Output path for mapped json"
+    )
     args = parser.parse_args()
 
     graph = _load_json(args.graph)
@@ -443,7 +493,9 @@ def main() -> None:
     }
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+    args.output.write_text(
+        json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     print(
         f"ok: bfs_valid={bfs_summary['paths_validated']}/{bfs_summary['paths_total']} "
         f"dfs_valid={dfs_summary['paths_validated']}/{dfs_summary['paths_total']} "
