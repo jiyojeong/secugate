@@ -76,9 +76,6 @@ def parse_checkov_json(path: Path, framework: str) -> list[Finding]:
       - {"results": {"failed_checks": [...], ...}}
       - {"failed_checks": [...], ...}
 
-    최소한의 필드만 추출
-      - check_id, check_name, resource, file_path, file_line_range, severity, guideline 등
-
     """
     data = _load_json(path)
 
@@ -122,12 +119,21 @@ def parse_checkov_json(path: Path, framework: str) -> list[Finding]:
             )
 
             file_path = _pick(c, "file_path", "file", "file_abs_path")
+            file_abs_path = _pick(c, "file_abs_path")
             file_line_range = _pick(c, "file_line_range", "file_line", "line_range")
             code_block = _pick(c, "code_block")
 
             severity = _pick(c, "severity")
             guideline = _pick(c, "guideline", "guideline_url")
             repo_file_path = _pick(c, "repo_file_path")
+            resource_address = _pick(c, "resource_address")
+            description = _pick(c, "description", "short_description")
+            details = c.get("details")
+            vulnerability_details = c.get("vulnerability_details")
+            entity_tags = c.get("entity_tags")
+            evaluations = c.get("evaluations")
+            breadcrumbs = c.get("breadcrumbs")
+            check_result = c.get("check_result")
 
             findings.append(
                 Finding(
@@ -135,13 +141,22 @@ def parse_checkov_json(path: Path, framework: str) -> list[Finding]:
                     check_id=check_id,
                     check_name=_safe_str(check_name),
                     result=result,  # type: ignore[arg-type]
-                    resource=resource,
-                    file_path=_str_or_none(file_path),
-                    repo_file_path=_str_or_none(repo_file_path),
-                    file_line_range=_str_or_none(file_line_range),
                     severity=_str_or_none(severity),
+                    resource=resource,
+                    resource_address=_str_or_none(resource_address),
+                    description=_str_or_none(description),
+                    details=details,
+                    vulnerability_details=vulnerability_details,
+                    entity_tags=entity_tags,
+                    evaluations=evaluations,
+                    breadcrumbs=breadcrumbs,
+                    file_abs_path=_str_or_none(file_abs_path),
+                    repo_file_path=_str_or_none(repo_file_path),
+                    file_path=_str_or_none(file_path),
+                    file_line_range=file_line_range,
+                    code_block=code_block,
                     guideline=_str_or_none(guideline),
-                    code_block=_str_or_none(code_block),
+                    check_result=check_result if isinstance(check_result, dict) else None,
                 )
             )
 

@@ -1,320 +1,297 @@
 {
-  "version": 1,
+  "version": 2,
   "normalize": [
     {
-      "capability": "iam_policy_admin_or_wildcard",
-      "check_ids": [
-        "CKV_AWS_62",
-        "CKV_AWS_63",
-        "CKV_AWS_355",
-        "CKV2_AWS_40"
-      ]
+      "capability_id": "IAM_WILDCARD_POLICY",
+      "capability_key": "iam_policy_admin_or_wildcard",
+      "capability": "IAM 와일드카드/관리자급 권한 남용 우려. 리소스/권한 제한이 충분히 특정되지 않음.",
+      "MITRE_Tactic": "PE",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV_AWS_62", "CKV_AWS_63", "CKV_AWS_355", "CKV2_AWS_40"]
     },
     {
-      "capability": "iam_policy_privilege_escalation",
-      "check_ids": [
-        "CKV_AWS_286"
-      ]
+      "capability_id": "IAM_PE_ROOT_POLICY",
+      "capability_key": "iam_pe_root_policy",
+      "capability": "Root 수준 권한 상승(Privilege Escalation) 가능성이 있는 IAM 정책/구성",
+      "MITRE_Tactic": "PE",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV_AWS_348"]
     },
     {
-      "capability": "iam_policy_credential_exposure",
-      "check_ids": [
-        "CKV_AWS_287"
-      ]
+      "capability_id": "IAM_PE_ADMINISTRATOR_ACCESS",
+      "capability_key": "iam_pe_administratoraccess_policy",
+      "capability": "AdministratorAccess 부여로 권한 상승/계정 장악 가능성 증가",
+      "MITRE_Tactic": "PE",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV_AWS_374"]
     },
     {
-      "capability": "iam_policy_data_exfiltration",
-      "check_ids": [
-        "CKV_AWS_288"
-      ]
+      "capability_id": "IAM_PE_POLICY",
+      "capability_key": "iam_policy_privilege_escalation",
+      "capability": "Privilege Escalation 가능성이 있는 IAM Policy 권한 조합 존재",
+      "MITRE_Tactic": "PE",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV_AWS_286"]
     },
     {
-      "capability": "iam_policy_permission_mgmt_unscoped",
-      "check_ids": [
-        "CKV_AWS_289"
-      ]
+      "capability_id": "IAM_TAKEOVER_ACCESS_KEY_FOR_OTHER_USER",
+      "capability_key": "iam_takeover_create_access_key_other_user",
+      "capability": "다른 IAM 사용자에 대한 Access Key 생성 가능(장기 접근/계정 악용 경로)",
+      "MITRE_Tactic": "PR",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV_AWS_110"]
     },
     {
-      "capability": "iam_policy_write_unscoped",
-      "check_ids": [
-        "CKV_AWS_290"
-      ]
+      "capability_id": "IAM_OIDC_TRUST_WEAK_CLAIMS",
+      "capability_key": "iam_oidc_trust_weak_claims",
+      "capability": "GitHub Actions OIDC 신뢰정책의 sub 조건이 과도하게 넓어 Role Assume 가능 범위가 확대됨",
+      "MITRE_Tactic": "PE",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV_AWS_358"]
     },
     {
-      "capability": "iam_user_present",
-      "check_ids": [
-        "CKV_AWS_273"
-      ]
+      "capability_id": "IAM_WEAK_PASSWORD_POLICY",
+      "capability_key": "iam_weak_password_policy",
+      "capability": "취약한 비밀번호 정책으로 계정 탈취 기반 초기 침입 위험 증가",
+      "MITRE_Tactic": "IA",
+      "MITRE_Tactic_Simple": "IA",
+      "check_ids": ["CKV_AWS_13"]
     },
     {
-      "capability": "iam_policy_attached_to_user",
-      "check_ids": [
-        "CKV_AWS_40"
-      ]
+      "capability_id": "IAM_OVER_TRUST_POLICY",
+      "capability_key": "iam_over_trust_policy",
+      "capability": "IAM Role의 Trust Policy가 과도하게 넓어 의도치 않은 주체가 Role Assume 가능",
+      "MITRE_Tactic": "PE",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV_AWS_61"]
+    },
+
+    {
+      "capability_id": "IAM_PERMISSION_MGMT_UNSCOPED",
+      "capability_key": "iam_policy_permission_mgmt_unscoped",
+      "capability": "범위 제한 없는 권한/권한관리 관련 액션 허용(권한 남용/상승 경로)",
+      "MITRE_Tactic": "PE",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV_AWS_289"]
     },
     {
-      "capability": "sg_ingress_ssh_open",
-      "check_ids": [
-        "CKV_AWS_24"
-      ]
+      "capability_id": "IAM_WRITE_UNSCOPED",
+      "capability_key": "iam_policy_write_unscoped",
+      "capability": "범위 제한 없는 쓰기 권한 허용(리소스 변경/정책 변경 악용 가능)",
+      "MITRE_Tactic": "PE",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV_AWS_290"]
     },
     {
-      "capability": "sg_ingress_http_open",
-      "check_ids": [
-        "CKV_AWS_260"
-      ]
+      "capability_id": "IAM_USER_PRESENT",
+      "capability_key": "iam_user_present",
+      "capability": "IAM 사용자 기반 장기 접근 경로 존재(키/비밀번호 기반)",
+      "MITRE_Tactic": "PR",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV_AWS_273"]
     },
     {
-      "capability": "ec2_public_ip_exposed",
-      "check_ids": [
-        "CKV_AWS_88"
-      ]
+      "capability_id": "IAM_POLICY_ATTACHED_TO_USER",
+      "capability_key": "iam_policy_attached_to_user",
+      "capability": "사용자 직접 정책 부여로 장기 권한 유지/확장 가능",
+      "MITRE_Tactic": "PR",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV_AWS_40"]
+    },
+
+    {
+      "capability_id": "NET_PUBLIC_SSH",
+      "capability_key": "sg_ingress_ssh_open",
+      "capability": "공개 SSH 인바운드 노출(원격 접근 표면 증가)",
+      "MITRE_Tactic": "IA",
+      "MITRE_Tactic_Simple": "IA",
+      "check_ids": ["CKV_AWS_24"]
     },
     {
-      "capability": "subnet_auto_public_ip",
-      "check_ids": [
-        "CKV_AWS_130"
-      ]
+      "capability_id": "NET_PUBLIC_HTTP",
+      "capability_key": "sg_ingress_http_open",
+      "capability": "공개 HTTP 인바운드 노출(공격 표면 증가)",
+      "MITRE_Tactic": "IA",
+      "MITRE_Tactic_Simple": "IA",
+      "check_ids": ["CKV_AWS_260"]
     },
     {
-      "capability": "sg_egress_all_open",
-      "check_ids": [
-        "CKV_AWS_382"
-      ]
+      "capability_id": "NET_EGRESS_ALL_OPEN",
+      "capability_key": "sg_egress_all_open",
+      "capability": "전방위 egress 허용(유출/원격 통신 경로 확대)",
+      "MITRE_Tactic": "EX",
+      "MITRE_Tactic_Simple": "EX",
+      "check_ids": ["CKV_AWS_382"]
+    },
+
+    {
+      "capability_id": "CMP_EC2_PUBLIC_IP",
+      "capability_key": "ec2_public_ip_exposed",
+      "capability": "EC2 퍼블릭 IP 직접 노출(외부에서 직접 접근 가능)",
+      "MITRE_Tactic": "IA",
+      "MITRE_Tactic_Simple": "IA",
+      "check_ids": ["CKV_AWS_88"]
     },
     {
-      "capability": "imdsv1_enabled",
-      "check_ids": [
-        "CKV_AWS_79"
-      ]
+      "capability_id": "CMP_SUBNET_AUTO_PUBLIC_IP",
+      "capability_key": "subnet_auto_public_ip",
+      "capability": "서브넷 기본 퍼블릭 IP 자동 할당(의도치 않은 노출 가능)",
+      "MITRE_Tactic": "IA",
+      "MITRE_Tactic_Simple": "IA",
+      "check_ids": ["CKV_AWS_130"]
     },
     {
-      "capability": "ec2_instance_profile_missing",
-      "check_ids": [
-        "CKV2_AWS_41"
-      ]
+      "capability_id": "CMP_IMDSV1_ENABLED",
+      "capability_key": "imdsv1_enabled",
+      "capability": "IMDSv1 활성화(인스턴스 자격증명 탈취 위험 증가)",
+      "MITRE_Tactic": "PE",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV_AWS_79"]
     },
     {
-      "capability": "vpc_flow_logs_disabled",
-      "check_ids": [
-        "CKV2_AWS_11"
-      ]
+      "capability_id": "CMP_INSTANCE_PROFILE_MISSING",
+      "capability_key": "ec2_instance_profile_missing",
+      "capability": "EC2 인스턴스 역할/프로파일 거버넌스 부재(권한 통제/감사 약화)",
+      "MITRE_Tactic": "PR",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV2_AWS_41"]
+    },
+
+    {
+      "capability_id": "VIS_VPC_FLOW_LOGS_DISABLED",
+      "capability_key": "vpc_flow_logs_disabled",
+      "capability": "VPC Flow Logs 미설정(네트워크 가시성/탐지 공백)",
+      "MITRE_Tactic": "DE",
+      "MITRE_Tactic_Simple": "PE",
+      "check_ids": ["CKV2_AWS_11"]
     },
     {
-      "capability": "default_sg_not_restricted",
-      "check_ids": [
-        "CKV2_AWS_12"
-      ]
-    },
-    {
-      "capability": "non_attack_monitoring_depth_missing",
-      "check_ids": [
-        "CKV_AWS_126"
-      ]
-    },
-    {
-      "capability": "non_attack_compute_performance_hardening_missing",
-      "check_ids": [
-        "CKV_AWS_135"
-      ]
+      "capability_id": "VIS_DEFAULT_SG_NOT_RESTRICTED",
+      "capability_key": "default_sg_not_restricted",
+      "capability": "기본 보안그룹이 제한되지 않음(원격 접근/이상행위 탐지 어려움)",
+      "MITRE_Tactic": "IA",
+      "MITRE_Tactic_Simple": "IA",
+      "check_ids": ["CKV2_AWS_12"]
     }
   ],
+
   "atomic_mappings": [
     {
-      "capability": "iam_policy_admin_or_wildcard",
-      "atomic_ids": [
-        "T1098.003",
-        "T1078.004"
-      ],
+      "capability_key": "iam_policy_admin_or_wildcard",
+      "atomic_ids": ["T1098.003", "T1078.004"],
       "name": "IAM 관리자급/와일드카드 정책 악용",
       "confidence": "high"
     },
     {
-      "capability": "iam_policy_privilege_escalation",
-      "atomic_ids": [
-        "T1098.003"
-      ],
+      "capability_key": "iam_policy_privilege_escalation",
+      "atomic_ids": ["T1098.003"],
       "name": "IAM 정책 기반 권한 상승 경로",
       "confidence": "high"
     },
     {
-      "capability": "iam_policy_credential_exposure",
-      "atomic_ids": [
-        "T1552"
-      ],
+      "capability_key": "iam_policy_credential_exposure",
+      "atomic_ids": ["T1552"],
       "name": "IAM 정책으로 인한 자격증명 노출 위험",
       "confidence": "medium"
     },
     {
-      "capability": "iam_policy_data_exfiltration",
-      "atomic_ids": [
-        "T1041"
-      ],
+      "capability_key": "iam_policy_data_exfiltration",
+      "atomic_ids": ["T1041"],
       "name": "IAM 정책 기반 데이터 유출 허용",
       "confidence": "high"
     },
     {
-      "capability": "iam_policy_permission_mgmt_unscoped",
-      "atomic_ids": [
-        "T1098.003"
-      ],
+      "capability_key": "iam_policy_permission_mgmt_unscoped",
+      "atomic_ids": ["T1098.003"],
       "name": "범위 제한 없는 권한 관리 허용",
       "confidence": "medium"
     },
     {
-      "capability": "iam_policy_write_unscoped",
-      "atomic_ids": [
-        "T1098.003"
-      ],
+      "capability_key": "iam_policy_write_unscoped",
+      "atomic_ids": ["T1098.003"],
       "name": "범위 제한 없는 쓰기 권한 허용",
       "confidence": "medium"
     },
     {
-      "capability": "iam_user_present",
-      "atomic_ids": [
-        "T1078.004"
-      ],
+      "capability_key": "iam_user_present",
+      "atomic_ids": ["T1078.004"],
       "name": "IAM 사용자 기반 장기 접근 경로",
       "confidence": "high"
     },
     {
-      "capability": "iam_policy_attached_to_user",
-      "atomic_ids": [
-        "T1078.004"
-      ],
+      "capability_key": "iam_policy_attached_to_user",
+      "atomic_ids": ["T1078.004"],
       "name": "사용자 직접 정책 부여에 의한 지속성",
       "confidence": "high"
     },
     {
-      "capability": "sg_ingress_ssh_open",
-      "atomic_ids": [
-        "T1190"
-      ],
+      "capability_key": "sg_ingress_ssh_open",
+      "atomic_ids": ["T1190"],
       "name": "공개 SSH 인바운드 노출",
       "confidence": "high"
     },
     {
-      "capability": "sg_ingress_http_open",
-      "atomic_ids": [
-        "T1190"
-      ],
-      "name": "공개 HTTP 인바운드 노출",
-      "confidence": "medium"
-    },
-    {
-      "capability": "ec2_public_ip_exposed",
-      "atomic_ids": [
-        "T1190"
-      ],
-      "name": "EC2 퍼블릭 IP 직접 노출",
-      "confidence": "medium"
-    },
-    {
-      "capability": "subnet_auto_public_ip",
-      "atomic_ids": [
-        "T1190"
-      ],
-      "name": "서브넷 기본 퍼블릭 IP 자동 할당",
-      "confidence": "medium"
-    },
-    {
-      "capability": "sg_egress_all_open",
-      "atomic_ids": [
-        "T1041"
-      ],
+      "capability_key": "sg_egress_all_open",
+      "atomic_ids": ["T1041"],
       "name": "전방위 egress 허용으로 인한 유출 경로",
       "confidence": "high"
     },
     {
-      "capability": "imdsv1_enabled",
-      "atomic_ids": [
-        "T1552"
-      ],
+      "capability_key": "imdsv1_enabled",
+      "atomic_ids": ["T1552"],
       "name": "IMDSv1 활성화로 인한 자격증명 수집 위험",
       "confidence": "high"
     },
     {
-      "capability": "ec2_instance_profile_missing",
-      "atomic_ids": [
-        "T1078.004"
-      ],
-      "name": "EC2 인스턴스 역할 거버넌스 부재",
-      "confidence": "low"
-    },
-    {
-      "capability": "vpc_flow_logs_disabled",
-      "atomic_ids": [
-        "T1046"
-      ],
+      "capability_key": "vpc_flow_logs_disabled",
+      "atomic_ids": ["T1046"],
       "name": "VPC 플로우 로그 미설정에 따른 정찰 탐지 공백",
       "confidence": "low"
     },
     {
-      "capability": "default_sg_not_restricted",
-      "atomic_ids": [
-        "T1021"
-      ],
+      "capability_key": "default_sg_not_restricted",
+      "atomic_ids": ["T1021"],
       "name": "기본 보안그룹 개방으로 인한 원격 접근 위험",
       "confidence": "medium"
     }
   ],
+
   "scenarios": [
     {
       "id": "aws_initial_access_to_iam_abuse",
       "title": "공개 SSH 노출 후 IAM 권한 악용",
-      "description": "공개 SSH 인바운드 노출 자산 초기 접근 이후 관리자급/와일드카드 IAM 정책으로 권한 상승 또는 지속성 확보",
-      "requires_capabilities": [
-        "sg_ingress_ssh_open",
-        "iam_policy_admin_or_wildcard"
-      ],
-      "atomic_chain": [
-        "T1190",
-        "T1098.003"
-      ],
-      "score": "high"
+      "description": "공개 SSH 인바운드 노출 자산에 대한 초기 접근 이후, 관리자급/와일드카드 IAM 권한을 악용해 권한 상승 또는 지속성을 확보할 수 있음",
+      "requires_capabilities": ["sg_ingress_ssh_open", "iam_policy_admin_or_wildcard"],
+      "atomic_chain": ["T1190", "T1098.003"],
+      "score": "high",
+      "logic": "If an internet-exposed entry point (public SSH) exists AND privileged IAM permissions (admin/wildcard) are present on the same asset or its role, generate an IA→PE scenario."
     },
     {
       "id": "aws_credential_collection_and_exfiltration",
       "title": "IMDS 자격증명 수집 후 외부 유출",
-      "description": "IMDSv1 활성화와 전방위 egress 허용 조합으로 수집 자격증명/데이터 외부 반출 위험 증가",
-      "requires_capabilities": [
-        "imdsv1_enabled",
-        "sg_egress_all_open"
-      ],
-      "atomic_chain": [
-        "T1552",
-        "T1041"
-      ],
-      "score": "high"
+      "description": "IMDSv1 활성화로 자격증명 수집이 쉬워지고, 전방위 egress 허용이 결합되면 외부 반출 위험이 증가함",
+      "requires_capabilities": ["imdsv1_enabled", "sg_egress_all_open"],
+      "atomic_chain": ["T1552", "T1041"],
+      "score": "high",
+      "logic": "If credentials can be harvested via IMDSv1 AND outbound traffic is unrestricted, generate a credential-collection→exfiltration scenario."
     },
     {
       "id": "aws_identity_persistence_via_iam_user",
       "title": "IAM 사용자 직접 정책 기반 지속성",
-      "description": "IAM 사용자 사용과 사용자 직접 정책 부여가 결합되면 장기 자격증명 기반 지속성이 강화됨",
-      "requires_capabilities": [
-        "iam_user_present",
-        "iam_policy_attached_to_user",
-        "iam_policy_privilege_escalation"
-      ],
-      "atomic_chain": [
-        "T1078.004",
-        "T1098.003"
-      ],
-      "score": "high"
+      "description": "IAM 사용자 존재 + 사용자 직접 정책 부여 + 권한상승 가능 정책이 결합되면 장기 자격증명 기반 지속성이 강화됨",
+      "requires_capabilities": ["iam_user_present", "iam_policy_attached_to_user", "iam_policy_privilege_escalation"],
+      "atomic_chain": ["T1078.004", "T1098.003"],
+      "score": "high",
+      "logic": "If long-lived IAM users exist AND policies are directly attached to users AND escalation paths exist, generate a persistence scenario."
     },
     {
       "id": "aws_visibility_gap_and_remote_access_risk",
       "title": "가시성 공백과 기본 SG 원격 접근 위험",
-      "description": "VPC 플로우 로그 미설정 상태에서 기본 보안그룹이 트래픽을 제한하지 않으면 원격 접근 활동 탐지/분석이 어려워짐",
-      "requires_capabilities": [
-        "vpc_flow_logs_disabled",
-        "default_sg_not_restricted"
-      ],
-      "atomic_chain": [
-        "T1046",
-        "T1021"
-      ],
-      "score": "medium"
+      "description": "VPC Flow Logs가 없고 기본 SG가 제한되지 않으면 원격 접근 시도 및 네트워크 활동에 대한 탐지/분석 공백이 커짐",
+      "requires_capabilities": ["vpc_flow_logs_disabled", "default_sg_not_restricted"],
+      "atomic_chain": ["T1046", "T1021"],
+      "score": "medium",
+      "logic": "If network visibility (flow logs) is absent AND default security group is permissive, raise the risk of undetected remote access and discovery activity."
     }
   ]
 }

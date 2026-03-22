@@ -20,7 +20,10 @@
       "인터넷 노출은 ALB/WAF 등 앞단으로 집약",
       "관리 접근은 VPN/SSM/Zero Trust로 제한",
       "원칙: 필요한 포트만, 필요한 소스만 허용"
-    ]
+    ],
+    "mitigation_snippets": {
+      "aws_tf": ""
+    }
   },
   "WEAK_NET_SEGMENTATION_NOT_ENFORCED": {
     "title":"네트워크 세그멘테이션 통제 미적용",
