@@ -43,6 +43,72 @@ STAGE_LABELS_KO: dict[int, str] = {
     3: "영향·유출",
 }
 
+DROP_REASON_LABELS_KO: dict[str, str] = {
+    "empty_path": "빈 경로",
+    "invalid_node_id": "잘못된 노드 ID",
+    "non_runtime_endpoint": "시작점 또는 끝점이 런타임 AWS 리소스가 아님(내부참조값 등임)",
+    "contains_non_runtime_node": "경로에 var/local/data 같은 비런타임 노드 포함",
+    "invalid_path": "유효하지 않은 경로",
+    "hops_exceeded": "최대 홉 수 초과",
+    "no_findings_on_path": "경로 위에 Checkov 결과 없음",
+    "no_attack_stage": "공격 단계로 해석 가능한 체크 없음",
+    "stage_order_violation": "공격 단계 순서가 역전됨",
+    "insufficient_stage_progress": "공격 단계 진행이 부족함",
+    "duplicate_path": "중복 경로",
+    "duplicate_scenario": "중복 시나리오",
+}
+
+PATH_CATEGORY_LABELS_KO: dict[str, str] = {
+    "network_exposure_chain": "네트워크 노출형 경로",
+    "iam_privilege_chain": "IAM 권한형 경로",
+    "network_to_iam_chain": "네트워크->IAM 혼합 경로",
+    "other_chain": "기타 경로",
+}
+
+PATH_CATEGORY_ORDER = [
+    "network_exposure_chain",
+    "iam_privilege_chain",
+    "network_to_iam_chain",
+    "other_chain",
+]
+
+NETWORK_RESOURCE_PREFIXES = (
+    "aws_internet_gateway",
+    "aws_route_table",
+    "aws_route_table_association",
+    "aws_subnet",
+    "aws_security_group",
+    "aws_security_group_rule",
+    "aws_network_acl",
+    "aws_networkfirewall",
+    "aws_vpc",
+    "aws_lb",
+    "aws_alb",
+    "aws_elb",
+)
+
+IAM_RESOURCE_PREFIXES = ("aws_iam_",)
+
+COMPUTE_RESOURCE_PREFIXES = (
+    "aws_instance",
+    "aws_launch_template",
+    "aws_launch_configuration",
+    "aws_autoscaling_group",
+    "aws_lambda_function",
+    "aws_ecs_service",
+    "aws_ecs_task_definition",
+    "aws_eks_",
+)
+
+ATTACK_ENDPOINT_PRIORITY: list[tuple[tuple[str, ...], int]] = [
+    (IAM_RESOURCE_PREFIXES, 500),
+    (COMPUTE_RESOURCE_PREFIXES, 400),
+    (("aws_lambda_function", "aws_ecs_service", "aws_ecs_task_definition"), 350),
+    (("aws_secretsmanager_", "aws_ssm_parameter", "aws_kms_"), 320),
+    (("aws_s3_bucket", "aws_db_", "aws_rds_", "aws_redshift_"), 300),
+    (NETWORK_RESOURCE_PREFIXES, 200),
+]
+
 
 def _load_json(path: Path) -> dict[str, Any]:
     data = json.loads(path.read_text(encoding="utf-8"))
@@ -160,6 +226,47 @@ def _load_checkov_vector_index(path: Path) -> dict[str, str]:
     return out
 
 
+def _load_checkov_korean_index(labels_path: Path, fallback_path: Path) -> dict[str, str]:
+    # 우선 별도 매핑 파일(check_id -> label_ko)을 읽고, 없으면 기존 why_fails에서 fallback
+    if labels_path.is_file():
+        data = _load_json(labels_path)
+        mapping = data.get("labels", {})
+        if isinstance(mapping, dict):
+            out = {
+                str(check_id): str(label).strip()
+                for check_id, label in mapping.items()
+                if isinstance(check_id, str) and isinstance(label, str) and label.strip()
+            }
+            if out:
+                return out
+
+    if not fallback_path.is_file():
+        return {}
+    data = _load_json(fallback_path)
+    checks = data.get("checks", [])
+    if not isinstance(checks, list):
+        return {}
+
+    out: dict[str, str] = {}
+    for item in checks:
+        if not isinstance(item, dict):
+            continue
+        check_id = item.get("check_id")
+        if not isinstance(check_id, str):
+            continue
+        examples = item.get("examples", [])
+        if not isinstance(examples, list):
+            continue
+        for ex in examples:
+            if not isinstance(ex, dict):
+                continue
+            why_fails = ex.get("why_fails")
+            if isinstance(why_fails, str) and why_fails.strip():
+                out[check_id] = why_fails.strip()
+                break
+    return out
+
+
 def _resource_type(node_id: str) -> str:
     return node_id.split(".", 1)[0] if "." in node_id else node_id
 
@@ -167,13 +274,13 @@ def _resource_type(node_id: str) -> str:
 def _is_path_runtime_valid(path_nodes: list[str]) -> tuple[bool, str | None]:
     # (1) 경로 유효성 필터
     if not path_nodes:
-        return False, "empty_path"
+        return False, "empty_path"  # 비어있는경로
     if not all(isinstance(n, str) and n for n in path_nodes):
-        return False, "invalid_node_id"
+        return False, "invalid_node_id"  # 노드 전부 문자열?
     if not path_nodes[0].startswith("aws_") or not path_nodes[-1].startswith("aws_"):
-        return False, "non_runtime_endpoint"
+        return False, "non_runtime_endpoint"  # 시작과 끝이 aws_
     if any(n.startswith(NON_RUNTIME_PREFIXES) for n in path_nodes):
-        return False, "contains_non_runtime_node"
+        return False, "contains_non_runtime_node"  # 중간 var.local.data. 섞였나
     return True, None
 
 
@@ -214,10 +321,40 @@ def _stage_sequence_from_path(
     return compressed
 
 
+def _select_path_orientation(
+    path_nodes: list[str],
+    node_findings: list[dict[str, Any]],
+    check_to_vector: dict[str, str],
+) -> tuple[list[str], list[int], str | None]:
+    candidates = [
+        ("forward", path_nodes),
+        ("reverse", list(reversed(path_nodes))),
+    ]
+
+    best_nodes: list[str] = path_nodes
+    best_seq: list[int] = []
+    best_direction: str | None = None
+
+    for direction, candidate_nodes in candidates:
+        stage_seq = _stage_sequence_from_path(
+            candidate_nodes, node_findings, check_to_vector
+        )
+        if not stage_seq:
+            continue
+        if any(stage_seq[i] > stage_seq[i + 1] for i in range(len(stage_seq) - 1)):
+            continue
+        if len(set(stage_seq)) < 2:
+            continue
+        return candidate_nodes, stage_seq, direction
+
+    return best_nodes, best_seq, best_direction
+
+
 def _build_stage_details(
     path_nodes: list[str],
     node_findings: list[dict[str, Any]],
     check_to_vector: dict[str, str],
+    check_to_korean: dict[str, str],
 ) -> list[dict[str, Any]]:
     details: list[dict[str, Any]] = []
     findings_by_node = {
@@ -255,6 +392,7 @@ def _build_stage_details(
                     {
                         "check_id": cid,
                         "check_name": f.get("check_name"),
+                        "check_name_ko": check_to_korean.get(cid),
                         "resource_address": f.get("resource_address")
                         or f.get("resource"),
                         "file_abs_path": f.get("file_abs_path"),
@@ -287,14 +425,20 @@ def _build_scenario_text(
         return f"{entry}에서 시작해 {target}까지 도달 가능한 경로입니다."
 
     parts: list[str] = []
-    for s in stage_details:
+    for idx, s in enumerate(stage_details):
         rank = s.get("stage_rank")
         resource = s.get("resource")
         stage_ko = STAGE_LABELS_KO.get(rank, str(s.get("stage", "단계")))
         ev = s.get("evidence_preview", [])
         if isinstance(ev, list) and ev:
             e0 = ev[0]
-            check_name = e0.get("check_name") or e0.get("check_id") or "-"
+            check_name = (
+                e0.get("check_name_ko")
+                or e0.get("check_name")
+                or e0.get("check_id")
+                or "-"
+            )
+            check_name_en = e0.get("check_name") or e0.get("check_id") or "-"
             resource_address = e0.get("resource_address") or resource or "-"
             file_abs_path = e0.get("file_abs_path") or "-"
             evaluated_keys = e0.get("evaluated_keys")
@@ -305,25 +449,367 @@ def _build_scenario_text(
             else:
                 eval_text = "-"
             parts.append(
-                f"{stage_ko} 단계: `{resource}`에서 `{check_name}` 발견 "
-                f"(resource_address={resource_address}, file_abs_path={file_abs_path}, evaluated_keys={eval_text})"
+                f"[{idx+1}] {stage_ko}\n"
+                f"  - resource: `{resource}`\n"
+                f"  - check: `{check_name}`\n"
+                f"  - check_id: `{e0.get('check_id') or '-'}`\n"
+                f"  - check_name_en: `{check_name_en}`\n"
+                f"  - resource_address: `{resource_address}`\n"
+                f"  - file: `{file_abs_path}`\n"
+                f"  - evaluated_keys: `{eval_text}`"
             )
         else:
-            parts.append(f"{stage_ko} 단계에서 `{resource}` 이슈가 관찰됩니다")
+            parts.append(
+                f"[{idx+1}] {stage_ko}\n"
+                f"  - resource: `{resource}`\n"
+                f"  - note: 이슈가 관찰됩니다"
+            )
 
-    flow_text = ". ".join(parts)
-    return f"`{entry}`에서 시작해 `{target}`로 이어지는 경로입니다. {flow_text}."
+    flow_text = "\n\n".join(parts)
+    return f"`{entry}` -> `{target}` 경로입니다.\n\n" f"{flow_text}"
+
+
+def _format_drop_reasons(drop_reasons: dict[str, Any]) -> list[str]:
+    if not isinstance(drop_reasons, dict) or not drop_reasons:
+        return ["- 없음"]
+    lines: list[str] = []
+    for reason, count in sorted(drop_reasons.items()):
+        reason_ko = DROP_REASON_LABELS_KO.get(reason, reason)
+        lines.append(f"- `{reason_ko}` (`{reason}`): {count}")
+    return lines
+
+
+def _format_stage_sequence(stage_sequence: Any) -> str:
+    if not isinstance(stage_sequence, list) or not stage_sequence:
+        return "-"
+    parts: list[str] = []
+    for rank in stage_sequence:
+        label = STAGE_LABELS_KO.get(rank, str(rank))
+        parts.append(f"{rank}:{label}")
+    return " -> ".join(parts)
+
+
+def _classify_attack_path(
+    path_nodes: list[str],
+    check_ids: set[str],
+    check_to_vector: dict[str, str],
+) -> tuple[str, str]:
+    vectors = {
+        check_to_vector[cid]
+        for cid in check_ids
+        if isinstance(cid, str) and check_to_vector.get(cid)
+    }
+
+    has_network_resource = any(
+        node.startswith(NETWORK_RESOURCE_PREFIXES) for node in path_nodes
+    )
+    has_iam_resource = any(node.startswith(IAM_RESOURCE_PREFIXES) for node in path_nodes)
+    has_compute_resource = any(
+        node.startswith(COMPUTE_RESOURCE_PREFIXES) for node in path_nodes
+    )
+
+    has_initial_access = "initial_access_public_exposure" in vectors
+    has_iam_vector = bool(
+        vectors
+        & {
+            "credential_access_and_secrets",
+            "privilege_escalation_and_persistence",
+            "lateral_movement_remote_access",
+        }
+    )
+
+    if has_initial_access and has_network_resource and (has_iam_resource or has_iam_vector):
+        code = "network_to_iam_chain"
+    elif has_iam_resource or has_iam_vector:
+        code = "iam_privilege_chain"
+    elif has_initial_access and (has_network_resource or has_compute_resource):
+        code = "network_exposure_chain"
+    else:
+        code = "other_chain"
+
+    return code, PATH_CATEGORY_LABELS_KO.get(code, code)
+
+
+def _format_path_markdown(
+    title: str, paths: list[dict[str, Any]], limit: int = 20
+) -> list[str]:
+    lines = [f"## {title}", ""]
+    if not paths:
+        lines.extend(["- 없음", ""])
+        return lines
+
+    ordered_paths = sorted(
+        paths,
+        key=lambda item: (
+            -item.get("hops", 0) if isinstance(item.get("hops"), int) else 0,
+            str(item.get("from", "")),
+            str(item.get("to", "")),
+        ),
+    )
+
+    lines.append(f"- 개수: {len(paths)}")
+    lines.append("")
+
+    for idx, item in enumerate(ordered_paths[:limit], start=1):
+        path_nodes = item.get("path_evaluated") or item.get("path") or []
+        path_text = " -> ".join(path_nodes) if isinstance(path_nodes, list) else "-"
+        check_ids = item.get("check_ids", [])
+        if isinstance(check_ids, list) and check_ids:
+            checks_text = ", ".join(str(x) for x in check_ids[:8])
+            if len(check_ids) > 8:
+                checks_text += f" 외 {len(check_ids) - 8}개"
+        else:
+            checks_text = "-"
+
+        lines.append(f"### {idx}. `{item.get('from', '-')}` -> `{item.get('to', '-')}`")
+        lines.append("")
+        lines.append(f"- Hops: {item.get('hops', '-')}")
+        lines.append(
+            f"- Path category: `{item.get('path_category_ko', item.get('path_category', '-'))}`"
+        )
+        lines.append(
+            f"- Stage sequence: {_format_stage_sequence(item.get('stage_sequence'))}"
+        )
+        lines.append(
+            f"- Findings: {item.get('finding_count', 0)} unique / {item.get('raw_finding_count', 0)} raw"
+        )
+        lines.append(f"- Checks: {checks_text}")
+        lines.append(f"- Path: `{path_text}`")
+        scenario = item.get("attack_scenario")
+        if isinstance(scenario, str) and scenario.strip():
+            lines.append(f"- Scenario: {scenario}")
+
+        stage_details = item.get("stage_details", [])
+        if isinstance(stage_details, list) and stage_details:
+            lines.append("- Stage details:")
+            for detail in stage_details[:6]:
+                rank = detail.get("stage_rank", "-")
+                stage_name = detail.get("stage", "-")
+                resource = detail.get("resource", "-")
+                detail_check_ids = detail.get("check_ids", [])
+                if isinstance(detail_check_ids, list) and detail_check_ids:
+                    detail_checks_text = ", ".join(str(x) for x in detail_check_ids[:5])
+                    if len(detail_check_ids) > 5:
+                        detail_checks_text += f" 외 {len(detail_check_ids) - 5}개"
+                else:
+                    detail_checks_text = "-"
+                lines.append(
+                    f"  - [{rank}] {stage_name} / `{resource}` / checks: {detail_checks_text}"
+                )
+        lines.append("")
+
+    if len(ordered_paths) > limit:
+        lines.append(f"- ... {len(ordered_paths) - limit}개 경로는 생략")
+        lines.append("")
+
+    return lines
+
+
+def _format_dropped_markdown(
+    title: str, paths: list[dict[str, Any]], limit: int = 20
+) -> list[str]:
+    lines = [f"## {title}", ""]
+    if not paths:
+        lines.extend(["- 없음", ""])
+        return lines
+
+    ordered_paths = sorted(
+        paths,
+        key=lambda item: (
+            -item.get("hops", 0) if isinstance(item.get("hops"), int) else 0,
+            str(item.get("from", "")),
+            str(item.get("to", "")),
+        ),
+    )
+
+    lines.append(f"- Count: {len(paths)}")
+    lines.append("")
+
+    for idx, item in enumerate(ordered_paths[:limit], start=1):
+        path_nodes = item.get("path") or []
+        path_text = " -> ".join(path_nodes) if isinstance(path_nodes, list) else "-"
+        lines.append(f"### {idx}. `{item.get('from', '-')}` -> `{item.get('to', '-')}`")
+        lines.append("")
+        lines.append(f"- Hops: {item.get('hops', '-')}")
+        reason = item.get("reason", "-")
+        reason_ko = DROP_REASON_LABELS_KO.get(reason, reason)
+        lines.append(f"- Reason: `{reason_ko}`")
+        lines.append(f"- Path: `{path_text}`")
+        lines.append("")
+
+    if len(ordered_paths) > limit:
+        lines.append(f"- ... {len(ordered_paths) - limit}개 경로는 생략")
+        lines.append("")
+
+    return lines
+
+
+def _path_dedup_key(item: dict[str, Any]) -> tuple[str, ...]:
+    path_nodes = item.get("path_evaluated") or item.get("path") or []
+    if not isinstance(path_nodes, list):
+        return tuple()
+    return tuple(str(x) for x in path_nodes)
+
+
+def _scenario_dedup_key(item: dict[str, Any]) -> tuple[Any, ...]:
+    stage_sequence = item.get("stage_sequence") or []
+    if not isinstance(stage_sequence, list):
+        stage_sequence = []
+
+    stage_details = item.get("stage_details") or []
+    normalized_details: list[tuple[Any, str, tuple[str, ...]]] = []
+    if isinstance(stage_details, list):
+        for detail in stage_details:
+            if not isinstance(detail, dict):
+                continue
+            rank = detail.get("stage_rank")
+            resource = str(detail.get("resource", ""))
+            check_ids = detail.get("check_ids") or []
+            if not isinstance(check_ids, list):
+                check_ids = []
+            normalized_details.append(
+                (
+                    rank,
+                    resource,
+                    tuple(sorted(str(cid) for cid in check_ids)),
+                )
+            )
+
+    return (
+        str(item.get("path_category", "")),
+        tuple(stage_sequence),
+        tuple(normalized_details),
+    )
+
+
+def _endpoint_priority(node_id: str) -> int:
+    for prefixes, score in ATTACK_ENDPOINT_PRIORITY:
+        if node_id.startswith(prefixes):
+            return score
+    return 0
+
+
+def _representative_score(item: dict[str, Any]) -> tuple[int, int, int, int, str, str]:
+    path_nodes = item.get("path_evaluated") or item.get("path") or []
+    if not isinstance(path_nodes, list):
+        path_nodes = []
+
+    start_node = str(path_nodes[0]) if path_nodes else ""
+    end_node = str(path_nodes[-1]) if path_nodes else ""
+    endpoint_score = max(_endpoint_priority(start_node), _endpoint_priority(end_node))
+    hops = item.get("hops", 0) if isinstance(item.get("hops"), int) else 0
+    finding_count = (
+        item.get("finding_count", 0) if isinstance(item.get("finding_count"), int) else 0
+    )
+    raw_finding_count = (
+        item.get("raw_finding_count", 0)
+        if isinstance(item.get("raw_finding_count"), int)
+        else 0
+    )
+    return (
+        endpoint_score,
+        hops,
+        finding_count,
+        raw_finding_count,
+        start_node,
+        end_node,
+    )
+
+
+def _format_category_counts(category_counts: dict[str, Any]) -> list[str]:
+    if not isinstance(category_counts, dict) or not category_counts:
+        return ["- 없음"]
+    lines: list[str] = []
+    ordered_codes = [
+        code for code in PATH_CATEGORY_ORDER if code in category_counts
+    ] + sorted(code for code in category_counts if code not in PATH_CATEGORY_ORDER)
+    for code in ordered_codes:
+        count = category_counts.get(code, 0)
+        label = PATH_CATEGORY_LABELS_KO.get(code, code)
+        lines.append(f"- `{label}` (`{code}`): {count}")
+    return lines
+
+
+def _group_paths_by_category(paths: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    grouped: dict[str, list[dict[str, Any]]] = {code: [] for code in PATH_CATEGORY_ORDER}
+    for item in paths:
+        if not isinstance(item, dict):
+            continue
+        code = item.get("path_category")
+        if not isinstance(code, str) or not code:
+            code = "other_chain"
+        grouped.setdefault(code, []).append(item)
+    return grouped
+
+
+def _build_markdown_report(result: dict[str, Any]) -> str:
+    summary = result.get("summary", {})
+    checkov_summary = summary.get("checkov", {})
+    dfs_summary = summary.get("dfs_paths", {})
+    grouped_validated = result.get("dfs_all_paths_validated_by_category", {})
+
+    lines = [
+        "# IaC Graph Checkov Paths Report",
+        "",
+        "## Sources",
+        "",
+        f"- Graph: `{result.get('source_graph', '-')}`",
+        f"- Checkov: `{result.get('source_checkov', '-')}`",
+        "",
+        "## Summary",
+        "",
+        f"- Checkov indexed nodes: {checkov_summary.get('indexed_nodes', 0)}",
+        f"- Checkov failed checks: {checkov_summary.get('failed_checks_total', 0)}",
+        f"- DFS validated: {dfs_summary.get('paths_validated', 0)} / {dfs_summary.get('paths_total', 0)}",
+        f"- Max hops: {summary.get('max_hops', '-')}",
+        "",
+        "## Path Categories",
+        "",
+        *_format_category_counts(dfs_summary.get("category_counts", {})),
+        "",
+    ]
+
+    lines.extend(["## DFS Validated Paths By Category", ""])
+    for code in PATH_CATEGORY_ORDER:
+        label = PATH_CATEGORY_LABELS_KO.get(code, code)
+        lines.extend(
+            _format_path_markdown(
+                f"{label}",
+                grouped_validated.get(code, []),
+            )
+        )
+
+    lines.extend(
+        [
+            "## Drop Reasons",
+            "",
+            "### DFS",
+            "",
+            *_format_drop_reasons(dfs_summary.get("drop_reasons", {})),
+            "",
+        ]
+    )
+    lines.extend(
+        _format_dropped_markdown(
+            "DFS Dropped Paths",
+            result.get("dfs_all_paths_dropped", []),
+        )
+    )
+    return "\n".join(lines).rstrip() + "\n"
 
 
 def _filter_and_annotate_paths(
     paths: list[dict[str, Any]],
     checkov_index: dict[str, list[dict[str, Any]]],
     check_to_vector: dict[str, str],
+    check_to_korean: dict[str, str],
     max_hops: int,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, int]]:
+    validated_candidates: list[dict[str, Any]] = []
     validated: list[dict[str, Any]] = []
     dropped: list[dict[str, Any]] = []
     reasons: dict[str, int] = {}
+    seen_validated_keys: set[tuple[str, ...]] = set()
 
     def drop(item: dict[str, Any], reason: str) -> None:
         reasons[reason] = reasons.get(reason, 0) + 1
@@ -346,7 +832,7 @@ def _filter_and_annotate_paths(
         ):
             continue
 
-        # (1) 경로 유효성 필터
+        # (1) 경로 유효성 필터(너무 긴건 빼기)
         ok, reason = _is_path_runtime_valid(path_nodes)
         if not ok:
             drop(item, reason or "invalid_path")
@@ -390,20 +876,24 @@ def _filter_and_annotate_paths(
             continue
 
         # (3) 공격 단계 정합성 필터
-        stage_seq = _stage_sequence_from_path(
+        eval_path_nodes, stage_seq, selected_direction = _select_path_orientation(
             path_nodes, node_findings, check_to_vector
         )
         if not stage_seq:
-            drop(item, "no_attack_stage")
-            continue
-        if any(stage_seq[i] > stage_seq[i + 1] for i in range(len(stage_seq) - 1)):
-            drop(item, "stage_order_violation")
-            continue
-        if len(set(stage_seq)) < 2:
-            drop(item, "insufficient_stage_progress")
+            raw_stage_seq = _stage_sequence_from_path(
+                path_nodes, node_findings, check_to_vector
+            )
+            if not raw_stage_seq:
+                drop(item, "no_attack_stage")
+            elif len(set(raw_stage_seq)) < 2:
+                drop(item, "insufficient_stage_progress")
+            else:
+                drop(item, "stage_order_violation")
             continue
 
-        stage_details = _build_stage_details(path_nodes, node_findings, check_to_vector)
+        stage_details = _build_stage_details(
+            eval_path_nodes, node_findings, check_to_vector, check_to_korean
+        )
         enriched = dict(item)
         # unique check 기준으로 과대계산 방지
         enriched["finding_count"] = len(unique_check_ids)
@@ -411,15 +901,47 @@ def _filter_and_annotate_paths(
         enriched["check_ids"] = sorted(unique_check_ids)
         enriched["stage_sequence"] = stage_seq
         enriched["stage_details"] = stage_details
-        enriched["attack_scenario"] = _build_scenario_text(path_nodes, stage_details)
+        enriched["path_evaluated"] = eval_path_nodes
+        enriched["path_direction"] = selected_direction
+        category_code, category_ko = _classify_attack_path(
+            eval_path_nodes, unique_check_ids, check_to_vector
+        )
+        enriched["path_category"] = category_code
+        enriched["path_category_ko"] = category_ko
+        enriched["attack_scenario"] = _build_scenario_text(
+            eval_path_nodes, stage_details
+        )
         enriched["node_findings"] = node_findings
-        validated.append(enriched)
+        dedup_key = _path_dedup_key(enriched)
+        if dedup_key in seen_validated_keys:
+            drop(item, "duplicate_path")
+            continue
+        seen_validated_keys.add(dedup_key)
+        validated_candidates.append(enriched)
+
+    scenario_groups: dict[tuple[Any, ...], list[dict[str, Any]]] = {}
+    for item in validated_candidates:
+        scenario_groups.setdefault(_scenario_dedup_key(item), []).append(item)
+
+    category_counts: dict[str, int] = {}
+    for group_items in scenario_groups.values():
+        representative = max(group_items, key=_representative_score)
+        validated.append(representative)
+        category_code = representative.get("path_category")
+        if isinstance(category_code, str):
+            category_counts[category_code] = category_counts.get(category_code, 0) + 1
+
+        for item in group_items:
+            if item is representative:
+                continue
+            drop(item, "duplicate_scenario")
 
     summary = {
         "paths_total": len(validated) + len(dropped),
         "paths_validated": len(validated),
         "paths_dropped": len(dropped),
         "drop_reasons": reasons,
+        "category_counts": category_counts,
     }
     return validated, dropped, summary
 
@@ -441,6 +963,18 @@ def main() -> None:
         help="Path to checkov_id_catalog.json (for attack-stage consistency)",
     )
     parser.add_argument(
+        "--checkov-korean-labels",
+        type=Path,
+        default=Path("src/secugate/rules/checkov_korean_labels.json"),
+        help="Path to checkov_korean_labels.json (editable Korean labels by check_id)",
+    )
+    parser.add_argument(
+        "--checkov-fail-condition",
+        type=Path,
+        default=Path("src/secugate/rules/checkov_fail_condition.json"),
+        help="Fallback path to checkov_fail_condition.json",
+    )
+    parser.add_argument(
         "--max-hops",
         type=int,
         default=6,
@@ -449,32 +983,33 @@ def main() -> None:
     parser.add_argument(
         "--output", type=Path, required=True, help="Output path for mapped json"
     )
+    parser.add_argument(
+        "--markdown-output",
+        type=Path,
+        help="Optional output path for a human-readable markdown report",
+    )
     args = parser.parse_args()
 
     graph = _load_json(args.graph)
     checkov = _load_json(args.checkov_merged)
     check_to_vector = _load_checkov_vector_index(args.checkov_id_catalog)
+    check_to_korean = _load_checkov_korean_index(
+        args.checkov_korean_labels, args.checkov_fail_condition
+    )
 
     checkov_index, checkov_summary = _build_checkov_index(checkov)
     dfs_paths = graph.get("dfs_all_paths", [])
-    bfs_paths = graph.get("bfs_shortest_paths", [])
     if not isinstance(dfs_paths, list):
         dfs_paths = []
-    if not isinstance(bfs_paths, list):
-        bfs_paths = []
 
     dfs_valid, dfs_dropped, dfs_summary = _filter_and_annotate_paths(
         dfs_paths,
         checkov_index,
         check_to_vector=check_to_vector,
+        check_to_korean=check_to_korean,
         max_hops=args.max_hops,
     )
-    bfs_valid, bfs_dropped, bfs_summary = _filter_and_annotate_paths(
-        bfs_paths,
-        checkov_index,
-        check_to_vector=check_to_vector,
-        max_hops=args.max_hops,
-    )
+    dfs_grouped_valid = _group_paths_by_category(dfs_valid)
 
     result = {
         "version": 1,
@@ -483,12 +1018,10 @@ def main() -> None:
         "summary": {
             "checkov": checkov_summary,
             "dfs_paths": dfs_summary,
-            "bfs_paths": bfs_summary,
             "max_hops": args.max_hops,
         },
-        "bfs_shortest_paths_validated": bfs_valid,
-        "bfs_shortest_paths_dropped": bfs_dropped,
         "dfs_all_paths_validated": dfs_valid,
+        "dfs_all_paths_validated_by_category": dfs_grouped_valid,
         "dfs_all_paths_dropped": dfs_dropped,
     }
 
@@ -496,10 +1029,12 @@ def main() -> None:
     args.output.write_text(
         json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8"
     )
+    markdown_output = args.markdown_output or args.output.with_suffix(".md")
+    markdown_output.parent.mkdir(parents=True, exist_ok=True)
+    markdown_output.write_text(_build_markdown_report(result), encoding="utf-8")
     print(
-        f"ok: bfs_valid={bfs_summary['paths_validated']}/{bfs_summary['paths_total']} "
-        f"dfs_valid={dfs_summary['paths_validated']}/{dfs_summary['paths_total']} "
-        f"output={args.output}"
+        f"ok: dfs_valid={dfs_summary['paths_validated']}/{dfs_summary['paths_total']} "
+        f"output={args.output} markdown={markdown_output}"
     )
 
 

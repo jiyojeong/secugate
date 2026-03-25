@@ -46,6 +46,8 @@ def run(
         "ok: "
         f"tfplan={result['tfplan_json']} "
         f"checkov={result['checkov_tf_json']} "
+        f"iac_paths={result['iac_graph_checkov_paths_json']} "
+        f"iac_paths_report={result['iac_graph_checkov_paths_md']} "
         f"attack_scenarios={result['attack_scenarios_json']} "
         f"attack_report={result['attack_scenarios_md']}"
     )

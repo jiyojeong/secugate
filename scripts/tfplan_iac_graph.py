@@ -774,14 +774,8 @@ def main() -> None:
         include_data=not args.exclude_data,
     )
 
-    # 2) 노드 간 경로 탐색: DFS(모든 경로), BFS(최단 1개)
+    # 2) 노드 간 경로 탐색: DFS(모든 경로)
     dfs_all_paths = _find_all_paths(
-        nodes,
-        edges,
-        max_depth=args.max_path_depth,
-        undirected=not args.directed,
-    )
-    bfs_shortest_paths = _find_bfs_shortest_paths(
         nodes,
         edges,
         max_depth=args.max_path_depth,
@@ -799,7 +793,6 @@ def main() -> None:
             "nodes": len(nodes),
             "edges": len(edges),
             "dfs_all_paths": len(dfs_all_paths),
-            "bfs_shortest_paths": len(bfs_shortest_paths),
             "iam_assume_role_edges": iam_analysis["summary"]["assume_role_edges"],
             "iam_bfs_paths": iam_analysis["summary"]["bfs_paths"],
             "iam_dfs_paths": iam_analysis["summary"]["dfs_paths"],
@@ -809,7 +802,6 @@ def main() -> None:
         "nodes": [nodes[node_id] for node_id in sorted(nodes.keys())],
         "edges": edges,
         "dfs_all_paths": dfs_all_paths,
-        "bfs_shortest_paths": bfs_shortest_paths,
         "iam_analysis": iam_analysis,
     }
 
@@ -820,7 +812,6 @@ def main() -> None:
         f"ok: nodes={result['summary']['nodes']} "
         f"edges={result['summary']['edges']} "
         f"dfs_all_paths={result['summary']['dfs_all_paths']} "
-        f"bfs_shortest_paths={result['summary']['bfs_shortest_paths']} "
         f"iam_assume_role_edges={result['summary']['iam_assume_role_edges']} "
         f"iam_bfs_paths={result['summary']['iam_bfs_paths']} "
         f"iam_dfs_paths={result['summary']['iam_dfs_paths']} "

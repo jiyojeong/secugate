@@ -5,7 +5,10 @@ import typer
 from secugate.attack_scenarios import generate_attack_scenarios
 from secugate.parsers.checkov import merge_checkov_results
 from secugate.runners.checkov import run_checkov_on_hcl, run_checkov_on_tfplan
-from secugate.runners.iac_graph import build_iac_graph_json
+from secugate.runners.iac_graph import (
+    build_iac_graph_checkov_paths,
+    build_iac_graph_json,
+)
 from secugate.runners.terraform import build_tfplan_json
 from secugate.utils.caching import calculate_dir_hash
 
@@ -31,6 +34,8 @@ def run_pipeline(
     checkov_plan_json = output_dir / "checkov_plan.json"
     checkov_hcl_json = output_dir / "checkov_hcl.json"
     checkov_merged_json = output_dir / "checkov_merged.json"
+    iac_graph_checkov_paths_json = output_dir / "iac_graph_checkov_paths.json"
+    iac_graph_checkov_paths_md = output_dir / "iac_graph_checkov_paths.md"
     attack_scenarios_json = output_dir / "attack_scenarios.json"
     attack_scenarios_md = output_dir / "attack_scenarios.md"
 
@@ -40,6 +45,8 @@ def run_pipeline(
     cached_checkov_plan_json = cache_dir / "checkov_plan.json"
     cached_checkov_hcl_json = cache_dir / "checkov_hcl.json"
     cached_checkov_merged_json = cache_dir / "checkov_merged.json"
+    cached_iac_graph_checkov_paths_json = cache_dir / "iac_graph_checkov_paths.json"
+    cached_iac_graph_checkov_paths_md = cache_dir / "iac_graph_checkov_paths.md"
     cached_attack_scenarios_json = cache_dir / "attack_scenarios.json"
     cached_attack_scenarios_md = cache_dir / "attack_scenarios.md"
 
@@ -54,6 +61,24 @@ def run_pipeline(
         shutil.copy(cached_checkov_plan_json, checkov_plan_json)
         shutil.copy(cached_checkov_hcl_json, checkov_hcl_json)
         shutil.copy(cached_checkov_merged_json, checkov_merged_json)
+        if cached_iac_graph_checkov_paths_json.is_file():
+            shutil.copy(cached_iac_graph_checkov_paths_json, iac_graph_checkov_paths_json)
+            if cached_iac_graph_checkov_paths_md.is_file():
+                shutil.copy(cached_iac_graph_checkov_paths_md, iac_graph_checkov_paths_md)
+            else:
+                build_iac_graph_checkov_paths(
+                    graph_json=iac_graph_json,
+                    checkov_merged_json=checkov_merged_json,
+                    out_json=iac_graph_checkov_paths_json,
+                    markdown_out=iac_graph_checkov_paths_md,
+                )
+        else:
+            build_iac_graph_checkov_paths(
+                graph_json=iac_graph_json,
+                checkov_merged_json=checkov_merged_json,
+                out_json=iac_graph_checkov_paths_json,
+                markdown_out=iac_graph_checkov_paths_md,
+            )
         if scenario_rules_path is None and cached_attack_scenarios_json.is_file():
             shutil.copy(cached_attack_scenarios_json, attack_scenarios_json)
             if cached_attack_scenarios_md.is_file():
@@ -76,6 +101,8 @@ def run_pipeline(
             "tfplan_json": str(tfplan_json),
             "iac_graph_json": str(iac_graph_json),
             "checkov_tf_json": str(checkov_merged_json),
+            "iac_graph_checkov_paths_json": str(iac_graph_checkov_paths_json),
+            "iac_graph_checkov_paths_md": str(iac_graph_checkov_paths_md),
             "attack_scenarios_json": str(attack_scenarios_json),
             "attack_scenarios_md": str(attack_scenarios_md),
         }
@@ -107,6 +134,12 @@ def run_pipeline(
         hcl_json_path=checkov_hcl_json,
         output_path=checkov_merged_json,
     )
+    build_iac_graph_checkov_paths(
+        graph_json=iac_graph_json,
+        checkov_merged_json=checkov_merged_json,
+        out_json=iac_graph_checkov_paths_json,
+        markdown_out=iac_graph_checkov_paths_md,
+    )
     generate_attack_scenarios(
         checkov_merged_json_path=checkov_merged_json,
         output_path=attack_scenarios_json,
@@ -122,6 +155,8 @@ def run_pipeline(
         shutil.copy(checkov_plan_json, cached_checkov_plan_json)
         shutil.copy(checkov_hcl_json, cached_checkov_hcl_json)
         shutil.copy(checkov_merged_json, cached_checkov_merged_json)
+        shutil.copy(iac_graph_checkov_paths_json, cached_iac_graph_checkov_paths_json)
+        shutil.copy(iac_graph_checkov_paths_md, cached_iac_graph_checkov_paths_md)
         if scenario_rules_path is None:
             shutil.copy(attack_scenarios_json, cached_attack_scenarios_json)
             shutil.copy(attack_scenarios_md, cached_attack_scenarios_md)
@@ -131,6 +166,8 @@ def run_pipeline(
         "tfplan_json": str(tfplan_json),
         "iac_graph_json": str(iac_graph_json),
         "checkov_tf_json": str(checkov_merged_json),
+        "iac_graph_checkov_paths_json": str(iac_graph_checkov_paths_json),
+        "iac_graph_checkov_paths_md": str(iac_graph_checkov_paths_md),
         "attack_scenarios_json": str(attack_scenarios_json),
         "attack_scenarios_md": str(attack_scenarios_md),
     }
