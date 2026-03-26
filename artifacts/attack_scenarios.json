@@ -1,18 +1,66 @@
 {
   "version": 1,
-  "source": "artifacts/checkov_merged.json",
+  "source": "/home/jiyoon/secugate/artifacts/checkov_merged.json",
   "rules": "/home/jiyoon/secugate/src/secugate/rules/attack_mapping.json",
   "summary": {
     "failed_findings": 26,
     "mapped_findings": 26,
-    "capabilities": 19,
+    "capabilities": 18,
     "atomic_ids": 7,
-    "scenarios": 4,
+    "scenarios": 7,
     "unmapped_check_ids": 0
   },
   "capabilities": [
     {
-      "capability": "default_sg_not_restricted",
+      "capability_key": "auto_stage_execution_or_visibility_control",
+      "capability_id": "AUTO_STAGE_EXECUTION_VISIBILITY",
+      "capability": "실행·탐지우회 단계로 분류되는 체크 자동 보강 그룹",
+      "mitre_tactic": "DE",
+      "stage": "execution_or_visibility_control",
+      "finding_count": 2,
+      "checks": {
+        "CKV_AWS_126": 1,
+        "CKV_AWS_135": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_126",
+          "check_name": "Ensure that detailed monitoring is enabled for EC2 instances",
+          "resource_address": "aws_instance.super_critical_security_server",
+          "resource": "aws_instance.super_critical_security_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            39,
+            62
+          ],
+          "evaluated_keys": [
+            "monitoring"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_135",
+          "check_name": "Ensure that EC2 is EBS optimized",
+          "resource_address": "aws_instance.super_critical_security_server",
+          "resource": "aws_instance.super_critical_security_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            39,
+            62
+          ],
+          "evaluated_keys": [
+            "ebs_optimized"
+          ]
+        }
+      ]
+    },
+    {
+      "capability_key": "default_sg_not_restricted",
+      "capability_id": "VIS_DEFAULT_SG_NOT_RESTRICTED",
+      "capability": "기본 보안그룹이 제한되지 않음(원격 접근/이상행위 탐지 어려움)",
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
       "finding_count": 1,
       "checks": {
         "CKV2_AWS_12": 1
@@ -20,18 +68,35 @@
       "evidence": [
         {
           "check_id": "CKV2_AWS_12",
+          "check_name": "Ensure the default security group of every VPC restricts all traffic",
+          "resource_address": "aws_vpc.vpc",
           "resource": "aws_vpc.vpc",
+          "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
           "file_path": "/vpc.tf",
           "file_line_range": [
             1,
             8
           ],
-          "check_name": "Ensure the default security group of every VPC restricts all traffic"
+          "evaluated_keys": [
+            "egress/to_port",
+            "egress/from_port",
+            "resource_type",
+            "ingress/from_port",
+            "egress/cidr_blocks",
+            "ingress/protocol",
+            "egress/protocol",
+            "ingress/to_port",
+            "ingress/self"
+          ]
         }
       ]
     },
     {
-      "capability": "ec2_instance_profile_missing",
+      "capability_key": "ec2_instance_profile_missing",
+      "capability_id": "CMP_INSTANCE_PROFILE_MISSING",
+      "capability": "EC2 인스턴스 역할/프로파일 거버넌스 부재(권한 통제/감사 약화)",
+      "mitre_tactic": "PR",
+      "stage": "privilege_or_credential_expansion",
       "finding_count": 1,
       "checks": {
         "CKV2_AWS_41": 1
@@ -39,18 +104,27 @@
       "evidence": [
         {
           "check_id": "CKV2_AWS_41",
+          "check_name": "Ensure an IAM role is attached to EC2 instance",
+          "resource_address": "aws_instance.super_critical_security_server",
           "resource": "aws_instance.super_critical_security_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
           "file_path": "/ec2.tf",
           "file_line_range": [
             39,
             62
           ],
-          "check_name": "Ensure an IAM role is attached to EC2 instance"
+          "evaluated_keys": [
+            "iam_instance_profile"
+          ]
         }
       ]
     },
     {
-      "capability": "ec2_public_ip_exposed",
+      "capability_key": "ec2_public_ip_exposed",
+      "capability_id": "CMP_EC2_PUBLIC_IP",
+      "capability": "EC2 퍼블릭 IP 직접 노출(외부에서 직접 접근 가능)",
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_88": 1
@@ -58,18 +132,27 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_88",
+          "check_name": "EC2 instance should not have public IP.",
+          "resource_address": "aws_instance.super_critical_security_server",
           "resource": "aws_instance.super_critical_security_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
           "file_path": "/ec2.tf",
           "file_line_range": [
             39,
             62
           ],
-          "check_name": "EC2 instance should not have public IP."
+          "evaluated_keys": [
+            "associate_public_ip_address"
+          ]
         }
       ]
     },
     {
-      "capability": "iam_policy_admin_or_wildcard",
+      "capability_key": "iam_policy_admin_or_wildcard",
+      "capability_id": "IAM_WILDCARD_POLICY",
+      "capability": "IAM 와일드카드/관리자급 권한 남용 우려. 리소스/권한 제한이 충분히 특정되지 않음.",
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
       "finding_count": 5,
       "checks": {
         "CKV_AWS_355": 2,
@@ -80,58 +163,91 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_355",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         },
         {
           "check_id": "CKV_AWS_63",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's actions",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's actions"
+          "evaluated_keys": [
+            "policy",
+            "inline_policy"
+          ]
         },
         {
           "check_id": "CKV_AWS_62",
+          "check_name": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created"
+          "evaluated_keys": [
+            "policy",
+            "inline_policy"
+          ]
         },
         {
           "check_id": "CKV_AWS_355",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+          "resource_address": "aws_iam_policy.kerrigan_policy",
           "resource": "aws_iam_policy.kerrigan_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
           "file_path": "/iam.tf",
           "file_line_range": [
             10,
             44
           ],
-          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         },
         {
           "check_id": "CKV2_AWS_40",
+          "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure AWS IAM policy does not allow full IAM privileges"
+          "evaluated_keys": [
+            "policy/Statement[?(@/Effect == Allow)]/Action[*]",
+            "statement[?(@/effect == Allow)]/actions[*]",
+            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
+          ]
         }
       ]
     },
     {
-      "capability": "iam_policy_attached_to_user",
+      "capability_key": "iam_policy_attached_to_user",
+      "capability_id": "IAM_POLICY_ATTACHED_TO_USER",
+      "capability": "사용자 직접 정책 부여로 장기 권한 유지/확장 가능",
+      "mitre_tactic": "PR",
+      "stage": "privilege_or_credential_expansion",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_40": 1
@@ -139,18 +255,27 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_40",
+          "check_name": "Ensure IAM policies are attached only to groups or roles (Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges.)",
+          "resource_address": "aws_iam_user_policy_attachment.kerrigan_attachment",
           "resource": "aws_iam_user_policy_attachment.kerrigan_attachment",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
           "file_path": "/iam.tf",
           "file_line_range": [
             46,
             49
           ],
-          "check_name": "Ensure IAM policies are attached only to groups or roles (Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges.)"
+          "evaluated_keys": [
+            "user"
+          ]
         }
       ]
     },
     {
-      "capability": "iam_policy_credential_exposure",
+      "capability_key": "iam_policy_credential_exposure",
+      "capability_id": "IAM_CREDENTIAL_EXPOSURE",
+      "capability": "IAM 정책이 자격증명 접근 액션을 과도하게 허용함",
+      "mitre_tactic": "CA",
+      "stage": "privilege_or_credential_expansion",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_287": 1
@@ -158,18 +283,27 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_287",
+          "check_name": "Ensure IAM policies does not allow credentials exposure",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure IAM policies does not allow credentials exposure"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         }
       ]
     },
     {
-      "capability": "iam_policy_data_exfiltration",
+      "capability_key": "iam_policy_data_exfiltration",
+      "capability_id": "IAM_DATA_EXFILTRATION",
+      "capability": "IAM 정책이 데이터 반출 액션을 과도하게 허용함",
+      "mitre_tactic": "EX",
+      "stage": "impact_or_exfiltration",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_288": 1
@@ -177,18 +311,27 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_288",
+          "check_name": "Ensure IAM policies does not allow data exfiltration",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure IAM policies does not allow data exfiltration"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         }
       ]
     },
     {
-      "capability": "iam_policy_permission_mgmt_unscoped",
+      "capability_key": "iam_policy_permission_mgmt_unscoped",
+      "capability_id": "IAM_PERMISSION_MGMT_UNSCOPED",
+      "capability": "범위 제한 없는 권한/권한관리 관련 액션 허용(권한 남용/상승 경로)",
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
       "finding_count": 2,
       "checks": {
         "CKV_AWS_289": 2
@@ -196,28 +339,42 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_289",
+          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         },
         {
           "check_id": "CKV_AWS_289",
+          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+          "resource_address": "aws_iam_policy.kerrigan_policy",
           "resource": "aws_iam_policy.kerrigan_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
           "file_path": "/iam.tf",
           "file_line_range": [
             10,
             44
           ],
-          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         }
       ]
     },
     {
-      "capability": "iam_policy_privilege_escalation",
+      "capability_key": "iam_policy_privilege_escalation",
+      "capability_id": "IAM_PE_POLICY",
+      "capability": "Privilege Escalation 가능성이 있는 IAM Policy 권한 조합 존재",
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
       "finding_count": 2,
       "checks": {
         "CKV_AWS_286": 2
@@ -225,28 +382,42 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_286",
+          "check_name": "Ensure IAM policies does not allow privilege escalation",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure IAM policies does not allow privilege escalation"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         },
         {
           "check_id": "CKV_AWS_286",
+          "check_name": "Ensure IAM policies does not allow privilege escalation",
+          "resource_address": "aws_iam_policy.kerrigan_policy",
           "resource": "aws_iam_policy.kerrigan_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
           "file_path": "/iam.tf",
           "file_line_range": [
             10,
             44
           ],
-          "check_name": "Ensure IAM policies does not allow privilege escalation"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         }
       ]
     },
     {
-      "capability": "iam_policy_write_unscoped",
+      "capability_key": "iam_policy_write_unscoped",
+      "capability_id": "IAM_WRITE_UNSCOPED",
+      "capability": "범위 제한 없는 쓰기 권한 허용(리소스 변경/정책 변경 악용 가능)",
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
       "finding_count": 2,
       "checks": {
         "CKV_AWS_290": 2
@@ -254,28 +425,42 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_290",
+          "check_name": "Ensure IAM policies does not allow write access without constraints",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
           "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
           "file_path": "/iam_mighty.tf",
           "file_line_range": [
             21,
             35
           ],
-          "check_name": "Ensure IAM policies does not allow write access without constraints"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         },
         {
           "check_id": "CKV_AWS_290",
+          "check_name": "Ensure IAM policies does not allow write access without constraints",
+          "resource_address": "aws_iam_policy.kerrigan_policy",
           "resource": "aws_iam_policy.kerrigan_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
           "file_path": "/iam.tf",
           "file_line_range": [
             10,
             44
           ],
-          "check_name": "Ensure IAM policies does not allow write access without constraints"
+          "evaluated_keys": [
+            "policy/Statement/[1]/Action"
+          ]
         }
       ]
     },
     {
-      "capability": "iam_user_present",
+      "capability_key": "iam_user_present",
+      "capability_id": "IAM_USER_PRESENT",
+      "capability": "IAM 사용자 기반 장기 접근 경로 존재(키/비밀번호 기반)",
+      "mitre_tactic": "PR",
+      "stage": "privilege_or_credential_expansion",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_273": 1
@@ -283,18 +468,25 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_273",
+          "check_name": "Ensure access is controlled through SSO and not AWS IAM defined users",
+          "resource_address": "aws_iam_user.kerrigan",
           "resource": "aws_iam_user.kerrigan",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
           "file_path": "/iam.tf",
           "file_line_range": [
             1,
             4
           ],
-          "check_name": "Ensure access is controlled through SSO and not AWS IAM defined users"
+          "evaluated_keys": []
         }
       ]
     },
     {
-      "capability": "imdsv1_enabled",
+      "capability_key": "imdsv1_enabled",
+      "capability_id": "CMP_IMDSV1_ENABLED",
+      "capability": "IMDSv1 활성화(인스턴스 자격증명 탈취 위험 증가)",
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_79": 1
@@ -302,56 +494,27 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_79",
+          "check_name": "Ensure Instance Metadata Service Version 1 is not enabled",
+          "resource_address": "aws_instance.super_critical_security_server",
           "resource": "aws_instance.super_critical_security_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
           "file_path": "/ec2.tf",
           "file_line_range": [
             39,
             62
           ],
-          "check_name": "Ensure Instance Metadata Service Version 1 is not enabled"
+          "evaluated_keys": [
+            "metadata_options/[0]/http_tokens"
+          ]
         }
       ]
     },
     {
-      "capability": "non_attack_compute_performance_hardening_missing",
-      "finding_count": 1,
-      "checks": {
-        "CKV_AWS_135": 1
-      },
-      "evidence": [
-        {
-          "check_id": "CKV_AWS_135",
-          "resource": "aws_instance.super_critical_security_server",
-          "file_path": "/ec2.tf",
-          "file_line_range": [
-            39,
-            62
-          ],
-          "check_name": "Ensure that EC2 is EBS optimized"
-        }
-      ]
-    },
-    {
-      "capability": "non_attack_monitoring_depth_missing",
-      "finding_count": 1,
-      "checks": {
-        "CKV_AWS_126": 1
-      },
-      "evidence": [
-        {
-          "check_id": "CKV_AWS_126",
-          "resource": "aws_instance.super_critical_security_server",
-          "file_path": "/ec2.tf",
-          "file_line_range": [
-            39,
-            62
-          ],
-          "check_name": "Ensure that detailed monitoring is enabled for EC2 instances"
-        }
-      ]
-    },
-    {
-      "capability": "sg_egress_all_open",
+      "capability_key": "sg_egress_all_open",
+      "capability_id": "NET_EGRESS_ALL_OPEN",
+      "capability": "전방위 egress 허용(유출/원격 통신 경로 확대)",
+      "mitre_tactic": "EX",
+      "stage": "impact_or_exfiltration",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_382": 1
@@ -359,18 +522,30 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_382",
+          "check_name": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+          "resource_address": "aws_security_group.ec2_server",
           "resource": "aws_security_group.ec2_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
           "file_path": "/ec2.tf",
           "file_line_range": [
             1,
             37
           ],
-          "check_name": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1"
+          "evaluated_keys": [
+            "egress/[0]/from_port",
+            "egress/[0]/to_port",
+            "egress/[0]/cidr_blocks",
+            "egress/[0]/ipv6_cidr_blocks"
+          ]
         }
       ]
     },
     {
-      "capability": "sg_ingress_http_open",
+      "capability_key": "sg_ingress_http_open",
+      "capability_id": "NET_PUBLIC_HTTP",
+      "capability": "공개 HTTP 인바운드 노출(공격 표면 증가)",
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_260": 1
@@ -378,18 +553,30 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_260",
+          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80",
+          "resource_address": "aws_security_group.ec2_server",
           "resource": "aws_security_group.ec2_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
           "file_path": "/ec2.tf",
           "file_line_range": [
             1,
             37
           ],
-          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80"
+          "evaluated_keys": [
+            "ingress/[2]/from_port",
+            "ingress/[2]/to_port",
+            "ingress/[2]/cidr_blocks",
+            "ingress/[2]/ipv6_cidr_blocks"
+          ]
         }
       ]
     },
     {
-      "capability": "sg_ingress_ssh_open",
+      "capability_key": "sg_ingress_ssh_open",
+      "capability_id": "NET_PUBLIC_SSH",
+      "capability": "공개 SSH 인바운드 노출(원격 접근 표면 증가)",
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_24": 1
@@ -397,18 +584,30 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_24",
+          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22",
+          "resource_address": "aws_security_group.ec2_server",
           "resource": "aws_security_group.ec2_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
           "file_path": "/ec2.tf",
           "file_line_range": [
             1,
             37
           ],
-          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+          "evaluated_keys": [
+            "ingress/[0]/from_port",
+            "ingress/[0]/to_port",
+            "ingress/[0]/cidr_blocks",
+            "ingress/[0]/ipv6_cidr_blocks"
+          ]
         }
       ]
     },
     {
-      "capability": "subnet_auto_public_ip",
+      "capability_key": "subnet_auto_public_ip",
+      "capability_id": "CMP_SUBNET_AUTO_PUBLIC_IP",
+      "capability": "서브넷 기본 퍼블릭 IP 자동 할당(의도치 않은 노출 가능)",
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_130": 1
@@ -416,18 +615,27 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_130",
+          "check_name": "Ensure VPC subnets do not assign public IP by default",
+          "resource_address": "aws_subnet.public",
           "resource": "aws_subnet.public",
+          "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
           "file_path": "/vpc.tf",
           "file_line_range": [
             18,
             27
           ],
-          "check_name": "Ensure VPC subnets do not assign public IP by default"
+          "evaluated_keys": [
+            "map_public_ip_on_launch"
+          ]
         }
       ]
     },
     {
-      "capability": "vpc_flow_logs_disabled",
+      "capability_key": "vpc_flow_logs_disabled",
+      "capability_id": "VIS_VPC_FLOW_LOGS_DISABLED",
+      "capability": "VPC Flow Logs 미설정(네트워크 가시성/탐지 공백)",
+      "mitre_tactic": "DE",
+      "stage": "execution_or_visibility_control",
       "finding_count": 1,
       "checks": {
         "CKV2_AWS_11": 1
@@ -435,13 +643,19 @@
       "evidence": [
         {
           "check_id": "CKV2_AWS_11",
+          "check_name": "Ensure VPC flow logging is enabled in all VPCs",
+          "resource_address": "aws_vpc.vpc",
           "resource": "aws_vpc.vpc",
+          "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
           "file_path": "/vpc.tf",
           "file_line_range": [
             1,
             8
           ],
-          "check_name": "Ensure VPC flow logging is enabled in all VPCs"
+          "evaluated_keys": [
+            "networking",
+            "resource_type"
+          ]
         }
       ]
     }
@@ -477,8 +691,7 @@
       "capabilities": [
         "iam_policy_admin_or_wildcard",
         "iam_user_present",
-        "iam_policy_attached_to_user",
-        "ec2_instance_profile_missing"
+        "iam_policy_attached_to_user"
       ],
       "name": "IAM 관리자급/와일드카드 정책 악용",
       "confidence": "high"
@@ -498,9 +711,7 @@
       "atomic_id": "T1190",
       "capabilities": [
         "sg_ingress_ssh_open",
-        "sg_ingress_http_open",
-        "ec2_public_ip_exposed",
-        "subnet_auto_public_ip"
+        "sg_ingress_http_open"
       ],
       "name": "공개 SSH 인바운드 노출",
       "confidence": "high"
@@ -519,9 +730,9 @@
     {
       "id": "aws_initial_access_to_iam_abuse",
       "title": "공개 SSH 노출 후 IAM 권한 악용",
-      "description": "공개 SSH 인바운드 노출 자산 초기 접근 이후 관리자급/와일드카드 IAM 정책으로 권한 상승 또는 지속성 확보",
+      "description": "공개 SSH 인바운드 노출 자산에 대한 초기 접근 이후, 관리자급/와일드카드 IAM 권한을 악용해 권한 상승 또는 지속성을 확보할 수 있음",
       "score": "high",
-      "matched_capabilities": [
+      "matched_capability_keys": [
         "sg_ingress_ssh_open",
         "iam_policy_admin_or_wildcard"
       ],
@@ -530,14 +741,113 @@
         "T1190",
         "T1098.003"
       ],
-      "evidence_count": 6
+      "evidence_count": 6,
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_24",
+          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22",
+          "resource_address": "aws_security_group.ec2_server",
+          "resource": "aws_security_group.ec2_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            1,
+            37
+          ],
+          "evaluated_keys": [
+            "ingress/[0]/from_port",
+            "ingress/[0]/to_port",
+            "ingress/[0]/cidr_blocks",
+            "ingress/[0]/ipv6_cidr_blocks"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_355",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_63",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's actions",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "evaluated_keys": [
+            "policy",
+            "inline_policy"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_62",
+          "check_name": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "evaluated_keys": [
+            "policy",
+            "inline_policy"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_355",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+          "resource_address": "aws_iam_policy.kerrigan_policy",
+          "resource": "aws_iam_policy.kerrigan_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
+          "file_path": "/iam.tf",
+          "file_line_range": [
+            10,
+            44
+          ],
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
+        },
+        {
+          "check_id": "CKV2_AWS_40",
+          "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "evaluated_keys": [
+            "policy/Statement[?(@/Effect == Allow)]/Action[*]",
+            "statement[?(@/effect == Allow)]/actions[*]",
+            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
+          ]
+        }
+      ]
     },
     {
       "id": "aws_credential_collection_and_exfiltration",
       "title": "IMDS 자격증명 수집 후 외부 유출",
-      "description": "IMDSv1 활성화와 전방위 egress 허용 조합으로 수집 자격증명/데이터 외부 반출 위험 증가",
+      "description": "IMDSv1 활성화로 자격증명 수집이 쉬워지고, 전방위 egress 허용이 결합되면 외부 반출 위험이 증가함",
       "score": "high",
-      "matched_capabilities": [
+      "matched_capability_keys": [
         "imdsv1_enabled",
         "sg_egress_all_open"
       ],
@@ -546,14 +856,49 @@
         "T1552",
         "T1041"
       ],
-      "evidence_count": 2
+      "evidence_count": 2,
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_79",
+          "check_name": "Ensure Instance Metadata Service Version 1 is not enabled",
+          "resource_address": "aws_instance.super_critical_security_server",
+          "resource": "aws_instance.super_critical_security_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            39,
+            62
+          ],
+          "evaluated_keys": [
+            "metadata_options/[0]/http_tokens"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_382",
+          "check_name": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+          "resource_address": "aws_security_group.ec2_server",
+          "resource": "aws_security_group.ec2_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            1,
+            37
+          ],
+          "evaluated_keys": [
+            "egress/[0]/from_port",
+            "egress/[0]/to_port",
+            "egress/[0]/cidr_blocks",
+            "egress/[0]/ipv6_cidr_blocks"
+          ]
+        }
+      ]
     },
     {
       "id": "aws_identity_persistence_via_iam_user",
       "title": "IAM 사용자 직접 정책 기반 지속성",
-      "description": "IAM 사용자 사용과 사용자 직접 정책 부여가 결합되면 장기 자격증명 기반 지속성이 강화됨",
+      "description": "IAM 사용자 존재 + 사용자 직접 정책 부여 + 권한상승 가능 정책이 결합되면 장기 자격증명 기반 지속성이 강화됨",
       "score": "high",
-      "matched_capabilities": [
+      "matched_capability_keys": [
         "iam_user_present",
         "iam_policy_attached_to_user",
         "iam_policy_privilege_escalation"
@@ -563,14 +908,74 @@
         "T1078.004",
         "T1098.003"
       ],
-      "evidence_count": 4
+      "evidence_count": 4,
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_273",
+          "check_name": "Ensure access is controlled through SSO and not AWS IAM defined users",
+          "resource_address": "aws_iam_user.kerrigan",
+          "resource": "aws_iam_user.kerrigan",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
+          "file_path": "/iam.tf",
+          "file_line_range": [
+            1,
+            4
+          ],
+          "evaluated_keys": []
+        },
+        {
+          "check_id": "CKV_AWS_40",
+          "check_name": "Ensure IAM policies are attached only to groups or roles (Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges.)",
+          "resource_address": "aws_iam_user_policy_attachment.kerrigan_attachment",
+          "resource": "aws_iam_user_policy_attachment.kerrigan_attachment",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
+          "file_path": "/iam.tf",
+          "file_line_range": [
+            46,
+            49
+          ],
+          "evaluated_keys": [
+            "user"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_286",
+          "check_name": "Ensure IAM policies does not allow privilege escalation",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_286",
+          "check_name": "Ensure IAM policies does not allow privilege escalation",
+          "resource_address": "aws_iam_policy.kerrigan_policy",
+          "resource": "aws_iam_policy.kerrigan_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
+          "file_path": "/iam.tf",
+          "file_line_range": [
+            10,
+            44
+          ],
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
+        }
+      ]
     },
     {
       "id": "aws_visibility_gap_and_remote_access_risk",
       "title": "가시성 공백과 기본 SG 원격 접근 위험",
-      "description": "VPC 플로우 로그 미설정 상태에서 기본 보안그룹이 트래픽을 제한하지 않으면 원격 접근 활동 탐지/분석이 어려워짐",
+      "description": "VPC Flow Logs가 없고 기본 SG가 제한되지 않으면 원격 접근 시도 및 네트워크 활동에 대한 탐지/분석 공백이 커짐",
       "score": "medium",
-      "matched_capabilities": [
+      "matched_capability_keys": [
         "vpc_flow_logs_disabled",
         "default_sg_not_restricted"
       ],
@@ -579,7 +984,198 @@
         "T1046",
         "T1021"
       ],
-      "evidence_count": 2
+      "evidence_count": 2,
+      "evidence": [
+        {
+          "check_id": "CKV2_AWS_11",
+          "check_name": "Ensure VPC flow logging is enabled in all VPCs",
+          "resource_address": "aws_vpc.vpc",
+          "resource": "aws_vpc.vpc",
+          "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
+          "file_path": "/vpc.tf",
+          "file_line_range": [
+            1,
+            8
+          ],
+          "evaluated_keys": [
+            "networking",
+            "resource_type"
+          ]
+        },
+        {
+          "check_id": "CKV2_AWS_12",
+          "check_name": "Ensure the default security group of every VPC restricts all traffic",
+          "resource_address": "aws_vpc.vpc",
+          "resource": "aws_vpc.vpc",
+          "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
+          "file_path": "/vpc.tf",
+          "file_line_range": [
+            1,
+            8
+          ],
+          "evaluated_keys": [
+            "egress/to_port",
+            "egress/from_port",
+            "resource_type",
+            "ingress/from_port",
+            "egress/cidr_blocks",
+            "ingress/protocol",
+            "egress/protocol",
+            "ingress/to_port",
+            "ingress/self"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aws_public_web_to_data_egress",
+      "title": "공개 HTTP 노출 후 외부 데이터 반출",
+      "description": "공개 HTTP 인바운드와 전방위 egress 허용이 결합되면 초기 침입 후 외부 반출 경로가 성립함",
+      "score": "high",
+      "matched_capability_keys": [
+        "sg_ingress_http_open",
+        "sg_egress_all_open"
+      ],
+      "matched_check_ids": [],
+      "atomic_chain": [
+        "T1190",
+        "T1041"
+      ],
+      "evidence_count": 2,
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_260",
+          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80",
+          "resource_address": "aws_security_group.ec2_server",
+          "resource": "aws_security_group.ec2_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            1,
+            37
+          ],
+          "evaluated_keys": [
+            "ingress/[2]/from_port",
+            "ingress/[2]/to_port",
+            "ingress/[2]/cidr_blocks",
+            "ingress/[2]/ipv6_cidr_blocks"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_382",
+          "check_name": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+          "resource_address": "aws_security_group.ec2_server",
+          "resource": "aws_security_group.ec2_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            1,
+            37
+          ],
+          "evaluated_keys": [
+            "egress/[0]/from_port",
+            "egress/[0]/to_port",
+            "egress/[0]/cidr_blocks",
+            "egress/[0]/ipv6_cidr_blocks"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aws_public_instance_imds_credential_access",
+      "title": "퍼블릭 인스턴스 노출 후 IMDS 자격증명 수집",
+      "description": "퍼블릭 IP가 노출된 EC2 인스턴스에서 IMDSv1이 활성화되어 있으면 초기 접근 이후 자격증명 수집 위험이 커짐",
+      "score": "high",
+      "matched_capability_keys": [
+        "ec2_public_ip_exposed",
+        "imdsv1_enabled"
+      ],
+      "matched_check_ids": [],
+      "atomic_chain": [
+        "T1190",
+        "T1552"
+      ],
+      "evidence_count": 2,
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_88",
+          "check_name": "EC2 instance should not have public IP.",
+          "resource_address": "aws_instance.super_critical_security_server",
+          "resource": "aws_instance.super_critical_security_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            39,
+            62
+          ],
+          "evaluated_keys": [
+            "associate_public_ip_address"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_79",
+          "check_name": "Ensure Instance Metadata Service Version 1 is not enabled",
+          "resource_address": "aws_instance.super_critical_security_server",
+          "resource": "aws_instance.super_critical_security_server",
+          "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+          "file_path": "/ec2.tf",
+          "file_line_range": [
+            39,
+            62
+          ],
+          "evaluated_keys": [
+            "metadata_options/[0]/http_tokens"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aws_iam_credential_access_and_exfiltration",
+      "title": "IAM 과권한으로 인한 자격증명 접근 및 데이터 반출",
+      "description": "IAM 정책이 자격증명 접근 액션과 데이터 반출 액션을 동시에 과도하게 허용하면 침해 후 수집과 반출이 연쇄적으로 가능해짐",
+      "score": "high",
+      "matched_capability_keys": [
+        "iam_policy_credential_exposure",
+        "iam_policy_data_exfiltration"
+      ],
+      "matched_check_ids": [],
+      "atomic_chain": [
+        "T1552",
+        "T1041"
+      ],
+      "evidence_count": 2,
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_287",
+          "check_name": "Ensure IAM policies does not allow credentials exposure",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_288",
+          "check_name": "Ensure IAM policies does not allow data exfiltration",
+          "resource_address": "aws_iam_policy.ec2_mighty_policy",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+          "file_path": "/iam_mighty.tf",
+          "file_line_range": [
+            21,
+            35
+          ],
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
+        }
+      ]
     }
   ],
   "unmapped_check_ids": []

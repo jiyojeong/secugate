@@ -2,296 +2,1006 @@
   "version": 2,
   "normalize": [
     {
-      "capability_id": "IAM_WILDCARD_POLICY",
-      "capability_key": "iam_policy_admin_or_wildcard",
-      "capability": "IAM 와일드카드/관리자급 권한 남용 우려. 리소스/권한 제한이 충분히 특정되지 않음.",
-      "MITRE_Tactic": "PE",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV_AWS_62", "CKV_AWS_63", "CKV_AWS_355", "CKV2_AWS_40"]
+      "capability_id": "VIS_DEFAULT_SG_NOT_RESTRICTED",
+      "capability_key": "default_sg_not_restricted",
+      "capability": "기본 보안그룹이 제한되지 않음(원격 접근/이상행위 탐지 어려움)",
+      "check_ids": [
+        "CKV2_AWS_12"
+      ],
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
+      "group_type": "specific"
     },
     {
-      "capability_id": "IAM_PE_ROOT_POLICY",
-      "capability_key": "iam_pe_root_policy",
-      "capability": "Root 수준 권한 상승(Privilege Escalation) 가능성이 있는 IAM 정책/구성",
-      "MITRE_Tactic": "PE",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV_AWS_348"]
-    },
-    {
-      "capability_id": "IAM_PE_ADMINISTRATOR_ACCESS",
-      "capability_key": "iam_pe_administratoraccess_policy",
-      "capability": "AdministratorAccess 부여로 권한 상승/계정 장악 가능성 증가",
-      "MITRE_Tactic": "PE",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV_AWS_374"]
-    },
-    {
-      "capability_id": "IAM_PE_POLICY",
-      "capability_key": "iam_policy_privilege_escalation",
-      "capability": "Privilege Escalation 가능성이 있는 IAM Policy 권한 조합 존재",
-      "MITRE_Tactic": "PE",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV_AWS_286"]
-    },
-    {
-      "capability_id": "IAM_TAKEOVER_ACCESS_KEY_FOR_OTHER_USER",
-      "capability_key": "iam_takeover_create_access_key_other_user",
-      "capability": "다른 IAM 사용자에 대한 Access Key 생성 가능(장기 접근/계정 악용 경로)",
-      "MITRE_Tactic": "PR",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV_AWS_110"]
-    },
-    {
-      "capability_id": "IAM_OIDC_TRUST_WEAK_CLAIMS",
-      "capability_key": "iam_oidc_trust_weak_claims",
-      "capability": "GitHub Actions OIDC 신뢰정책의 sub 조건이 과도하게 넓어 Role Assume 가능 범위가 확대됨",
-      "MITRE_Tactic": "PE",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV_AWS_358"]
+      "capability_id": "CMP_EC2_PUBLIC_IP",
+      "capability_key": "ec2_public_ip_exposed",
+      "capability": "EC2 퍼블릭 IP 직접 노출(외부에서 직접 접근 가능)",
+      "check_ids": [
+        "CKV_AWS_88"
+      ],
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
+      "group_type": "specific"
     },
     {
       "capability_id": "IAM_WEAK_PASSWORD_POLICY",
       "capability_key": "iam_weak_password_policy",
       "capability": "취약한 비밀번호 정책으로 계정 탈취 기반 초기 침입 위험 증가",
-      "MITRE_Tactic": "IA",
-      "MITRE_Tactic_Simple": "IA",
-      "check_ids": ["CKV_AWS_13"]
-    },
-    {
-      "capability_id": "IAM_OVER_TRUST_POLICY",
-      "capability_key": "iam_over_trust_policy",
-      "capability": "IAM Role의 Trust Policy가 과도하게 넓어 의도치 않은 주체가 Role Assume 가능",
-      "MITRE_Tactic": "PE",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV_AWS_61"]
-    },
-
-    {
-      "capability_id": "IAM_PERMISSION_MGMT_UNSCOPED",
-      "capability_key": "iam_policy_permission_mgmt_unscoped",
-      "capability": "범위 제한 없는 권한/권한관리 관련 액션 허용(권한 남용/상승 경로)",
-      "MITRE_Tactic": "PE",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV_AWS_289"]
-    },
-    {
-      "capability_id": "IAM_WRITE_UNSCOPED",
-      "capability_key": "iam_policy_write_unscoped",
-      "capability": "범위 제한 없는 쓰기 권한 허용(리소스 변경/정책 변경 악용 가능)",
-      "MITRE_Tactic": "PE",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV_AWS_290"]
-    },
-    {
-      "capability_id": "IAM_USER_PRESENT",
-      "capability_key": "iam_user_present",
-      "capability": "IAM 사용자 기반 장기 접근 경로 존재(키/비밀번호 기반)",
-      "MITRE_Tactic": "PR",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV_AWS_273"]
-    },
-    {
-      "capability_id": "IAM_POLICY_ATTACHED_TO_USER",
-      "capability_key": "iam_policy_attached_to_user",
-      "capability": "사용자 직접 정책 부여로 장기 권한 유지/확장 가능",
-      "MITRE_Tactic": "PR",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV_AWS_40"]
-    },
-
-    {
-      "capability_id": "NET_PUBLIC_SSH",
-      "capability_key": "sg_ingress_ssh_open",
-      "capability": "공개 SSH 인바운드 노출(원격 접근 표면 증가)",
-      "MITRE_Tactic": "IA",
-      "MITRE_Tactic_Simple": "IA",
-      "check_ids": ["CKV_AWS_24"]
+      "check_ids": [
+        "CKV_AWS_13"
+      ],
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
+      "group_type": "specific"
     },
     {
       "capability_id": "NET_PUBLIC_HTTP",
       "capability_key": "sg_ingress_http_open",
       "capability": "공개 HTTP 인바운드 노출(공격 표면 증가)",
-      "MITRE_Tactic": "IA",
-      "MITRE_Tactic_Simple": "IA",
-      "check_ids": ["CKV_AWS_260"]
+      "check_ids": [
+        "CKV_AWS_260"
+      ],
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
+      "group_type": "specific"
     },
     {
-      "capability_id": "NET_EGRESS_ALL_OPEN",
-      "capability_key": "sg_egress_all_open",
-      "capability": "전방위 egress 허용(유출/원격 통신 경로 확대)",
-      "MITRE_Tactic": "EX",
-      "MITRE_Tactic_Simple": "EX",
-      "check_ids": ["CKV_AWS_382"]
-    },
-
-    {
-      "capability_id": "CMP_EC2_PUBLIC_IP",
-      "capability_key": "ec2_public_ip_exposed",
-      "capability": "EC2 퍼블릭 IP 직접 노출(외부에서 직접 접근 가능)",
-      "MITRE_Tactic": "IA",
-      "MITRE_Tactic_Simple": "IA",
-      "check_ids": ["CKV_AWS_88"]
+      "capability_id": "NET_PUBLIC_SSH",
+      "capability_key": "sg_ingress_ssh_open",
+      "capability": "공개 SSH 인바운드 노출(원격 접근 표면 증가)",
+      "check_ids": [
+        "CKV_AWS_24"
+      ],
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
+      "group_type": "specific"
     },
     {
       "capability_id": "CMP_SUBNET_AUTO_PUBLIC_IP",
       "capability_key": "subnet_auto_public_ip",
       "capability": "서브넷 기본 퍼블릭 IP 자동 할당(의도치 않은 노출 가능)",
-      "MITRE_Tactic": "IA",
-      "MITRE_Tactic_Simple": "IA",
-      "check_ids": ["CKV_AWS_130"]
+      "check_ids": [
+        "CKV_AWS_130"
+      ],
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
+      "group_type": "specific"
     },
     {
-      "capability_id": "CMP_IMDSV1_ENABLED",
-      "capability_key": "imdsv1_enabled",
-      "capability": "IMDSv1 활성화(인스턴스 자격증명 탈취 위험 증가)",
-      "MITRE_Tactic": "PE",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV_AWS_79"]
+      "capability_id": "STAGE_INITIAL_ACCESS_FALLBACK",
+      "capability_key": "stage_initial_access_fallback",
+      "capability": "초기 접근/노출 단계 일반 fallback 그룹",
+      "check_ids": [
+        "CKV2_AWS_28",
+        "CKV2_AWS_29",
+        "CKV2_AWS_37",
+        "CKV2_AWS_38",
+        "CKV2_AWS_6",
+        "CKV2_AWS_66",
+        "CKV2_AWS_75",
+        "CKV_AWS_100",
+        "CKV_AWS_102",
+        "CKV_AWS_122",
+        "CKV_AWS_164",
+        "CKV_AWS_167",
+        "CKV_AWS_168",
+        "CKV_AWS_169",
+        "CKV_AWS_17",
+        "CKV_AWS_20",
+        "CKV_AWS_229",
+        "CKV_AWS_23",
+        "CKV_AWS_230",
+        "CKV_AWS_231",
+        "CKV_AWS_232",
+        "CKV_AWS_25",
+        "CKV_AWS_277",
+        "CKV_AWS_301",
+        "CKV_AWS_302",
+        "CKV_AWS_303",
+        "CKV_AWS_32",
+        "CKV_AWS_333",
+        "CKV_AWS_352",
+        "CKV_AWS_38",
+        "CKV_AWS_387",
+        "CKV_AWS_388",
+        "CKV_AWS_389",
+        "CKV_AWS_39",
+        "CKV_AWS_390",
+        "CKV_AWS_391",
+        "CKV_AWS_392",
+        "CKV_AWS_53",
+        "CKV_AWS_54",
+        "CKV_AWS_55",
+        "CKV_AWS_56",
+        "CKV_AWS_57",
+        "CKV_AWS_69",
+        "CKV_AWS_87",
+        "CKV_AWS_89"
+      ],
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
+      "group_type": "fallback"
     },
     {
       "capability_id": "CMP_INSTANCE_PROFILE_MISSING",
       "capability_key": "ec2_instance_profile_missing",
       "capability": "EC2 인스턴스 역할/프로파일 거버넌스 부재(권한 통제/감사 약화)",
-      "MITRE_Tactic": "PR",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV2_AWS_41"]
+      "check_ids": [
+        "CKV2_AWS_41"
+      ],
+      "mitre_tactic": "PR",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
     },
-
+    {
+      "capability_id": "IAM_OIDC_TRUST_WEAK_CLAIMS",
+      "capability_key": "iam_oidc_trust_weak_claims",
+      "capability": "GitHub Actions OIDC 신뢰정책의 sub 조건이 과도하게 넓어 Role Assume 가능 범위가 확대됨",
+      "check_ids": [
+        "CKV_AWS_358"
+      ],
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "IAM_OVER_TRUST_POLICY",
+      "capability_key": "iam_over_trust_policy",
+      "capability": "IAM Role의 Trust Policy가 과도하게 넓어 의도치 않은 주체가 Role Assume 가능",
+      "check_ids": [
+        "CKV_AWS_61"
+      ],
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "IAM_PE_ADMINISTRATOR_ACCESS",
+      "capability_key": "iam_pe_administratoraccess_policy",
+      "capability": "AdministratorAccess 부여로 권한 상승/계정 장악 가능성 증가",
+      "check_ids": [
+        "CKV_AWS_374"
+      ],
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "IAM_PE_ROOT_POLICY",
+      "capability_key": "iam_pe_root_policy",
+      "capability": "Root 수준 권한 상승(Privilege Escalation) 가능성이 있는 IAM 정책/구성",
+      "check_ids": [
+        "CKV_AWS_348"
+      ],
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "IAM_WILDCARD_POLICY",
+      "capability_key": "iam_policy_admin_or_wildcard",
+      "capability": "IAM 와일드카드/관리자급 권한 남용 우려. 리소스/권한 제한이 충분히 특정되지 않음.",
+      "check_ids": [
+        "CKV_AWS_62",
+        "CKV_AWS_63",
+        "CKV_AWS_355",
+        "CKV2_AWS_40"
+      ],
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "IAM_POLICY_ATTACHED_TO_USER",
+      "capability_key": "iam_policy_attached_to_user",
+      "capability": "사용자 직접 정책 부여로 장기 권한 유지/확장 가능",
+      "check_ids": [
+        "CKV_AWS_40"
+      ],
+      "mitre_tactic": "PR",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "IAM_CREDENTIAL_EXPOSURE",
+      "capability_key": "iam_policy_credential_exposure",
+      "capability": "IAM 정책이 자격증명 접근 액션을 과도하게 허용함",
+      "check_ids": [
+        "CKV_AWS_107",
+        "CKV_AWS_287"
+      ],
+      "mitre_tactic": "CA",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "IAM_PERMISSION_MGMT_UNSCOPED",
+      "capability_key": "iam_policy_permission_mgmt_unscoped",
+      "capability": "범위 제한 없는 권한/권한관리 관련 액션 허용(권한 남용/상승 경로)",
+      "check_ids": [
+        "CKV_AWS_289"
+      ],
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "IAM_PE_POLICY",
+      "capability_key": "iam_policy_privilege_escalation",
+      "capability": "Privilege Escalation 가능성이 있는 IAM Policy 권한 조합 존재",
+      "check_ids": [
+        "CKV_AWS_286"
+      ],
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "IAM_WRITE_UNSCOPED",
+      "capability_key": "iam_policy_write_unscoped",
+      "capability": "범위 제한 없는 쓰기 권한 허용(리소스 변경/정책 변경 악용 가능)",
+      "check_ids": [
+        "CKV_AWS_290"
+      ],
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "IAM_TAKEOVER_ACCESS_KEY_FOR_OTHER_USER",
+      "capability_key": "iam_takeover_create_access_key_other_user",
+      "capability": "다른 IAM 사용자에 대한 Access Key 생성 가능(장기 접근/계정 악용 경로)",
+      "check_ids": [
+        "CKV_AWS_110"
+      ],
+      "mitre_tactic": "PR",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "IAM_USER_PRESENT",
+      "capability_key": "iam_user_present",
+      "capability": "IAM 사용자 기반 장기 접근 경로 존재(키/비밀번호 기반)",
+      "check_ids": [
+        "CKV_AWS_273"
+      ],
+      "mitre_tactic": "PR",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "CMP_IMDSV1_ENABLED",
+      "capability_key": "imdsv1_enabled",
+      "capability": "IMDSv1 활성화(인스턴스 자격증명 탈취 위험 증가)",
+      "check_ids": [
+        "CKV_AWS_79"
+      ],
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "STAGE_PRIVILEGE_OR_CREDENTIAL_EXPANSION_FALLBACK",
+      "capability_key": "stage_privilege_or_credential_expansion_fallback",
+      "capability": "권한·자격 확장 단계 일반 fallback 그룹",
+      "check_ids": [
+        "CKV2_AWS_15",
+        "CKV2_AWS_19",
+        "CKV2_AWS_36",
+        "CKV2_AWS_44",
+        "CKV2_AWS_5",
+        "CKV2_AWS_56",
+        "CKV2_AWS_57",
+        "CKV2_AWS_64",
+        "CKV2_AWS_68",
+        "CKV2_AWS_7",
+        "CKV2_AWS_71",
+        "CKV_AWS_10",
+        "CKV_AWS_109",
+        "CKV_AWS_11",
+        "CKV_AWS_12",
+        "CKV_AWS_14",
+        "CKV_AWS_149",
+        "CKV_AWS_15",
+        "CKV_AWS_175",
+        "CKV_AWS_195",
+        "CKV_AWS_248",
+        "CKV_AWS_274",
+        "CKV_AWS_275",
+        "CKV_AWS_295",
+        "CKV_AWS_304",
+        "CKV_AWS_31",
+        "CKV_AWS_33",
+        "CKV_AWS_371",
+        "CKV_AWS_381",
+        "CKV_AWS_383",
+        "CKV_AWS_41",
+        "CKV_AWS_45",
+        "CKV_AWS_46",
+        "CKV_AWS_58",
+        "CKV_AWS_9"
+      ],
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "group_type": "fallback"
+    },
     {
       "capability_id": "VIS_VPC_FLOW_LOGS_DISABLED",
       "capability_key": "vpc_flow_logs_disabled",
       "capability": "VPC Flow Logs 미설정(네트워크 가시성/탐지 공백)",
-      "MITRE_Tactic": "DE",
-      "MITRE_Tactic_Simple": "PE",
-      "check_ids": ["CKV2_AWS_11"]
+      "check_ids": [
+        "CKV2_AWS_11"
+      ],
+      "mitre_tactic": "DE",
+      "stage": "execution_or_visibility_control",
+      "group_type": "specific"
     },
     {
-      "capability_id": "VIS_DEFAULT_SG_NOT_RESTRICTED",
-      "capability_key": "default_sg_not_restricted",
-      "capability": "기본 보안그룹이 제한되지 않음(원격 접근/이상행위 탐지 어려움)",
-      "MITRE_Tactic": "IA",
-      "MITRE_Tactic_Simple": "IA",
-      "check_ids": ["CKV2_AWS_12"]
+      "capability_id": "STAGE_EXECUTION_OR_VISIBILITY_CONTROL_FALLBACK",
+      "capability_key": "stage_execution_or_visibility_control_fallback",
+      "capability": "실행·탐지우회 단계 일반 fallback 그룹",
+      "check_ids": [
+        "CKV2_AWS_1",
+        "CKV2_AWS_10",
+        "CKV2_AWS_14",
+        "CKV2_AWS_16",
+        "CKV2_AWS_2",
+        "CKV2_AWS_20",
+        "CKV2_AWS_21",
+        "CKV2_AWS_22",
+        "CKV2_AWS_23",
+        "CKV2_AWS_27",
+        "CKV2_AWS_3",
+        "CKV2_AWS_30",
+        "CKV2_AWS_31",
+        "CKV2_AWS_32",
+        "CKV2_AWS_33",
+        "CKV2_AWS_34",
+        "CKV2_AWS_35",
+        "CKV2_AWS_39",
+        "CKV2_AWS_4",
+        "CKV2_AWS_42",
+        "CKV2_AWS_43",
+        "CKV2_AWS_45",
+        "CKV2_AWS_46",
+        "CKV2_AWS_47",
+        "CKV2_AWS_48",
+        "CKV2_AWS_49",
+        "CKV2_AWS_51",
+        "CKV2_AWS_52",
+        "CKV2_AWS_53",
+        "CKV2_AWS_54",
+        "CKV2_AWS_55",
+        "CKV2_AWS_59",
+        "CKV2_AWS_62",
+        "CKV2_AWS_63",
+        "CKV2_AWS_65",
+        "CKV2_AWS_69",
+        "CKV2_AWS_70",
+        "CKV2_AWS_72",
+        "CKV2_AWS_73",
+        "CKV2_AWS_74",
+        "CKV2_AWS_76",
+        "CKV2_AWS_77",
+        "CKV2_AWS_78",
+        "CKV_AWS_101",
+        "CKV_AWS_103",
+        "CKV_AWS_104",
+        "CKV_AWS_105",
+        "CKV_AWS_106",
+        "CKV_AWS_111",
+        "CKV_AWS_112",
+        "CKV_AWS_113",
+        "CKV_AWS_114",
+        "CKV_AWS_115",
+        "CKV_AWS_116",
+        "CKV_AWS_117",
+        "CKV_AWS_118",
+        "CKV_AWS_119",
+        "CKV_AWS_120",
+        "CKV_AWS_121",
+        "CKV_AWS_123",
+        "CKV_AWS_124",
+        "CKV_AWS_126",
+        "CKV_AWS_127",
+        "CKV_AWS_129",
+        "CKV_AWS_131",
+        "CKV_AWS_135",
+        "CKV_AWS_136",
+        "CKV_AWS_137",
+        "CKV_AWS_138",
+        "CKV_AWS_140",
+        "CKV_AWS_141",
+        "CKV_AWS_142",
+        "CKV_AWS_143",
+        "CKV_AWS_145",
+        "CKV_AWS_146",
+        "CKV_AWS_147",
+        "CKV_AWS_148",
+        "CKV_AWS_152",
+        "CKV_AWS_153",
+        "CKV_AWS_154",
+        "CKV_AWS_155",
+        "CKV_AWS_156",
+        "CKV_AWS_158",
+        "CKV_AWS_159",
+        "CKV_AWS_16",
+        "CKV_AWS_160",
+        "CKV_AWS_161",
+        "CKV_AWS_162",
+        "CKV_AWS_163",
+        "CKV_AWS_170",
+        "CKV_AWS_171",
+        "CKV_AWS_173",
+        "CKV_AWS_174",
+        "CKV_AWS_176",
+        "CKV_AWS_177",
+        "CKV_AWS_178",
+        "CKV_AWS_179",
+        "CKV_AWS_18",
+        "CKV_AWS_180",
+        "CKV_AWS_182",
+        "CKV_AWS_184",
+        "CKV_AWS_185",
+        "CKV_AWS_186",
+        "CKV_AWS_187",
+        "CKV_AWS_189",
+        "CKV_AWS_19",
+        "CKV_AWS_190",
+        "CKV_AWS_192",
+        "CKV_AWS_193",
+        "CKV_AWS_194",
+        "CKV_AWS_196",
+        "CKV_AWS_197",
+        "CKV_AWS_198",
+        "CKV_AWS_199",
+        "CKV_AWS_2",
+        "CKV_AWS_200",
+        "CKV_AWS_201",
+        "CKV_AWS_202",
+        "CKV_AWS_203",
+        "CKV_AWS_204",
+        "CKV_AWS_205",
+        "CKV_AWS_206",
+        "CKV_AWS_207",
+        "CKV_AWS_208",
+        "CKV_AWS_209",
+        "CKV_AWS_210",
+        "CKV_AWS_211",
+        "CKV_AWS_213",
+        "CKV_AWS_214",
+        "CKV_AWS_215",
+        "CKV_AWS_216",
+        "CKV_AWS_217",
+        "CKV_AWS_218",
+        "CKV_AWS_219",
+        "CKV_AWS_22",
+        "CKV_AWS_220",
+        "CKV_AWS_221",
+        "CKV_AWS_223",
+        "CKV_AWS_224",
+        "CKV_AWS_225",
+        "CKV_AWS_226",
+        "CKV_AWS_227",
+        "CKV_AWS_228",
+        "CKV_AWS_233",
+        "CKV_AWS_234",
+        "CKV_AWS_237",
+        "CKV_AWS_238",
+        "CKV_AWS_239",
+        "CKV_AWS_240",
+        "CKV_AWS_241",
+        "CKV_AWS_242",
+        "CKV_AWS_243",
+        "CKV_AWS_244",
+        "CKV_AWS_246",
+        "CKV_AWS_247",
+        "CKV_AWS_249",
+        "CKV_AWS_250",
+        "CKV_AWS_251",
+        "CKV_AWS_252",
+        "CKV_AWS_257",
+        "CKV_AWS_258",
+        "CKV_AWS_259",
+        "CKV_AWS_26",
+        "CKV_AWS_261",
+        "CKV_AWS_262",
+        "CKV_AWS_263",
+        "CKV_AWS_264",
+        "CKV_AWS_265",
+        "CKV_AWS_267",
+        "CKV_AWS_268",
+        "CKV_AWS_269",
+        "CKV_AWS_27",
+        "CKV_AWS_270",
+        "CKV_AWS_271",
+        "CKV_AWS_272",
+        "CKV_AWS_276",
+        "CKV_AWS_278",
+        "CKV_AWS_279",
+        "CKV_AWS_280",
+        "CKV_AWS_282",
+        "CKV_AWS_283",
+        "CKV_AWS_284",
+        "CKV_AWS_285",
+        "CKV_AWS_291",
+        "CKV_AWS_292",
+        "CKV_AWS_294",
+        "CKV_AWS_296",
+        "CKV_AWS_297",
+        "CKV_AWS_298",
+        "CKV_AWS_3",
+        "CKV_AWS_305",
+        "CKV_AWS_306",
+        "CKV_AWS_307",
+        "CKV_AWS_308",
+        "CKV_AWS_309",
+        "CKV_AWS_310",
+        "CKV_AWS_311",
+        "CKV_AWS_312",
+        "CKV_AWS_314",
+        "CKV_AWS_315",
+        "CKV_AWS_316",
+        "CKV_AWS_317",
+        "CKV_AWS_318",
+        "CKV_AWS_319",
+        "CKV_AWS_320",
+        "CKV_AWS_321",
+        "CKV_AWS_322",
+        "CKV_AWS_323",
+        "CKV_AWS_324",
+        "CKV_AWS_325",
+        "CKV_AWS_326",
+        "CKV_AWS_327",
+        "CKV_AWS_328",
+        "CKV_AWS_329",
+        "CKV_AWS_330",
+        "CKV_AWS_331",
+        "CKV_AWS_332",
+        "CKV_AWS_334",
+        "CKV_AWS_335",
+        "CKV_AWS_336",
+        "CKV_AWS_337",
+        "CKV_AWS_338",
+        "CKV_AWS_339",
+        "CKV_AWS_34",
+        "CKV_AWS_340",
+        "CKV_AWS_341",
+        "CKV_AWS_342",
+        "CKV_AWS_343",
+        "CKV_AWS_345",
+        "CKV_AWS_346",
+        "CKV_AWS_347",
+        "CKV_AWS_349",
+        "CKV_AWS_35",
+        "CKV_AWS_350",
+        "CKV_AWS_351",
+        "CKV_AWS_353",
+        "CKV_AWS_354",
+        "CKV_AWS_356",
+        "CKV_AWS_357",
+        "CKV_AWS_359",
+        "CKV_AWS_36",
+        "CKV_AWS_363",
+        "CKV_AWS_364",
+        "CKV_AWS_365",
+        "CKV_AWS_366",
+        "CKV_AWS_367",
+        "CKV_AWS_368",
+        "CKV_AWS_369",
+        "CKV_AWS_37",
+        "CKV_AWS_370",
+        "CKV_AWS_372",
+        "CKV_AWS_373",
+        "CKV_AWS_375",
+        "CKV_AWS_376",
+        "CKV_AWS_377",
+        "CKV_AWS_378",
+        "CKV_AWS_379",
+        "CKV_AWS_380",
+        "CKV_AWS_386",
+        "CKV_AWS_42",
+        "CKV_AWS_43",
+        "CKV_AWS_44",
+        "CKV_AWS_47",
+        "CKV_AWS_48",
+        "CKV_AWS_49",
+        "CKV_AWS_5",
+        "CKV_AWS_50",
+        "CKV_AWS_51",
+        "CKV_AWS_59",
+        "CKV_AWS_6",
+        "CKV_AWS_60",
+        "CKV_AWS_64",
+        "CKV_AWS_65",
+        "CKV_AWS_66",
+        "CKV_AWS_67",
+        "CKV_AWS_68",
+        "CKV_AWS_7",
+        "CKV_AWS_70",
+        "CKV_AWS_71",
+        "CKV_AWS_72",
+        "CKV_AWS_73",
+        "CKV_AWS_74",
+        "CKV_AWS_75",
+        "CKV_AWS_76",
+        "CKV_AWS_77",
+        "CKV_AWS_78",
+        "CKV_AWS_8",
+        "CKV_AWS_80",
+        "CKV_AWS_81",
+        "CKV_AWS_82",
+        "CKV_AWS_83",
+        "CKV_AWS_84",
+        "CKV_AWS_85",
+        "CKV_AWS_86",
+        "CKV_AWS_90",
+        "CKV_AWS_91",
+        "CKV_AWS_92",
+        "CKV_AWS_93",
+        "CKV_AWS_94",
+        "CKV_AWS_96",
+        "CKV_AWS_97",
+        "CKV_AWS_98",
+        "CKV_AWS_99"
+      ],
+      "mitre_tactic": "DE",
+      "stage": "execution_or_visibility_control",
+      "group_type": "fallback"
+    },
+    {
+      "capability_id": "IAM_DATA_EXFILTRATION",
+      "capability_key": "iam_policy_data_exfiltration",
+      "capability": "IAM 정책이 데이터 반출 액션을 과도하게 허용함",
+      "check_ids": [
+        "CKV_AWS_108",
+        "CKV_AWS_288"
+      ],
+      "mitre_tactic": "EX",
+      "stage": "impact_or_exfiltration",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "NET_EGRESS_ALL_OPEN",
+      "capability_key": "sg_egress_all_open",
+      "capability": "전방위 egress 허용(유출/원격 통신 경로 확대)",
+      "check_ids": [
+        "CKV_AWS_382"
+      ],
+      "mitre_tactic": "EX",
+      "stage": "impact_or_exfiltration",
+      "group_type": "specific"
+    },
+    {
+      "capability_id": "STAGE_IMPACT_OR_EXFILTRATION_FALLBACK",
+      "capability_key": "stage_impact_or_exfiltration_fallback",
+      "capability": "영향·유출 단계 일반 fallback 그룹",
+      "check_ids": [
+        "CKV2_AWS_18",
+        "CKV2_AWS_50",
+        "CKV2_AWS_58",
+        "CKV2_AWS_60",
+        "CKV2_AWS_61",
+        "CKV2_AWS_8",
+        "CKV2_AWS_9",
+        "CKV_AWS_133",
+        "CKV_AWS_134",
+        "CKV_AWS_139",
+        "CKV_AWS_144",
+        "CKV_AWS_150",
+        "CKV_AWS_157",
+        "CKV_AWS_165",
+        "CKV_AWS_166",
+        "CKV_AWS_172",
+        "CKV_AWS_181",
+        "CKV_AWS_183",
+        "CKV_AWS_191",
+        "CKV_AWS_21",
+        "CKV_AWS_212",
+        "CKV_AWS_222",
+        "CKV_AWS_235",
+        "CKV_AWS_236",
+        "CKV_AWS_245",
+        "CKV_AWS_253",
+        "CKV_AWS_254",
+        "CKV_AWS_255",
+        "CKV_AWS_256",
+        "CKV_AWS_266",
+        "CKV_AWS_28",
+        "CKV_AWS_281",
+        "CKV_AWS_29",
+        "CKV_AWS_293",
+        "CKV_AWS_30",
+        "CKV_AWS_300",
+        "CKV_AWS_313",
+        "CKV_AWS_344",
+        "CKV_AWS_360",
+        "CKV_AWS_361",
+        "CKV_AWS_362",
+        "CKV_AWS_385"
+      ],
+      "mitre_tactic": "EX",
+      "stage": "impact_or_exfiltration",
+      "group_type": "fallback"
     }
   ],
-
   "atomic_mappings": [
     {
       "capability_key": "iam_policy_admin_or_wildcard",
-      "atomic_ids": ["T1098.003", "T1078.004"],
+      "atomic_ids": [
+        "T1098.003",
+        "T1078.004"
+      ],
       "name": "IAM 관리자급/와일드카드 정책 악용",
       "confidence": "high"
     },
     {
       "capability_key": "iam_policy_privilege_escalation",
-      "atomic_ids": ["T1098.003"],
+      "atomic_ids": [
+        "T1098.003"
+      ],
       "name": "IAM 정책 기반 권한 상승 경로",
       "confidence": "high"
     },
     {
       "capability_key": "iam_policy_credential_exposure",
-      "atomic_ids": ["T1552"],
+      "atomic_ids": [
+        "T1552"
+      ],
       "name": "IAM 정책으로 인한 자격증명 노출 위험",
       "confidence": "medium"
     },
     {
       "capability_key": "iam_policy_data_exfiltration",
-      "atomic_ids": ["T1041"],
+      "atomic_ids": [
+        "T1041"
+      ],
       "name": "IAM 정책 기반 데이터 유출 허용",
       "confidence": "high"
     },
     {
       "capability_key": "iam_policy_permission_mgmt_unscoped",
-      "atomic_ids": ["T1098.003"],
+      "atomic_ids": [
+        "T1098.003"
+      ],
       "name": "범위 제한 없는 권한 관리 허용",
       "confidence": "medium"
     },
     {
       "capability_key": "iam_policy_write_unscoped",
-      "atomic_ids": ["T1098.003"],
+      "atomic_ids": [
+        "T1098.003"
+      ],
       "name": "범위 제한 없는 쓰기 권한 허용",
       "confidence": "medium"
     },
     {
       "capability_key": "iam_user_present",
-      "atomic_ids": ["T1078.004"],
+      "atomic_ids": [
+        "T1078.004"
+      ],
       "name": "IAM 사용자 기반 장기 접근 경로",
       "confidence": "high"
     },
     {
       "capability_key": "iam_policy_attached_to_user",
-      "atomic_ids": ["T1078.004"],
+      "atomic_ids": [
+        "T1078.004"
+      ],
       "name": "사용자 직접 정책 부여에 의한 지속성",
       "confidence": "high"
     },
     {
       "capability_key": "sg_ingress_ssh_open",
-      "atomic_ids": ["T1190"],
+      "atomic_ids": [
+        "T1190"
+      ],
       "name": "공개 SSH 인바운드 노출",
       "confidence": "high"
     },
     {
       "capability_key": "sg_egress_all_open",
-      "atomic_ids": ["T1041"],
+      "atomic_ids": [
+        "T1041"
+      ],
       "name": "전방위 egress 허용으로 인한 유출 경로",
       "confidence": "high"
     },
     {
       "capability_key": "imdsv1_enabled",
-      "atomic_ids": ["T1552"],
+      "atomic_ids": [
+        "T1552"
+      ],
       "name": "IMDSv1 활성화로 인한 자격증명 수집 위험",
       "confidence": "high"
     },
     {
       "capability_key": "vpc_flow_logs_disabled",
-      "atomic_ids": ["T1046"],
+      "atomic_ids": [
+        "T1046"
+      ],
       "name": "VPC 플로우 로그 미설정에 따른 정찰 탐지 공백",
       "confidence": "low"
     },
     {
       "capability_key": "default_sg_not_restricted",
-      "atomic_ids": ["T1021"],
+      "atomic_ids": [
+        "T1021"
+      ],
       "name": "기본 보안그룹 개방으로 인한 원격 접근 위험",
+      "confidence": "medium"
+    },
+    {
+      "capability_key": "sg_ingress_http_open",
+      "atomic_ids": [
+        "T1190"
+      ],
+      "name": "공개 HTTP 인바운드 노출",
+      "confidence": "high"
+    },
+    {
+      "capability_key": "ec2_public_ip_exposed",
+      "atomic_ids": [
+        "T1190"
+      ],
+      "name": "EC2 퍼블릭 IP 직접 노출",
+      "confidence": "medium"
+    },
+    {
+      "capability_key": "subnet_auto_public_ip",
+      "atomic_ids": [
+        "T1190"
+      ],
+      "name": "서브넷 자동 퍼블릭 IP 할당으로 인한 노출",
+      "confidence": "medium"
+    },
+    {
+      "capability_key": "iam_pe_administratoraccess_policy",
+      "atomic_ids": [
+        "T1098.003"
+      ],
+      "name": "AdministratorAccess 부여 기반 권한 상승",
+      "confidence": "high"
+    },
+    {
+      "capability_key": "iam_pe_root_policy",
+      "atomic_ids": [
+        "T1098.003"
+      ],
+      "name": "루트 수준 정책 기반 권한 상승",
+      "confidence": "medium"
+    },
+    {
+      "capability_key": "iam_takeover_create_access_key_other_user",
+      "atomic_ids": [
+        "T1098.001"
+      ],
+      "name": "다른 IAM 사용자 액세스 키 생성",
+      "confidence": "high"
+    },
+    {
+      "capability_key": "iam_oidc_trust_weak_claims",
+      "atomic_ids": [
+        "T1550.001"
+      ],
+      "name": "OIDC 신뢰정책 약화로 인한 토큰 악용 가능성",
+      "confidence": "medium"
+    },
+    {
+      "capability_key": "iam_over_trust_policy",
+      "atomic_ids": [
+        "T1550.001"
+      ],
+      "name": "과도한 Trust Policy로 인한 역할 악용 가능성",
       "confidence": "medium"
     }
   ],
-
   "scenarios": [
     {
       "id": "aws_initial_access_to_iam_abuse",
       "title": "공개 SSH 노출 후 IAM 권한 악용",
       "description": "공개 SSH 인바운드 노출 자산에 대한 초기 접근 이후, 관리자급/와일드카드 IAM 권한을 악용해 권한 상승 또는 지속성을 확보할 수 있음",
-      "requires_capabilities": ["sg_ingress_ssh_open", "iam_policy_admin_or_wildcard"],
-      "atomic_chain": ["T1190", "T1098.003"],
+      "atomic_chain": [
+        "T1190",
+        "T1098.003"
+      ],
       "score": "high",
-      "logic": "If an internet-exposed entry point (public SSH) exists AND privileged IAM permissions (admin/wildcard) are present on the same asset or its role, generate an IA→PE scenario."
+      "logic": "If an internet-exposed entry point (public SSH) exists AND privileged IAM permissions (admin/wildcard) are present on the same asset or its role, generate an IA→PE scenario.",
+      "requires_capability_keys": [
+        "sg_ingress_ssh_open",
+        "iam_policy_admin_or_wildcard"
+      ]
     },
     {
       "id": "aws_credential_collection_and_exfiltration",
       "title": "IMDS 자격증명 수집 후 외부 유출",
       "description": "IMDSv1 활성화로 자격증명 수집이 쉬워지고, 전방위 egress 허용이 결합되면 외부 반출 위험이 증가함",
-      "requires_capabilities": ["imdsv1_enabled", "sg_egress_all_open"],
-      "atomic_chain": ["T1552", "T1041"],
+      "atomic_chain": [
+        "T1552",
+        "T1041"
+      ],
       "score": "high",
-      "logic": "If credentials can be harvested via IMDSv1 AND outbound traffic is unrestricted, generate a credential-collection→exfiltration scenario."
+      "logic": "If credentials can be harvested via IMDSv1 AND outbound traffic is unrestricted, generate a credential-collection→exfiltration scenario.",
+      "requires_capability_keys": [
+        "imdsv1_enabled",
+        "sg_egress_all_open"
+      ]
     },
     {
       "id": "aws_identity_persistence_via_iam_user",
       "title": "IAM 사용자 직접 정책 기반 지속성",
       "description": "IAM 사용자 존재 + 사용자 직접 정책 부여 + 권한상승 가능 정책이 결합되면 장기 자격증명 기반 지속성이 강화됨",
-      "requires_capabilities": ["iam_user_present", "iam_policy_attached_to_user", "iam_policy_privilege_escalation"],
-      "atomic_chain": ["T1078.004", "T1098.003"],
+      "atomic_chain": [
+        "T1078.004",
+        "T1098.003"
+      ],
       "score": "high",
-      "logic": "If long-lived IAM users exist AND policies are directly attached to users AND escalation paths exist, generate a persistence scenario."
+      "logic": "If long-lived IAM users exist AND policies are directly attached to users AND escalation paths exist, generate a persistence scenario.",
+      "requires_capability_keys": [
+        "iam_user_present",
+        "iam_policy_attached_to_user",
+        "iam_policy_privilege_escalation"
+      ]
     },
     {
       "id": "aws_visibility_gap_and_remote_access_risk",
       "title": "가시성 공백과 기본 SG 원격 접근 위험",
       "description": "VPC Flow Logs가 없고 기본 SG가 제한되지 않으면 원격 접근 시도 및 네트워크 활동에 대한 탐지/분석 공백이 커짐",
-      "requires_capabilities": ["vpc_flow_logs_disabled", "default_sg_not_restricted"],
-      "atomic_chain": ["T1046", "T1021"],
+      "atomic_chain": [
+        "T1046",
+        "T1021"
+      ],
       "score": "medium",
-      "logic": "If network visibility (flow logs) is absent AND default security group is permissive, raise the risk of undetected remote access and discovery activity."
+      "logic": "If network visibility (flow logs) is absent AND default security group is permissive, raise the risk of undetected remote access and discovery activity.",
+      "requires_capability_keys": [
+        "vpc_flow_logs_disabled",
+        "default_sg_not_restricted"
+      ]
+    },
+    {
+      "id": "aws_public_web_to_data_egress",
+      "title": "공개 HTTP 노출 후 외부 데이터 반출",
+      "description": "공개 HTTP 인바운드와 전방위 egress 허용이 결합되면 초기 침입 후 외부 반출 경로가 성립함",
+      "atomic_chain": [
+        "T1190",
+        "T1041"
+      ],
+      "score": "high",
+      "logic": "If a public HTTP entry point exists AND outbound traffic is unrestricted, generate an initial-access-to-exfiltration scenario.",
+      "requires_capability_keys": [
+        "sg_ingress_http_open",
+        "sg_egress_all_open"
+      ]
+    },
+    {
+      "id": "aws_public_instance_imds_credential_access",
+      "title": "퍼블릭 인스턴스 노출 후 IMDS 자격증명 수집",
+      "description": "퍼블릭 IP가 노출된 EC2 인스턴스에서 IMDSv1이 활성화되어 있으면 초기 접근 이후 자격증명 수집 위험이 커짐",
+      "atomic_chain": [
+        "T1190",
+        "T1552"
+      ],
+      "score": "high",
+      "logic": "If an EC2 instance is publicly reachable AND IMDSv1 is enabled, generate an initial-access-to-credential-access scenario.",
+      "requires_capability_keys": [
+        "ec2_public_ip_exposed",
+        "imdsv1_enabled"
+      ]
+    },
+    {
+      "id": "aws_iam_credential_access_and_exfiltration",
+      "title": "IAM 과권한으로 인한 자격증명 접근 및 데이터 반출",
+      "description": "IAM 정책이 자격증명 접근 액션과 데이터 반출 액션을 동시에 과도하게 허용하면 침해 후 수집과 반출이 연쇄적으로 가능해짐",
+      "atomic_chain": [
+        "T1552",
+        "T1041"
+      ],
+      "score": "high",
+      "logic": "If IAM policy allows credential access actions AND data exfiltration actions, generate a credential-access-to-exfiltration scenario.",
+      "requires_capability_keys": [
+        "iam_policy_credential_exposure",
+        "iam_policy_data_exfiltration"
+      ]
     }
   ]
 }

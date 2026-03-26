@@ -29,6 +29,13 @@ VECTOR_STAGE_RANK: dict[str, int] = {
     "data_protection_and_encryption_posture": 2,
 }
 
+STAGE_RANK: dict[str, int] = {
+    "initial_access": 0,
+    "privilege_or_credential_expansion": 1,
+    "execution_or_visibility_control": 2,
+    "impact_or_exfiltration": 3,
+}
+
 STAGE_LABELS: dict[int, str] = {
     0: "initial_access",
     1: "privilege_or_credential_expansion",
@@ -226,6 +233,49 @@ def _load_checkov_vector_index(path: Path) -> dict[str, str]:
     return out
 
 
+def _load_attack_stage_index(path: Path) -> dict[str, str]:
+    if not path.is_file():
+        return {}
+    data = _load_json(path)
+    normalize = data.get("normalize", [])
+    if not isinstance(normalize, list):
+        return {}
+
+    out: dict[str, str] = {}
+    for item in normalize:
+        if not isinstance(item, dict):
+            continue
+        stage = item.get("stage")
+        if not isinstance(stage, str) or not stage.strip():
+            continue
+        check_ids = item.get("check_ids", [])
+        if not isinstance(check_ids, list):
+            continue
+        for check_id in check_ids:
+            if isinstance(check_id, str) and check_id.strip():
+                out[check_id] = stage.strip()
+    return out
+
+
+def _load_check_stage_index(attack_mapping_path: Path, fallback_catalog_path: Path) -> dict[str, int]:
+    out: dict[str, int] = {}
+
+    for check_id, stage in _load_attack_stage_index(attack_mapping_path).items():
+        rank = STAGE_RANK.get(stage)
+        if rank is not None:
+            out[check_id] = rank
+
+    # attack_mapping에 없는 check_id만 기존 catalog vector로 보완
+    for check_id, vector in _load_checkov_vector_index(fallback_catalog_path).items():
+        if check_id in out:
+            continue
+        rank = VECTOR_STAGE_RANK.get(vector)
+        if rank is not None:
+            out[check_id] = rank
+
+    return out
+
+
 def _load_checkov_korean_index(labels_path: Path, fallback_path: Path) -> dict[str, str]:
     # 우선 별도 매핑 파일(check_id -> label_ko)을 읽고, 없으면 기존 why_fails에서 fallback
     if labels_path.is_file():
@@ -267,6 +317,86 @@ def _load_checkov_korean_index(labels_path: Path, fallback_path: Path) -> dict[s
     return out
 
 
+def _load_checkov_fail_index(path: Path) -> dict[str, dict[str, str]]:
+    if not path.is_file():
+        return {}
+    data = _load_json(path)
+    checks = data.get("checks", [])
+    if not isinstance(checks, list):
+        return {}
+
+    out: dict[str, dict[str, str]] = {}
+    for item in checks:
+        if not isinstance(item, dict):
+            continue
+        check_id = item.get("check_id")
+        if not isinstance(check_id, str) or not check_id.strip():
+            continue
+
+        meta: dict[str, str] = {}
+        severity = item.get("Severity")
+        if isinstance(severity, str) and severity.strip():
+            meta["severity"] = severity.strip()
+
+        examples = item.get("examples", [])
+        if isinstance(examples, list):
+            for ex in examples:
+                if not isinstance(ex, dict):
+                    continue
+                why_fails = ex.get("why_fails")
+                mitigation = ex.get("mitigation")
+                if isinstance(why_fails, str) and why_fails.strip():
+                    meta["why_fails"] = why_fails.strip()
+                if isinstance(mitigation, str) and mitigation.strip():
+                    meta["mitigation"] = mitigation.strip()
+                if meta.get("why_fails") and meta.get("mitigation"):
+                    break
+
+        if meta:
+            out[check_id] = meta
+    return out
+
+
+def _load_attack_meta_index(path: Path) -> dict[str, dict[str, Any]]:
+    if not path.is_file():
+        return {}
+    data = _load_json(path)
+
+    atomic_by_key: dict[str, list[str]] = {}
+    for item in data.get("atomic_mappings", []):
+        if not isinstance(item, dict):
+            continue
+        capability_key = item.get("capability_key")
+        if not isinstance(capability_key, str) or not capability_key.strip():
+            continue
+        atomic_ids = [
+            str(atomic_id).strip()
+            for atomic_id in (item.get("atomic_ids") or [])
+            if str(atomic_id).strip()
+        ]
+        atomic_by_key[capability_key] = atomic_ids
+
+    out: dict[str, dict[str, Any]] = {}
+    for item in data.get("normalize", []):
+        if not isinstance(item, dict):
+            continue
+        capability_key = item.get("capability_key")
+        if not isinstance(capability_key, str) or not capability_key.strip():
+            continue
+        meta = {
+            "capability_key": capability_key.strip(),
+            "capability_id": str(item.get("capability_id", "")).strip() or None,
+            "capability": str(item.get("capability", "")).strip() or None,
+            "mitre_tactic": str(item.get("mitre_tactic", "")).strip() or None,
+            "stage": str(item.get("stage", "")).strip() or None,
+            "atomic_ids": atomic_by_key.get(capability_key.strip(), []),
+        }
+        for check_id in item.get("check_ids", []) or []:
+            if isinstance(check_id, str) and check_id.strip():
+                out[check_id.strip()] = meta
+    return out
+
+
 def _resource_type(node_id: str) -> str:
     return node_id.split(".", 1)[0] if "." in node_id else node_id
 
@@ -287,7 +417,7 @@ def _is_path_runtime_valid(path_nodes: list[str]) -> tuple[bool, str | None]:
 def _stage_sequence_from_path(
     path_nodes: list[str],
     node_findings: list[dict[str, Any]],
-    check_to_vector: dict[str, str],
+    check_to_stage_rank: dict[str, int],
 ) -> list[int]:
     # 경로 노드 순서대로 체크 벡터를 단계(rank) 시퀀스로 변환
     findings_by_node = {
@@ -303,10 +433,7 @@ def _stage_sequence_from_path(
             cid = f.get("check_id")
             if not isinstance(cid, str):
                 continue
-            vector = check_to_vector.get(cid)
-            if not vector:
-                continue
-            rank = VECTOR_STAGE_RANK.get(vector)
+            rank = check_to_stage_rank.get(cid)
             if rank is None:
                 continue
             node_ranks.append(rank)
@@ -324,7 +451,7 @@ def _stage_sequence_from_path(
 def _select_path_orientation(
     path_nodes: list[str],
     node_findings: list[dict[str, Any]],
-    check_to_vector: dict[str, str],
+    check_to_stage_rank: dict[str, int],
 ) -> tuple[list[str], list[int], str | None]:
     candidates = [
         ("forward", path_nodes),
@@ -337,7 +464,7 @@ def _select_path_orientation(
 
     for direction, candidate_nodes in candidates:
         stage_seq = _stage_sequence_from_path(
-            candidate_nodes, node_findings, check_to_vector
+            candidate_nodes, node_findings, check_to_stage_rank
         )
         if not stage_seq:
             continue
@@ -353,8 +480,10 @@ def _select_path_orientation(
 def _build_stage_details(
     path_nodes: list[str],
     node_findings: list[dict[str, Any]],
-    check_to_vector: dict[str, str],
+    check_to_stage_rank: dict[str, int],
     check_to_korean: dict[str, str],
+    check_to_fail_meta: dict[str, dict[str, str]],
+    check_to_attack_meta: dict[str, dict[str, Any]],
 ) -> list[dict[str, Any]]:
     details: list[dict[str, Any]] = []
     findings_by_node = {
@@ -373,10 +502,7 @@ def _build_stage_details(
             cid = f.get("check_id")
             if not isinstance(cid, str):
                 continue
-            vector = check_to_vector.get(cid)
-            if not vector:
-                continue
-            rank = VECTOR_STAGE_RANK.get(vector)
+            rank = check_to_stage_rank.get(cid)
             if rank is None:
                 continue
             stage_to_checks.setdefault(rank, set()).add(cid)
@@ -393,6 +519,25 @@ def _build_stage_details(
                         "check_id": cid,
                         "check_name": f.get("check_name"),
                         "check_name_ko": check_to_korean.get(cid),
+                        "severity": (
+                            (check_to_fail_meta.get(cid) or {}).get("severity")
+                            or f.get("severity")
+                        ),
+                        "why_fails": (check_to_fail_meta.get(cid) or {}).get(
+                            "why_fails"
+                        ),
+                        "mitigation": (check_to_fail_meta.get(cid) or {}).get(
+                            "mitigation"
+                        ),
+                        "mitre_tactic": (check_to_attack_meta.get(cid) or {}).get(
+                            "mitre_tactic"
+                        ),
+                        "atomic_ids": (check_to_attack_meta.get(cid) or {}).get(
+                            "atomic_ids", []
+                        ),
+                        "capability_key": (check_to_attack_meta.get(cid) or {}).get(
+                            "capability_key"
+                        ),
                         "resource_address": f.get("resource_address")
                         or f.get("resource"),
                         "file_abs_path": f.get("file_abs_path"),
@@ -441,6 +586,12 @@ def _build_scenario_text(
             check_name_en = e0.get("check_name") or e0.get("check_id") or "-"
             resource_address = e0.get("resource_address") or resource or "-"
             file_abs_path = e0.get("file_abs_path") or "-"
+            severity = e0.get("severity") or "-"
+            why_fails = e0.get("why_fails") or "-"
+            mitigation = e0.get("mitigation") or "-"
+            mitre_tactic = e0.get("mitre_tactic") or "-"
+            atomic_ids = e0.get("atomic_ids") or []
+            atomic_text = ", ".join(str(x) for x in atomic_ids) if atomic_ids else "-"
             evaluated_keys = e0.get("evaluated_keys")
             if isinstance(evaluated_keys, list):
                 eval_text = ", ".join(str(k) for k in evaluated_keys[:2])
@@ -454,6 +605,11 @@ def _build_scenario_text(
                 f"  - check: `{check_name}`\n"
                 f"  - check_id: `{e0.get('check_id') or '-'}`\n"
                 f"  - check_name_en: `{check_name_en}`\n"
+                f"  - severity: `{severity}`\n"
+                f"  - mitre_tactic: `{mitre_tactic}`\n"
+                f"  - atomic_ids: `{atomic_text}`\n"
+                f"  - why_fails: {why_fails}\n"
+                f"  - mitigation: {mitigation}\n"
                 f"  - resource_address: `{resource_address}`\n"
                 f"  - file: `{file_abs_path}`\n"
                 f"  - evaluated_keys: `{eval_text}`"
@@ -492,12 +648,12 @@ def _format_stage_sequence(stage_sequence: Any) -> str:
 def _classify_attack_path(
     path_nodes: list[str],
     check_ids: set[str],
-    check_to_vector: dict[str, str],
+    check_to_stage_rank: dict[str, int],
 ) -> tuple[str, str]:
-    vectors = {
-        check_to_vector[cid]
+    ranks = {
+        check_to_stage_rank[cid]
         for cid in check_ids
-        if isinstance(cid, str) and check_to_vector.get(cid)
+        if isinstance(cid, str) and cid in check_to_stage_rank
     }
 
     has_network_resource = any(
@@ -508,15 +664,8 @@ def _classify_attack_path(
         node.startswith(COMPUTE_RESOURCE_PREFIXES) for node in path_nodes
     )
 
-    has_initial_access = "initial_access_public_exposure" in vectors
-    has_iam_vector = bool(
-        vectors
-        & {
-            "credential_access_and_secrets",
-            "privilege_escalation_and_persistence",
-            "lateral_movement_remote_access",
-        }
-    )
+    has_initial_access = 0 in ranks
+    has_iam_vector = 1 in ranks
 
     if has_initial_access and has_network_resource and (has_iam_resource or has_iam_vector):
         code = "network_to_iam_chain"
@@ -573,6 +722,12 @@ def _format_path_markdown(
         lines.append(
             f"- Findings: {item.get('finding_count', 0)} unique / {item.get('raw_finding_count', 0)} raw"
         )
+        attack_tactic_chain = item.get("attack_tactic_chain", [])
+        if isinstance(attack_tactic_chain, list) and attack_tactic_chain:
+            lines.append(f"- ATT&CK chain: {', '.join(str(x) for x in attack_tactic_chain)}")
+        atomic_chain = item.get("atomic_chain", [])
+        if isinstance(atomic_chain, list) and atomic_chain:
+            lines.append(f"- Atomic chain: {', '.join(str(x) for x in atomic_chain)}")
         lines.append(f"- Checks: {checks_text}")
         lines.append(f"- Path: `{path_text}`")
         scenario = item.get("attack_scenario")
@@ -596,6 +751,33 @@ def _format_path_markdown(
                 lines.append(
                     f"  - [{rank}] {stage_name} / `{resource}` / checks: {detail_checks_text}"
                 )
+                evidence_preview = detail.get("evidence_preview", [])
+                if isinstance(evidence_preview, list) and evidence_preview:
+                    rep = evidence_preview[0]
+                    rep_check = (
+                        rep.get("check_name_ko")
+                        or rep.get("check_name")
+                        or rep.get("check_id")
+                        or "-"
+                    )
+                    rep_severity = rep.get("severity") or "-"
+                    rep_why = rep.get("why_fails")
+                    rep_mitigation = rep.get("mitigation")
+                    rep_tactic = rep.get("mitre_tactic")
+                    rep_atomic = rep.get("atomic_ids") or []
+                    lines.append(
+                        f"    - Representative check: `{rep_check}` (`{rep_severity}`)"
+                    )
+                    if isinstance(rep_tactic, str) and rep_tactic.strip():
+                        lines.append(f"    - ATT&CK tactic: `{rep_tactic.strip()}`")
+                    if isinstance(rep_atomic, list) and rep_atomic:
+                        lines.append(
+                            f"    - Atomic IDs: {', '.join(str(x) for x in rep_atomic)}"
+                        )
+                    if isinstance(rep_why, str) and rep_why.strip():
+                        lines.append(f"    - Why fails: {rep_why.strip()}")
+                    if isinstance(rep_mitigation, str) and rep_mitigation.strip():
+                        lines.append(f"    - Mitigation: {rep_mitigation.strip()}")
         lines.append("")
 
     if len(ordered_paths) > limit:
@@ -801,8 +983,10 @@ def _build_markdown_report(result: dict[str, Any]) -> str:
 def _filter_and_annotate_paths(
     paths: list[dict[str, Any]],
     checkov_index: dict[str, list[dict[str, Any]]],
-    check_to_vector: dict[str, str],
+    check_to_stage_rank: dict[str, int],
     check_to_korean: dict[str, str],
+    check_to_fail_meta: dict[str, dict[str, str]],
+    check_to_attack_meta: dict[str, dict[str, Any]],
     max_hops: int,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, int]]:
     validated_candidates: list[dict[str, Any]] = []
@@ -877,11 +1061,11 @@ def _filter_and_annotate_paths(
 
         # (3) 공격 단계 정합성 필터
         eval_path_nodes, stage_seq, selected_direction = _select_path_orientation(
-            path_nodes, node_findings, check_to_vector
+            path_nodes, node_findings, check_to_stage_rank
         )
         if not stage_seq:
             raw_stage_seq = _stage_sequence_from_path(
-                path_nodes, node_findings, check_to_vector
+                path_nodes, node_findings, check_to_stage_rank
             )
             if not raw_stage_seq:
                 drop(item, "no_attack_stage")
@@ -892,7 +1076,12 @@ def _filter_and_annotate_paths(
             continue
 
         stage_details = _build_stage_details(
-            eval_path_nodes, node_findings, check_to_vector, check_to_korean
+            eval_path_nodes,
+            node_findings,
+            check_to_stage_rank,
+            check_to_korean,
+            check_to_fail_meta,
+            check_to_attack_meta,
         )
         enriched = dict(item)
         # unique check 기준으로 과대계산 방지
@@ -904,10 +1093,30 @@ def _filter_and_annotate_paths(
         enriched["path_evaluated"] = eval_path_nodes
         enriched["path_direction"] = selected_direction
         category_code, category_ko = _classify_attack_path(
-            eval_path_nodes, unique_check_ids, check_to_vector
+            eval_path_nodes, unique_check_ids, check_to_stage_rank
         )
         enriched["path_category"] = category_code
         enriched["path_category_ko"] = category_ko
+        attack_tactic_chain: list[str] = []
+        atomic_chain: list[str] = []
+        for detail in stage_details:
+            preview = detail.get("evidence_preview") or []
+            if not isinstance(preview, list):
+                continue
+            for evidence in preview:
+                if not isinstance(evidence, dict):
+                    continue
+                tactic = evidence.get("mitre_tactic")
+                if isinstance(tactic, str) and tactic.strip() and tactic.strip() not in attack_tactic_chain:
+                    attack_tactic_chain.append(tactic.strip())
+                atomic_ids = evidence.get("atomic_ids") or []
+                if isinstance(atomic_ids, list):
+                    for atomic_id in atomic_ids:
+                        atomic_text = str(atomic_id).strip()
+                        if atomic_text and atomic_text not in atomic_chain:
+                            atomic_chain.append(atomic_text)
+        enriched["attack_tactic_chain"] = attack_tactic_chain
+        enriched["atomic_chain"] = atomic_chain
         enriched["attack_scenario"] = _build_scenario_text(
             eval_path_nodes, stage_details
         )
@@ -960,7 +1169,13 @@ def main() -> None:
         "--checkov-id-catalog",
         type=Path,
         default=Path("src/secugate/rules/checkov_id_catalog.json"),
-        help="Path to checkov_id_catalog.json (for attack-stage consistency)",
+        help="Fallback path to checkov_id_catalog.json when attack_mapping stage is missing",
+    )
+    parser.add_argument(
+        "--attack-mapping",
+        type=Path,
+        default=Path("src/secugate/rules/attack_mapping.json"),
+        help="Path to attack_mapping.json (primary source for attack stage)",
     )
     parser.add_argument(
         "--checkov-korean-labels",
@@ -992,10 +1207,14 @@ def main() -> None:
 
     graph = _load_json(args.graph)
     checkov = _load_json(args.checkov_merged)
-    check_to_vector = _load_checkov_vector_index(args.checkov_id_catalog)
+    check_to_stage_rank = _load_check_stage_index(
+        args.attack_mapping, args.checkov_id_catalog
+    )
     check_to_korean = _load_checkov_korean_index(
         args.checkov_korean_labels, args.checkov_fail_condition
     )
+    check_to_fail_meta = _load_checkov_fail_index(args.checkov_fail_condition)
+    check_to_attack_meta = _load_attack_meta_index(args.attack_mapping)
 
     checkov_index, checkov_summary = _build_checkov_index(checkov)
     dfs_paths = graph.get("dfs_all_paths", [])
@@ -1005,8 +1224,10 @@ def main() -> None:
     dfs_valid, dfs_dropped, dfs_summary = _filter_and_annotate_paths(
         dfs_paths,
         checkov_index,
-        check_to_vector=check_to_vector,
+        check_to_stage_rank=check_to_stage_rank,
         check_to_korean=check_to_korean,
+        check_to_fail_meta=check_to_fail_meta,
+        check_to_attack_meta=check_to_attack_meta,
         max_hops=args.max_hops,
     )
     dfs_grouped_valid = _group_paths_by_category(dfs_valid)

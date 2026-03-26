@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "source_graph": "/home/jiyoon/secugate/artifacts/iac_graph.json",
-  "source_checkov": "/home/jiyoon/secugate/artifacts/checkov_merged.json",
+  "source_graph": "artifacts/iac_graph.json",
+  "source_checkov": "artifacts/checkov_merged.json",
   "summary": {
     "checkov": {
       "failed_checks_total": 26,
@@ -11,24 +11,327 @@
     },
     "dfs_paths": {
       "paths_total": 288,
-      "paths_validated": 3,
-      "paths_dropped": 285,
+      "paths_validated": 4,
+      "paths_dropped": 284,
       "drop_reasons": {
-        "insufficient_stage_progress": 20,
+        "insufficient_stage_progress": 18,
         "no_findings_on_path": 12,
         "stage_order_violation": 138,
         "non_runtime_endpoint": 58,
         "duplicate_path": 22,
-        "duplicate_scenario": 35
+        "duplicate_scenario": 36
       },
       "category_counts": {
-        "network_to_iam_chain": 2,
-        "iam_privilege_chain": 1
+        "iam_privilege_chain": 1,
+        "network_to_iam_chain": 1,
+        "network_exposure_chain": 2
       }
     },
     "max_hops": 6
   },
   "dfs_all_paths_validated": [
+    {
+      "from": "aws_iam_role.ec2_mighty_role",
+      "to": "aws_iam_policy.ec2_mighty_policy",
+      "hops": 1,
+      "path": [
+        "aws_iam_role.ec2_mighty_role",
+        "aws_iam_policy.ec2_mighty_policy"
+      ],
+      "finding_count": 9,
+      "raw_finding_count": 9,
+      "check_ids": [
+        "CKV2_AWS_40",
+        "CKV_AWS_286",
+        "CKV_AWS_287",
+        "CKV_AWS_288",
+        "CKV_AWS_289",
+        "CKV_AWS_290",
+        "CKV_AWS_355",
+        "CKV_AWS_62",
+        "CKV_AWS_63"
+      ],
+      "stage_sequence": [
+        1,
+        3
+      ],
+      "stage_details": [
+        {
+          "stage_rank": 1,
+          "stage": "privilege_or_credential_expansion",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "check_ids": [
+            "CKV2_AWS_40",
+            "CKV_AWS_286",
+            "CKV_AWS_287",
+            "CKV_AWS_289",
+            "CKV_AWS_290",
+            "CKV_AWS_355",
+            "CKV_AWS_62",
+            "CKV_AWS_63"
+          ],
+          "evidence_preview": [
+            {
+              "check_id": "CKV2_AWS_40",
+              "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
+              "check_name_ko": "Action/Resource 와일드카드 정책",
+              "severity": "HIGH",
+              "why_fails": "Action/Resource 와일드카드 정책",
+              "mitigation": "aws_iam_group_policy 정책에서 Action/Resource 와일드카드를 제거하고 최소 권한으로 축소",
+              "mitre_tactic": "PE",
+              "atomic_ids": [
+                "T1098.003",
+                "T1078.004"
+              ],
+              "capability_key": "iam_policy_admin_or_wildcard",
+              "resource_address": "aws_iam_policy.ec2_mighty_policy",
+              "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+              "evaluated_keys": [
+                "policy/Statement[?(@/Effect == Allow)]/Action[*]",
+                "statement[?(@/effect == Allow)]/actions[*]",
+                "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
+              ]
+            },
+            {
+              "check_id": "CKV_AWS_286",
+              "check_name": "Ensure IAM policies does not allow privilege escalation",
+              "check_name_ko": "권한상승 액션 과다 허용",
+              "severity": "HIGH",
+              "why_fails": "권한상승 액션 과다 허용",
+              "mitigation": "aws_iam_group_policy 정책에서 권한상승 가능 액션을 제거하고 최소 권한으로 축소",
+              "mitre_tactic": "PE",
+              "atomic_ids": [
+                "T1098.003"
+              ],
+              "capability_key": "iam_policy_privilege_escalation",
+              "resource_address": "aws_iam_policy.ec2_mighty_policy",
+              "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+              "evaluated_keys": [
+                "policy/Statement/[0]/Action"
+              ]
+            }
+          ]
+        },
+        {
+          "stage_rank": 3,
+          "stage": "impact_or_exfiltration",
+          "resource": "aws_iam_policy.ec2_mighty_policy",
+          "check_ids": [
+            "CKV_AWS_288"
+          ],
+          "evidence_preview": [
+            {
+              "check_id": "CKV_AWS_288",
+              "check_name": "Ensure IAM policies does not allow data exfiltration",
+              "check_name_ko": "데이터 반출 액션 과다 허용",
+              "severity": "HIGH",
+              "why_fails": "데이터 반출 액션 과다 허용",
+              "mitigation": "aws_iam_group_policy 정책에서 데이터 반출 관련 액션 범위를 최소화",
+              "mitre_tactic": "EX",
+              "atomic_ids": [
+                "T1041"
+              ],
+              "capability_key": "iam_policy_data_exfiltration",
+              "resource_address": "aws_iam_policy.ec2_mighty_policy",
+              "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+              "evaluated_keys": [
+                "policy/Statement/[0]/Action"
+              ]
+            }
+          ]
+        }
+      ],
+      "path_evaluated": [
+        "aws_iam_role.ec2_mighty_role",
+        "aws_iam_policy.ec2_mighty_policy"
+      ],
+      "path_direction": "forward",
+      "path_category": "iam_privilege_chain",
+      "path_category_ko": "IAM 권한형 경로",
+      "attack_tactic_chain": [
+        "PE",
+        "EX"
+      ],
+      "atomic_chain": [
+        "T1098.003",
+        "T1078.004",
+        "T1041"
+      ],
+      "attack_scenario": "`aws_iam_role.ec2_mighty_role` -> `aws_iam_policy.ec2_mighty_policy` 경로입니다.\n\n[1] 권한·자격 확장\n  - resource: `aws_iam_policy.ec2_mighty_policy`\n  - check: `Action/Resource 와일드카드 정책`\n  - check_id: `CKV2_AWS_40`\n  - check_name_en: `Ensure AWS IAM policy does not allow full IAM privileges`\n  - severity: `HIGH`\n  - mitre_tactic: `PE`\n  - atomic_ids: `T1098.003, T1078.004`\n  - why_fails: Action/Resource 와일드카드 정책\n  - mitigation: aws_iam_group_policy 정책에서 Action/Resource 와일드카드를 제거하고 최소 권한으로 축소\n  - resource_address: `aws_iam_policy.ec2_mighty_policy`\n  - file: `/home/jiyoon/testterraform/iam_mighty.tf`\n  - evaluated_keys: `policy/Statement[?(@/Effect == Allow)]/Action[*], statement[?(@/effect == Allow)]/actions[*] 외 1개`\n\n[2] 영향·유출\n  - resource: `aws_iam_policy.ec2_mighty_policy`\n  - check: `데이터 반출 액션 과다 허용`\n  - check_id: `CKV_AWS_288`\n  - check_name_en: `Ensure IAM policies does not allow data exfiltration`\n  - severity: `HIGH`\n  - mitre_tactic: `EX`\n  - atomic_ids: `T1041`\n  - why_fails: 데이터 반출 액션 과다 허용\n  - mitigation: aws_iam_group_policy 정책에서 데이터 반출 관련 액션 범위를 최소화\n  - resource_address: `aws_iam_policy.ec2_mighty_policy`\n  - file: `/home/jiyoon/testterraform/iam_mighty.tf`\n  - evaluated_keys: `policy/Statement/[0]/Action`",
+      "node_findings": [
+        {
+          "node": "aws_iam_policy.ec2_mighty_policy",
+          "findings": [
+            {
+              "check_id": "CKV2_AWS_40",
+              "severity": null,
+              "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
+              "description": null,
+              "resource": "aws_iam_policy.ec2_mighty_policy",
+              "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+              "resource_address": "aws_iam_policy.ec2_mighty_policy",
+              "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+              "file_path": "/iam_mighty.tf",
+              "file_line_range": [
+                21,
+                35
+              ],
+              "evaluated_keys": [
+                "policy/Statement[?(@/Effect == Allow)]/Action[*]",
+                "statement[?(@/effect == Allow)]/actions[*]",
+                "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
+              ]
+            },
+            {
+              "check_id": "CKV_AWS_286",
+              "severity": null,
+              "check_name": "Ensure IAM policies does not allow privilege escalation",
+              "description": null,
+              "resource": "aws_iam_policy.ec2_mighty_policy",
+              "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+              "resource_address": "aws_iam_policy.ec2_mighty_policy",
+              "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+              "file_path": "/iam_mighty.tf",
+              "file_line_range": [
+                21,
+                35
+              ],
+              "evaluated_keys": [
+                "policy/Statement/[0]/Action"
+              ]
+            },
+            {
+              "check_id": "CKV_AWS_287",
+              "severity": null,
+              "check_name": "Ensure IAM policies does not allow credentials exposure",
+              "description": null,
+              "resource": "aws_iam_policy.ec2_mighty_policy",
+              "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+              "resource_address": "aws_iam_policy.ec2_mighty_policy",
+              "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+              "file_path": "/iam_mighty.tf",
+              "file_line_range": [
+                21,
+                35
+              ],
+              "evaluated_keys": [
+                "policy/Statement/[0]/Action"
+              ]
+            },
+            {
+              "check_id": "CKV_AWS_288",
+              "severity": null,
+              "check_name": "Ensure IAM policies does not allow data exfiltration",
+              "description": null,
+              "resource": "aws_iam_policy.ec2_mighty_policy",
+              "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+              "resource_address": "aws_iam_policy.ec2_mighty_policy",
+              "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+              "file_path": "/iam_mighty.tf",
+              "file_line_range": [
+                21,
+                35
+              ],
+              "evaluated_keys": [
+                "policy/Statement/[0]/Action"
+              ]
+            },
+            {
+              "check_id": "CKV_AWS_289",
+              "severity": null,
+              "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+              "description": null,
+              "resource": "aws_iam_policy.ec2_mighty_policy",
+              "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+              "resource_address": "aws_iam_policy.ec2_mighty_policy",
+              "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+              "file_path": "/iam_mighty.tf",
+              "file_line_range": [
+                21,
+                35
+              ],
+              "evaluated_keys": [
+                "policy/Statement/[0]/Action"
+              ]
+            },
+            {
+              "check_id": "CKV_AWS_290",
+              "severity": null,
+              "check_name": "Ensure IAM policies does not allow write access without constraints",
+              "description": null,
+              "resource": "aws_iam_policy.ec2_mighty_policy",
+              "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+              "resource_address": "aws_iam_policy.ec2_mighty_policy",
+              "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+              "file_path": "/iam_mighty.tf",
+              "file_line_range": [
+                21,
+                35
+              ],
+              "evaluated_keys": [
+                "policy/Statement/[0]/Action"
+              ]
+            },
+            {
+              "check_id": "CKV_AWS_355",
+              "severity": null,
+              "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+              "description": null,
+              "resource": "aws_iam_policy.ec2_mighty_policy",
+              "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+              "resource_address": "aws_iam_policy.ec2_mighty_policy",
+              "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+              "file_path": "/iam_mighty.tf",
+              "file_line_range": [
+                21,
+                35
+              ],
+              "evaluated_keys": [
+                "policy/Statement/[0]/Action"
+              ]
+            },
+            {
+              "check_id": "CKV_AWS_62",
+              "severity": null,
+              "check_name": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created",
+              "description": null,
+              "resource": "aws_iam_policy.ec2_mighty_policy",
+              "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+              "resource_address": "aws_iam_policy.ec2_mighty_policy",
+              "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+              "file_path": "/iam_mighty.tf",
+              "file_line_range": [
+                21,
+                35
+              ],
+              "evaluated_keys": [
+                "policy",
+                "inline_policy"
+              ]
+            },
+            {
+              "check_id": "CKV_AWS_63",
+              "severity": null,
+              "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's actions",
+              "description": null,
+              "resource": "aws_iam_policy.ec2_mighty_policy",
+              "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+              "resource_address": "aws_iam_policy.ec2_mighty_policy",
+              "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+              "file_path": "/iam_mighty.tf",
+              "file_line_range": [
+                21,
+                35
+              ],
+              "evaluated_keys": [
+                "policy",
+                "inline_policy"
+              ]
+            }
+          ]
+        }
+      ]
+    },
     {
       "from": "aws_instance.super_critical_security_server",
       "to": "aws_internet_gateway.internet_gateway",
@@ -68,6 +371,12 @@
               "check_id": "CKV_AWS_130",
               "check_name": "Ensure VPC subnets do not assign public IP by default",
               "check_name_ko": "퍼블릭 IP 할당",
+              "severity": "HIGH",
+              "why_fails": "퍼블릭 IP 할당",
+              "mitigation": "aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화",
+              "mitre_tactic": "IA",
+              "atomic_ids": [],
+              "capability_key": "subnet_auto_public_ip",
               "resource_address": "aws_subnet.public",
               "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
               "evaluated_keys": [
@@ -88,6 +397,12 @@
               "check_id": "CKV_AWS_88",
               "check_name": "EC2 instance should not have public IP.",
               "check_name_ko": "퍼블릭 IP 할당",
+              "severity": "HIGH",
+              "why_fails": "퍼블릭 IP 할당",
+              "mitigation": "aws_instance 리소스에서 퍼블릭 IP 할당을 비활성화",
+              "mitre_tactic": "IA",
+              "atomic_ids": [],
+              "capability_key": "ec2_public_ip_exposed",
               "resource_address": "aws_instance.super_critical_security_server",
               "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
               "evaluated_keys": [
@@ -101,13 +416,38 @@
           "stage": "privilege_or_credential_expansion",
           "resource": "aws_instance.super_critical_security_server",
           "check_ids": [
+            "CKV2_AWS_41",
             "CKV_AWS_79"
           ],
           "evidence_preview": [
             {
+              "check_id": "CKV2_AWS_41",
+              "check_name": "Ensure an IAM role is attached to EC2 instance",
+              "check_name_ko": "EC2 IAM Role 미부착",
+              "severity": "MEDIUM",
+              "why_fails": "EC2 IAM Role 미부착",
+              "mitigation": "aws_instance 리소스에 최소 권한 IAM Role/Instance Profile을 연결",
+              "mitre_tactic": "PR",
+              "atomic_ids": [],
+              "capability_key": "ec2_instance_profile_missing",
+              "resource_address": "aws_instance.super_critical_security_server",
+              "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+              "evaluated_keys": [
+                "iam_instance_profile"
+              ]
+            },
+            {
               "check_id": "CKV_AWS_79",
               "check_name": "Ensure Instance Metadata Service Version 1 is not enabled",
-              "check_name_ko": "IMDSv2 강제 미설정",
+              "check_name_ko": "IMDSv2 미설정(aws_instance)",
+              "severity": "HIGH",
+              "why_fails": "IMDSv2 미설정(aws_instance)",
+              "mitigation": "aws_instance 리소스 metadata_options에 http_tokens = \"required\" 설정",
+              "mitre_tactic": "PE",
+              "atomic_ids": [
+                "T1552"
+              ],
+              "capability_key": "imdsv1_enabled",
               "resource_address": "aws_instance.super_critical_security_server",
               "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
               "evaluated_keys": [
@@ -121,29 +461,40 @@
           "stage": "execution_or_visibility_control",
           "resource": "aws_instance.super_critical_security_server",
           "check_ids": [
-            "CKV2_AWS_41",
             "CKV_AWS_126",
             "CKV_AWS_135"
           ],
           "evidence_preview": [
             {
-              "check_id": "CKV2_AWS_41",
-              "check_name": "Ensure an IAM role is attached to EC2 instance",
-              "check_name_ko": "EC2 IAM Role 미부착",
-              "resource_address": "aws_instance.super_critical_security_server",
-              "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
-              "evaluated_keys": [
-                "iam_instance_profile"
-              ]
-            },
-            {
               "check_id": "CKV_AWS_126",
               "check_name": "Ensure that detailed monitoring is enabled for EC2 instances",
               "check_name_ko": "필수 보안 설정 누락(설명 기반)",
+              "severity": "MEDIUM",
+              "why_fails": "필수 보안 설정 누락(설명 기반)",
+              "mitigation": "aws_instance 리소스에서 \"Ensure that detailed monitoring is enabled for EC2 instances\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가",
+              "mitre_tactic": "DE",
+              "atomic_ids": [],
+              "capability_key": "auto_stage_execution_or_visibility_control",
               "resource_address": "aws_instance.super_critical_security_server",
               "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
               "evaluated_keys": [
                 "monitoring"
+              ]
+            },
+            {
+              "check_id": "CKV_AWS_135",
+              "check_name": "Ensure that EC2 is EBS optimized",
+              "check_name_ko": "필수 보안 설정 누락(설명 기반)",
+              "severity": "MEDIUM",
+              "why_fails": "필수 보안 설정 누락(설명 기반)",
+              "mitigation": "aws_instance 리소스에서 \"Ensure that EC2 is EBS optimized\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가",
+              "mitre_tactic": "DE",
+              "atomic_ids": [],
+              "capability_key": "auto_stage_execution_or_visibility_control",
+              "resource_address": "aws_instance.super_critical_security_server",
+              "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+              "evaluated_keys": [
+                "ebs_optimized"
               ]
             }
           ]
@@ -159,7 +510,16 @@
       "path_direction": "reverse",
       "path_category": "network_to_iam_chain",
       "path_category_ko": "네트워크->IAM 혼합 경로",
-      "attack_scenario": "`aws_internet_gateway.internet_gateway` -> `aws_instance.super_critical_security_server` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_88`\n  - check_name_en: `EC2 instance should not have public IP.`\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `associate_public_ip_address`\n\n[3] 권한·자격 확장\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `IMDSv2 강제 미설정`\n  - check_id: `CKV_AWS_79`\n  - check_name_en: `Ensure Instance Metadata Service Version 1 is not enabled`\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `metadata_options/[0]/http_tokens`\n\n[4] 실행·탐지우회\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `EC2 IAM Role 미부착`\n  - check_id: `CKV2_AWS_41`\n  - check_name_en: `Ensure an IAM role is attached to EC2 instance`\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `iam_instance_profile`",
+      "attack_tactic_chain": [
+        "IA",
+        "PR",
+        "PE",
+        "DE"
+      ],
+      "atomic_chain": [
+        "T1552"
+      ],
+      "attack_scenario": "`aws_internet_gateway.internet_gateway` -> `aws_instance.super_critical_security_server` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `-`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_88`\n  - check_name_en: `EC2 instance should not have public IP.`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `-`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_instance 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `associate_public_ip_address`\n\n[3] 권한·자격 확장\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `EC2 IAM Role 미부착`\n  - check_id: `CKV2_AWS_41`\n  - check_name_en: `Ensure an IAM role is attached to EC2 instance`\n  - severity: `MEDIUM`\n  - mitre_tactic: `PR`\n  - atomic_ids: `-`\n  - why_fails: EC2 IAM Role 미부착\n  - mitigation: aws_instance 리소스에 최소 권한 IAM Role/Instance Profile을 연결\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `iam_instance_profile`\n\n[4] 실행·탐지우회\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV_AWS_126`\n  - check_name_en: `Ensure that detailed monitoring is enabled for EC2 instances`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_instance 리소스에서 \"Ensure that detailed monitoring is enabled for EC2 instances\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `monitoring`",
       "node_findings": [
         {
           "node": "aws_instance.super_critical_security_server",
@@ -298,13 +658,13 @@
         "CKV2_AWS_12"
       ],
       "stage_sequence": [
-        1,
+        0,
         2
       ],
       "stage_details": [
         {
-          "stage_rank": 1,
-          "stage": "privilege_or_credential_expansion",
+          "stage_rank": 0,
+          "stage": "initial_access",
           "resource": "aws_vpc.vpc",
           "check_ids": [
             "CKV2_AWS_12"
@@ -314,6 +674,14 @@
               "check_id": "CKV2_AWS_12",
               "check_name": "Ensure the default security group of every VPC restricts all traffic",
               "check_name_ko": "기본 SG 미제한",
+              "severity": "HIGH",
+              "why_fails": "기본 SG 미제한",
+              "mitigation": "aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거",
+              "mitre_tactic": "IA",
+              "atomic_ids": [
+                "T1021"
+              ],
+              "capability_key": "default_sg_not_restricted",
               "resource_address": "aws_vpc.vpc",
               "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
               "evaluated_keys": [
@@ -342,6 +710,14 @@
               "check_id": "CKV2_AWS_11",
               "check_name": "Ensure VPC flow logging is enabled in all VPCs",
               "check_name_ko": "VPC Flow Logs 미설정",
+              "severity": "MEDIUM",
+              "why_fails": "VPC Flow Logs 미설정",
+              "mitigation": "aws_vpc 리소스에 VPC Flow Logs를 활성화",
+              "mitre_tactic": "DE",
+              "atomic_ids": [
+                "T1046"
+              ],
+              "capability_key": "vpc_flow_logs_disabled",
               "resource_address": "aws_vpc.vpc",
               "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
               "evaluated_keys": [
@@ -359,9 +735,17 @@
         "aws_route_table_association.public_subnet_route_association"
       ],
       "path_direction": "forward",
-      "path_category": "iam_privilege_chain",
-      "path_category_ko": "IAM 권한형 경로",
-      "attack_scenario": "`aws_vpc.vpc` -> `aws_route_table_association.public_subnet_route_association` 경로입니다.\n\n[1] 권한·자격 확장\n  - resource: `aws_vpc.vpc`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `egress/to_port, egress/from_port 외 7개`\n\n[2] 실행·탐지우회\n  - resource: `aws_vpc.vpc`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `networking, resource_type`",
+      "path_category": "network_exposure_chain",
+      "path_category_ko": "네트워크 노출형 경로",
+      "attack_tactic_chain": [
+        "IA",
+        "DE"
+      ],
+      "atomic_chain": [
+        "T1021",
+        "T1046"
+      ],
+      "attack_scenario": "`aws_vpc.vpc` -> `aws_route_table_association.public_subnet_route_association` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_vpc.vpc`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `egress/to_port, egress/from_port 외 7개`\n\n[2] 실행·탐지우회\n  - resource: `aws_vpc.vpc`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `networking, resource_type`",
       "node_findings": [
         {
           "node": "aws_vpc.vpc",
@@ -435,7 +819,6 @@
       ],
       "stage_sequence": [
         0,
-        1,
         2
       ],
       "stage_details": [
@@ -451,6 +834,12 @@
               "check_id": "CKV_AWS_130",
               "check_name": "Ensure VPC subnets do not assign public IP by default",
               "check_name_ko": "퍼블릭 IP 할당",
+              "severity": "HIGH",
+              "why_fails": "퍼블릭 IP 할당",
+              "mitigation": "aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화",
+              "mitre_tactic": "IA",
+              "atomic_ids": [],
+              "capability_key": "subnet_auto_public_ip",
               "resource_address": "aws_subnet.public",
               "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
               "evaluated_keys": [
@@ -460,8 +849,8 @@
           ]
         },
         {
-          "stage_rank": 1,
-          "stage": "privilege_or_credential_expansion",
+          "stage_rank": 0,
+          "stage": "initial_access",
           "resource": "aws_vpc.vpc",
           "check_ids": [
             "CKV2_AWS_12"
@@ -471,6 +860,14 @@
               "check_id": "CKV2_AWS_12",
               "check_name": "Ensure the default security group of every VPC restricts all traffic",
               "check_name_ko": "기본 SG 미제한",
+              "severity": "HIGH",
+              "why_fails": "기본 SG 미제한",
+              "mitigation": "aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거",
+              "mitre_tactic": "IA",
+              "atomic_ids": [
+                "T1021"
+              ],
+              "capability_key": "default_sg_not_restricted",
               "resource_address": "aws_vpc.vpc",
               "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
               "evaluated_keys": [
@@ -499,6 +896,14 @@
               "check_id": "CKV2_AWS_11",
               "check_name": "Ensure VPC flow logging is enabled in all VPCs",
               "check_name_ko": "VPC Flow Logs 미설정",
+              "severity": "MEDIUM",
+              "why_fails": "VPC Flow Logs 미설정",
+              "mitigation": "aws_vpc 리소스에 VPC Flow Logs를 활성화",
+              "mitre_tactic": "DE",
+              "atomic_ids": [
+                "T1046"
+              ],
+              "capability_key": "vpc_flow_logs_disabled",
               "resource_address": "aws_vpc.vpc",
               "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
               "evaluated_keys": [
@@ -517,9 +922,17 @@
         "aws_vpc.vpc"
       ],
       "path_direction": "forward",
-      "path_category": "network_to_iam_chain",
-      "path_category_ko": "네트워크->IAM 혼합 경로",
-      "attack_scenario": "`aws_subnet.public` -> `aws_vpc.vpc` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 권한·자격 확장\n  - resource: `aws_vpc.vpc`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `egress/to_port, egress/from_port 외 7개`\n\n[3] 실행·탐지우회\n  - resource: `aws_vpc.vpc`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `networking, resource_type`",
+      "path_category": "network_exposure_chain",
+      "path_category_ko": "네트워크 노출형 경로",
+      "attack_tactic_chain": [
+        "IA",
+        "DE"
+      ],
+      "atomic_chain": [
+        "T1021",
+        "T1046"
+      ],
+      "attack_scenario": "`aws_subnet.public` -> `aws_vpc.vpc` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `-`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_vpc.vpc`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `egress/to_port, egress/from_port 외 7개`\n\n[3] 실행·탐지우회\n  - resource: `aws_vpc.vpc`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `networking, resource_type`",
       "node_findings": [
         {
           "node": "aws_subnet.public",
@@ -598,8 +1011,7 @@
     }
   ],
   "dfs_all_paths_validated_by_category": {
-    "network_exposure_chain": [],
-    "iam_privilege_chain": [
+    "network_exposure_chain": [
       {
         "from": "aws_vpc.vpc",
         "to": "aws_route_table_association.public_subnet_route_association",
@@ -617,13 +1029,13 @@
           "CKV2_AWS_12"
         ],
         "stage_sequence": [
-          1,
+          0,
           2
         ],
         "stage_details": [
           {
-            "stage_rank": 1,
-            "stage": "privilege_or_credential_expansion",
+            "stage_rank": 0,
+            "stage": "initial_access",
             "resource": "aws_vpc.vpc",
             "check_ids": [
               "CKV2_AWS_12"
@@ -633,6 +1045,14 @@
                 "check_id": "CKV2_AWS_12",
                 "check_name": "Ensure the default security group of every VPC restricts all traffic",
                 "check_name_ko": "기본 SG 미제한",
+                "severity": "HIGH",
+                "why_fails": "기본 SG 미제한",
+                "mitigation": "aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거",
+                "mitre_tactic": "IA",
+                "atomic_ids": [
+                  "T1021"
+                ],
+                "capability_key": "default_sg_not_restricted",
                 "resource_address": "aws_vpc.vpc",
                 "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
                 "evaluated_keys": [
@@ -661,6 +1081,14 @@
                 "check_id": "CKV2_AWS_11",
                 "check_name": "Ensure VPC flow logging is enabled in all VPCs",
                 "check_name_ko": "VPC Flow Logs 미설정",
+                "severity": "MEDIUM",
+                "why_fails": "VPC Flow Logs 미설정",
+                "mitigation": "aws_vpc 리소스에 VPC Flow Logs를 활성화",
+                "mitre_tactic": "DE",
+                "atomic_ids": [
+                  "T1046"
+                ],
+                "capability_key": "vpc_flow_logs_disabled",
                 "resource_address": "aws_vpc.vpc",
                 "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
                 "evaluated_keys": [
@@ -678,10 +1106,228 @@
           "aws_route_table_association.public_subnet_route_association"
         ],
         "path_direction": "forward",
-        "path_category": "iam_privilege_chain",
-        "path_category_ko": "IAM 권한형 경로",
-        "attack_scenario": "`aws_vpc.vpc` -> `aws_route_table_association.public_subnet_route_association` 경로입니다.\n\n[1] 권한·자격 확장\n  - resource: `aws_vpc.vpc`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `egress/to_port, egress/from_port 외 7개`\n\n[2] 실행·탐지우회\n  - resource: `aws_vpc.vpc`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `networking, resource_type`",
+        "path_category": "network_exposure_chain",
+        "path_category_ko": "네트워크 노출형 경로",
+        "attack_tactic_chain": [
+          "IA",
+          "DE"
+        ],
+        "atomic_chain": [
+          "T1021",
+          "T1046"
+        ],
+        "attack_scenario": "`aws_vpc.vpc` -> `aws_route_table_association.public_subnet_route_association` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_vpc.vpc`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `egress/to_port, egress/from_port 외 7개`\n\n[2] 실행·탐지우회\n  - resource: `aws_vpc.vpc`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `networking, resource_type`",
         "node_findings": [
+          {
+            "node": "aws_vpc.vpc",
+            "findings": [
+              {
+                "check_id": "CKV2_AWS_11",
+                "severity": null,
+                "check_name": "Ensure VPC flow logging is enabled in all VPCs",
+                "description": null,
+                "resource": "aws_vpc.vpc",
+                "normalized_resource": "aws_vpc.vpc",
+                "resource_address": "aws_vpc.vpc",
+                "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
+                "file_path": "/vpc.tf",
+                "file_line_range": [
+                  1,
+                  8
+                ],
+                "evaluated_keys": [
+                  "networking",
+                  "resource_type"
+                ]
+              },
+              {
+                "check_id": "CKV2_AWS_12",
+                "severity": null,
+                "check_name": "Ensure the default security group of every VPC restricts all traffic",
+                "description": null,
+                "resource": "aws_vpc.vpc",
+                "normalized_resource": "aws_vpc.vpc",
+                "resource_address": "aws_vpc.vpc",
+                "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
+                "file_path": "/vpc.tf",
+                "file_line_range": [
+                  1,
+                  8
+                ],
+                "evaluated_keys": [
+                  "egress/to_port",
+                  "egress/from_port",
+                  "resource_type",
+                  "ingress/from_port",
+                  "egress/cidr_blocks",
+                  "ingress/protocol",
+                  "egress/protocol",
+                  "ingress/to_port",
+                  "ingress/self"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "from": "aws_subnet.public",
+        "to": "aws_vpc.vpc",
+        "hops": 4,
+        "path": [
+          "aws_subnet.public",
+          "aws_route_table_association.public_subnet_route_association",
+          "aws_route_table.public_subnet",
+          "aws_internet_gateway.internet_gateway",
+          "aws_vpc.vpc"
+        ],
+        "finding_count": 3,
+        "raw_finding_count": 3,
+        "check_ids": [
+          "CKV2_AWS_11",
+          "CKV2_AWS_12",
+          "CKV_AWS_130"
+        ],
+        "stage_sequence": [
+          0,
+          2
+        ],
+        "stage_details": [
+          {
+            "stage_rank": 0,
+            "stage": "initial_access",
+            "resource": "aws_subnet.public",
+            "check_ids": [
+              "CKV_AWS_130"
+            ],
+            "evidence_preview": [
+              {
+                "check_id": "CKV_AWS_130",
+                "check_name": "Ensure VPC subnets do not assign public IP by default",
+                "check_name_ko": "퍼블릭 IP 할당",
+                "severity": "HIGH",
+                "why_fails": "퍼블릭 IP 할당",
+                "mitigation": "aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화",
+                "mitre_tactic": "IA",
+                "atomic_ids": [],
+                "capability_key": "subnet_auto_public_ip",
+                "resource_address": "aws_subnet.public",
+                "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
+                "evaluated_keys": [
+                  "map_public_ip_on_launch"
+                ]
+              }
+            ]
+          },
+          {
+            "stage_rank": 0,
+            "stage": "initial_access",
+            "resource": "aws_vpc.vpc",
+            "check_ids": [
+              "CKV2_AWS_12"
+            ],
+            "evidence_preview": [
+              {
+                "check_id": "CKV2_AWS_12",
+                "check_name": "Ensure the default security group of every VPC restricts all traffic",
+                "check_name_ko": "기본 SG 미제한",
+                "severity": "HIGH",
+                "why_fails": "기본 SG 미제한",
+                "mitigation": "aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거",
+                "mitre_tactic": "IA",
+                "atomic_ids": [
+                  "T1021"
+                ],
+                "capability_key": "default_sg_not_restricted",
+                "resource_address": "aws_vpc.vpc",
+                "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
+                "evaluated_keys": [
+                  "egress/to_port",
+                  "egress/from_port",
+                  "resource_type",
+                  "ingress/from_port",
+                  "egress/cidr_blocks",
+                  "ingress/protocol",
+                  "egress/protocol",
+                  "ingress/to_port",
+                  "ingress/self"
+                ]
+              }
+            ]
+          },
+          {
+            "stage_rank": 2,
+            "stage": "execution_or_visibility_control",
+            "resource": "aws_vpc.vpc",
+            "check_ids": [
+              "CKV2_AWS_11"
+            ],
+            "evidence_preview": [
+              {
+                "check_id": "CKV2_AWS_11",
+                "check_name": "Ensure VPC flow logging is enabled in all VPCs",
+                "check_name_ko": "VPC Flow Logs 미설정",
+                "severity": "MEDIUM",
+                "why_fails": "VPC Flow Logs 미설정",
+                "mitigation": "aws_vpc 리소스에 VPC Flow Logs를 활성화",
+                "mitre_tactic": "DE",
+                "atomic_ids": [
+                  "T1046"
+                ],
+                "capability_key": "vpc_flow_logs_disabled",
+                "resource_address": "aws_vpc.vpc",
+                "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
+                "evaluated_keys": [
+                  "networking",
+                  "resource_type"
+                ]
+              }
+            ]
+          }
+        ],
+        "path_evaluated": [
+          "aws_subnet.public",
+          "aws_route_table_association.public_subnet_route_association",
+          "aws_route_table.public_subnet",
+          "aws_internet_gateway.internet_gateway",
+          "aws_vpc.vpc"
+        ],
+        "path_direction": "forward",
+        "path_category": "network_exposure_chain",
+        "path_category_ko": "네트워크 노출형 경로",
+        "attack_tactic_chain": [
+          "IA",
+          "DE"
+        ],
+        "atomic_chain": [
+          "T1021",
+          "T1046"
+        ],
+        "attack_scenario": "`aws_subnet.public` -> `aws_vpc.vpc` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `-`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_vpc.vpc`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `egress/to_port, egress/from_port 외 7개`\n\n[3] 실행·탐지우회\n  - resource: `aws_vpc.vpc`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `networking, resource_type`",
+        "node_findings": [
+          {
+            "node": "aws_subnet.public",
+            "findings": [
+              {
+                "check_id": "CKV_AWS_130",
+                "severity": null,
+                "check_name": "Ensure VPC subnets do not assign public IP by default",
+                "description": null,
+                "resource": "aws_subnet.public",
+                "normalized_resource": "aws_subnet.public",
+                "resource_address": "aws_subnet.public",
+                "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
+                "file_path": "/vpc.tf",
+                "file_line_range": [
+                  18,
+                  27
+                ],
+                "evaluated_keys": [
+                  "map_public_ip_on_launch"
+                ]
+              }
+            ]
+          },
           {
             "node": "aws_vpc.vpc",
             "findings": [
@@ -735,6 +1381,310 @@
         ]
       }
     ],
+    "iam_privilege_chain": [
+      {
+        "from": "aws_iam_role.ec2_mighty_role",
+        "to": "aws_iam_policy.ec2_mighty_policy",
+        "hops": 1,
+        "path": [
+          "aws_iam_role.ec2_mighty_role",
+          "aws_iam_policy.ec2_mighty_policy"
+        ],
+        "finding_count": 9,
+        "raw_finding_count": 9,
+        "check_ids": [
+          "CKV2_AWS_40",
+          "CKV_AWS_286",
+          "CKV_AWS_287",
+          "CKV_AWS_288",
+          "CKV_AWS_289",
+          "CKV_AWS_290",
+          "CKV_AWS_355",
+          "CKV_AWS_62",
+          "CKV_AWS_63"
+        ],
+        "stage_sequence": [
+          1,
+          3
+        ],
+        "stage_details": [
+          {
+            "stage_rank": 1,
+            "stage": "privilege_or_credential_expansion",
+            "resource": "aws_iam_policy.ec2_mighty_policy",
+            "check_ids": [
+              "CKV2_AWS_40",
+              "CKV_AWS_286",
+              "CKV_AWS_287",
+              "CKV_AWS_289",
+              "CKV_AWS_290",
+              "CKV_AWS_355",
+              "CKV_AWS_62",
+              "CKV_AWS_63"
+            ],
+            "evidence_preview": [
+              {
+                "check_id": "CKV2_AWS_40",
+                "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
+                "check_name_ko": "Action/Resource 와일드카드 정책",
+                "severity": "HIGH",
+                "why_fails": "Action/Resource 와일드카드 정책",
+                "mitigation": "aws_iam_group_policy 정책에서 Action/Resource 와일드카드를 제거하고 최소 권한으로 축소",
+                "mitre_tactic": "PE",
+                "atomic_ids": [
+                  "T1098.003",
+                  "T1078.004"
+                ],
+                "capability_key": "iam_policy_admin_or_wildcard",
+                "resource_address": "aws_iam_policy.ec2_mighty_policy",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "evaluated_keys": [
+                  "policy/Statement[?(@/Effect == Allow)]/Action[*]",
+                  "statement[?(@/effect == Allow)]/actions[*]",
+                  "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
+                ]
+              },
+              {
+                "check_id": "CKV_AWS_286",
+                "check_name": "Ensure IAM policies does not allow privilege escalation",
+                "check_name_ko": "권한상승 액션 과다 허용",
+                "severity": "HIGH",
+                "why_fails": "권한상승 액션 과다 허용",
+                "mitigation": "aws_iam_group_policy 정책에서 권한상승 가능 액션을 제거하고 최소 권한으로 축소",
+                "mitre_tactic": "PE",
+                "atomic_ids": [
+                  "T1098.003"
+                ],
+                "capability_key": "iam_policy_privilege_escalation",
+                "resource_address": "aws_iam_policy.ec2_mighty_policy",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "evaluated_keys": [
+                  "policy/Statement/[0]/Action"
+                ]
+              }
+            ]
+          },
+          {
+            "stage_rank": 3,
+            "stage": "impact_or_exfiltration",
+            "resource": "aws_iam_policy.ec2_mighty_policy",
+            "check_ids": [
+              "CKV_AWS_288"
+            ],
+            "evidence_preview": [
+              {
+                "check_id": "CKV_AWS_288",
+                "check_name": "Ensure IAM policies does not allow data exfiltration",
+                "check_name_ko": "데이터 반출 액션 과다 허용",
+                "severity": "HIGH",
+                "why_fails": "데이터 반출 액션 과다 허용",
+                "mitigation": "aws_iam_group_policy 정책에서 데이터 반출 관련 액션 범위를 최소화",
+                "mitre_tactic": "EX",
+                "atomic_ids": [
+                  "T1041"
+                ],
+                "capability_key": "iam_policy_data_exfiltration",
+                "resource_address": "aws_iam_policy.ec2_mighty_policy",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "evaluated_keys": [
+                  "policy/Statement/[0]/Action"
+                ]
+              }
+            ]
+          }
+        ],
+        "path_evaluated": [
+          "aws_iam_role.ec2_mighty_role",
+          "aws_iam_policy.ec2_mighty_policy"
+        ],
+        "path_direction": "forward",
+        "path_category": "iam_privilege_chain",
+        "path_category_ko": "IAM 권한형 경로",
+        "attack_tactic_chain": [
+          "PE",
+          "EX"
+        ],
+        "atomic_chain": [
+          "T1098.003",
+          "T1078.004",
+          "T1041"
+        ],
+        "attack_scenario": "`aws_iam_role.ec2_mighty_role` -> `aws_iam_policy.ec2_mighty_policy` 경로입니다.\n\n[1] 권한·자격 확장\n  - resource: `aws_iam_policy.ec2_mighty_policy`\n  - check: `Action/Resource 와일드카드 정책`\n  - check_id: `CKV2_AWS_40`\n  - check_name_en: `Ensure AWS IAM policy does not allow full IAM privileges`\n  - severity: `HIGH`\n  - mitre_tactic: `PE`\n  - atomic_ids: `T1098.003, T1078.004`\n  - why_fails: Action/Resource 와일드카드 정책\n  - mitigation: aws_iam_group_policy 정책에서 Action/Resource 와일드카드를 제거하고 최소 권한으로 축소\n  - resource_address: `aws_iam_policy.ec2_mighty_policy`\n  - file: `/home/jiyoon/testterraform/iam_mighty.tf`\n  - evaluated_keys: `policy/Statement[?(@/Effect == Allow)]/Action[*], statement[?(@/effect == Allow)]/actions[*] 외 1개`\n\n[2] 영향·유출\n  - resource: `aws_iam_policy.ec2_mighty_policy`\n  - check: `데이터 반출 액션 과다 허용`\n  - check_id: `CKV_AWS_288`\n  - check_name_en: `Ensure IAM policies does not allow data exfiltration`\n  - severity: `HIGH`\n  - mitre_tactic: `EX`\n  - atomic_ids: `T1041`\n  - why_fails: 데이터 반출 액션 과다 허용\n  - mitigation: aws_iam_group_policy 정책에서 데이터 반출 관련 액션 범위를 최소화\n  - resource_address: `aws_iam_policy.ec2_mighty_policy`\n  - file: `/home/jiyoon/testterraform/iam_mighty.tf`\n  - evaluated_keys: `policy/Statement/[0]/Action`",
+        "node_findings": [
+          {
+            "node": "aws_iam_policy.ec2_mighty_policy",
+            "findings": [
+              {
+                "check_id": "CKV2_AWS_40",
+                "severity": null,
+                "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
+                "description": null,
+                "resource": "aws_iam_policy.ec2_mighty_policy",
+                "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+                "resource_address": "aws_iam_policy.ec2_mighty_policy",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "file_path": "/iam_mighty.tf",
+                "file_line_range": [
+                  21,
+                  35
+                ],
+                "evaluated_keys": [
+                  "policy/Statement[?(@/Effect == Allow)]/Action[*]",
+                  "statement[?(@/effect == Allow)]/actions[*]",
+                  "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
+                ]
+              },
+              {
+                "check_id": "CKV_AWS_286",
+                "severity": null,
+                "check_name": "Ensure IAM policies does not allow privilege escalation",
+                "description": null,
+                "resource": "aws_iam_policy.ec2_mighty_policy",
+                "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+                "resource_address": "aws_iam_policy.ec2_mighty_policy",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "file_path": "/iam_mighty.tf",
+                "file_line_range": [
+                  21,
+                  35
+                ],
+                "evaluated_keys": [
+                  "policy/Statement/[0]/Action"
+                ]
+              },
+              {
+                "check_id": "CKV_AWS_287",
+                "severity": null,
+                "check_name": "Ensure IAM policies does not allow credentials exposure",
+                "description": null,
+                "resource": "aws_iam_policy.ec2_mighty_policy",
+                "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+                "resource_address": "aws_iam_policy.ec2_mighty_policy",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "file_path": "/iam_mighty.tf",
+                "file_line_range": [
+                  21,
+                  35
+                ],
+                "evaluated_keys": [
+                  "policy/Statement/[0]/Action"
+                ]
+              },
+              {
+                "check_id": "CKV_AWS_288",
+                "severity": null,
+                "check_name": "Ensure IAM policies does not allow data exfiltration",
+                "description": null,
+                "resource": "aws_iam_policy.ec2_mighty_policy",
+                "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+                "resource_address": "aws_iam_policy.ec2_mighty_policy",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "file_path": "/iam_mighty.tf",
+                "file_line_range": [
+                  21,
+                  35
+                ],
+                "evaluated_keys": [
+                  "policy/Statement/[0]/Action"
+                ]
+              },
+              {
+                "check_id": "CKV_AWS_289",
+                "severity": null,
+                "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+                "description": null,
+                "resource": "aws_iam_policy.ec2_mighty_policy",
+                "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+                "resource_address": "aws_iam_policy.ec2_mighty_policy",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "file_path": "/iam_mighty.tf",
+                "file_line_range": [
+                  21,
+                  35
+                ],
+                "evaluated_keys": [
+                  "policy/Statement/[0]/Action"
+                ]
+              },
+              {
+                "check_id": "CKV_AWS_290",
+                "severity": null,
+                "check_name": "Ensure IAM policies does not allow write access without constraints",
+                "description": null,
+                "resource": "aws_iam_policy.ec2_mighty_policy",
+                "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+                "resource_address": "aws_iam_policy.ec2_mighty_policy",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "file_path": "/iam_mighty.tf",
+                "file_line_range": [
+                  21,
+                  35
+                ],
+                "evaluated_keys": [
+                  "policy/Statement/[0]/Action"
+                ]
+              },
+              {
+                "check_id": "CKV_AWS_355",
+                "severity": null,
+                "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+                "description": null,
+                "resource": "aws_iam_policy.ec2_mighty_policy",
+                "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+                "resource_address": "aws_iam_policy.ec2_mighty_policy",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "file_path": "/iam_mighty.tf",
+                "file_line_range": [
+                  21,
+                  35
+                ],
+                "evaluated_keys": [
+                  "policy/Statement/[0]/Action"
+                ]
+              },
+              {
+                "check_id": "CKV_AWS_62",
+                "severity": null,
+                "check_name": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created",
+                "description": null,
+                "resource": "aws_iam_policy.ec2_mighty_policy",
+                "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+                "resource_address": "aws_iam_policy.ec2_mighty_policy",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "file_path": "/iam_mighty.tf",
+                "file_line_range": [
+                  21,
+                  35
+                ],
+                "evaluated_keys": [
+                  "policy",
+                  "inline_policy"
+                ]
+              },
+              {
+                "check_id": "CKV_AWS_63",
+                "severity": null,
+                "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's actions",
+                "description": null,
+                "resource": "aws_iam_policy.ec2_mighty_policy",
+                "normalized_resource": "aws_iam_policy.ec2_mighty_policy",
+                "resource_address": "aws_iam_policy.ec2_mighty_policy",
+                "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
+                "file_path": "/iam_mighty.tf",
+                "file_line_range": [
+                  21,
+                  35
+                ],
+                "evaluated_keys": [
+                  "policy",
+                  "inline_policy"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "network_to_iam_chain": [
       {
         "from": "aws_instance.super_critical_security_server",
@@ -775,6 +1725,12 @@
                 "check_id": "CKV_AWS_130",
                 "check_name": "Ensure VPC subnets do not assign public IP by default",
                 "check_name_ko": "퍼블릭 IP 할당",
+                "severity": "HIGH",
+                "why_fails": "퍼블릭 IP 할당",
+                "mitigation": "aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화",
+                "mitre_tactic": "IA",
+                "atomic_ids": [],
+                "capability_key": "subnet_auto_public_ip",
                 "resource_address": "aws_subnet.public",
                 "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
                 "evaluated_keys": [
@@ -795,6 +1751,12 @@
                 "check_id": "CKV_AWS_88",
                 "check_name": "EC2 instance should not have public IP.",
                 "check_name_ko": "퍼블릭 IP 할당",
+                "severity": "HIGH",
+                "why_fails": "퍼블릭 IP 할당",
+                "mitigation": "aws_instance 리소스에서 퍼블릭 IP 할당을 비활성화",
+                "mitre_tactic": "IA",
+                "atomic_ids": [],
+                "capability_key": "ec2_public_ip_exposed",
                 "resource_address": "aws_instance.super_critical_security_server",
                 "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
                 "evaluated_keys": [
@@ -808,13 +1770,38 @@
             "stage": "privilege_or_credential_expansion",
             "resource": "aws_instance.super_critical_security_server",
             "check_ids": [
+              "CKV2_AWS_41",
               "CKV_AWS_79"
             ],
             "evidence_preview": [
               {
+                "check_id": "CKV2_AWS_41",
+                "check_name": "Ensure an IAM role is attached to EC2 instance",
+                "check_name_ko": "EC2 IAM Role 미부착",
+                "severity": "MEDIUM",
+                "why_fails": "EC2 IAM Role 미부착",
+                "mitigation": "aws_instance 리소스에 최소 권한 IAM Role/Instance Profile을 연결",
+                "mitre_tactic": "PR",
+                "atomic_ids": [],
+                "capability_key": "ec2_instance_profile_missing",
+                "resource_address": "aws_instance.super_critical_security_server",
+                "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+                "evaluated_keys": [
+                  "iam_instance_profile"
+                ]
+              },
+              {
                 "check_id": "CKV_AWS_79",
                 "check_name": "Ensure Instance Metadata Service Version 1 is not enabled",
-                "check_name_ko": "IMDSv2 강제 미설정",
+                "check_name_ko": "IMDSv2 미설정(aws_instance)",
+                "severity": "HIGH",
+                "why_fails": "IMDSv2 미설정(aws_instance)",
+                "mitigation": "aws_instance 리소스 metadata_options에 http_tokens = \"required\" 설정",
+                "mitre_tactic": "PE",
+                "atomic_ids": [
+                  "T1552"
+                ],
+                "capability_key": "imdsv1_enabled",
                 "resource_address": "aws_instance.super_critical_security_server",
                 "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
                 "evaluated_keys": [
@@ -828,29 +1815,40 @@
             "stage": "execution_or_visibility_control",
             "resource": "aws_instance.super_critical_security_server",
             "check_ids": [
-              "CKV2_AWS_41",
               "CKV_AWS_126",
               "CKV_AWS_135"
             ],
             "evidence_preview": [
               {
-                "check_id": "CKV2_AWS_41",
-                "check_name": "Ensure an IAM role is attached to EC2 instance",
-                "check_name_ko": "EC2 IAM Role 미부착",
-                "resource_address": "aws_instance.super_critical_security_server",
-                "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
-                "evaluated_keys": [
-                  "iam_instance_profile"
-                ]
-              },
-              {
                 "check_id": "CKV_AWS_126",
                 "check_name": "Ensure that detailed monitoring is enabled for EC2 instances",
                 "check_name_ko": "필수 보안 설정 누락(설명 기반)",
+                "severity": "MEDIUM",
+                "why_fails": "필수 보안 설정 누락(설명 기반)",
+                "mitigation": "aws_instance 리소스에서 \"Ensure that detailed monitoring is enabled for EC2 instances\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가",
+                "mitre_tactic": "DE",
+                "atomic_ids": [],
+                "capability_key": "auto_stage_execution_or_visibility_control",
                 "resource_address": "aws_instance.super_critical_security_server",
                 "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
                 "evaluated_keys": [
                   "monitoring"
+                ]
+              },
+              {
+                "check_id": "CKV_AWS_135",
+                "check_name": "Ensure that EC2 is EBS optimized",
+                "check_name_ko": "필수 보안 설정 누락(설명 기반)",
+                "severity": "MEDIUM",
+                "why_fails": "필수 보안 설정 누락(설명 기반)",
+                "mitigation": "aws_instance 리소스에서 \"Ensure that EC2 is EBS optimized\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가",
+                "mitre_tactic": "DE",
+                "atomic_ids": [],
+                "capability_key": "auto_stage_execution_or_visibility_control",
+                "resource_address": "aws_instance.super_critical_security_server",
+                "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
+                "evaluated_keys": [
+                  "ebs_optimized"
                 ]
               }
             ]
@@ -866,7 +1864,16 @@
         "path_direction": "reverse",
         "path_category": "network_to_iam_chain",
         "path_category_ko": "네트워크->IAM 혼합 경로",
-        "attack_scenario": "`aws_internet_gateway.internet_gateway` -> `aws_instance.super_critical_security_server` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_88`\n  - check_name_en: `EC2 instance should not have public IP.`\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `associate_public_ip_address`\n\n[3] 권한·자격 확장\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `IMDSv2 강제 미설정`\n  - check_id: `CKV_AWS_79`\n  - check_name_en: `Ensure Instance Metadata Service Version 1 is not enabled`\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `metadata_options/[0]/http_tokens`\n\n[4] 실행·탐지우회\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `EC2 IAM Role 미부착`\n  - check_id: `CKV2_AWS_41`\n  - check_name_en: `Ensure an IAM role is attached to EC2 instance`\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `iam_instance_profile`",
+        "attack_tactic_chain": [
+          "IA",
+          "PR",
+          "PE",
+          "DE"
+        ],
+        "atomic_chain": [
+          "T1552"
+        ],
+        "attack_scenario": "`aws_internet_gateway.internet_gateway` -> `aws_instance.super_critical_security_server` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `-`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_88`\n  - check_name_en: `EC2 instance should not have public IP.`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `-`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_instance 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `associate_public_ip_address`\n\n[3] 권한·자격 확장\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `EC2 IAM Role 미부착`\n  - check_id: `CKV2_AWS_41`\n  - check_name_en: `Ensure an IAM role is attached to EC2 instance`\n  - severity: `MEDIUM`\n  - mitre_tactic: `PR`\n  - atomic_ids: `-`\n  - why_fails: EC2 IAM Role 미부착\n  - mitigation: aws_instance 리소스에 최소 권한 IAM Role/Instance Profile을 연결\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `iam_instance_profile`\n\n[4] 실행·탐지우회\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV_AWS_126`\n  - check_name_en: `Ensure that detailed monitoring is enabled for EC2 instances`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_instance 리소스에서 \"Ensure that detailed monitoring is enabled for EC2 instances\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `monitoring`",
         "node_findings": [
           {
             "node": "aws_instance.super_critical_security_server",
@@ -987,187 +1994,6 @@
             ]
           }
         ]
-      },
-      {
-        "from": "aws_subnet.public",
-        "to": "aws_vpc.vpc",
-        "hops": 4,
-        "path": [
-          "aws_subnet.public",
-          "aws_route_table_association.public_subnet_route_association",
-          "aws_route_table.public_subnet",
-          "aws_internet_gateway.internet_gateway",
-          "aws_vpc.vpc"
-        ],
-        "finding_count": 3,
-        "raw_finding_count": 3,
-        "check_ids": [
-          "CKV2_AWS_11",
-          "CKV2_AWS_12",
-          "CKV_AWS_130"
-        ],
-        "stage_sequence": [
-          0,
-          1,
-          2
-        ],
-        "stage_details": [
-          {
-            "stage_rank": 0,
-            "stage": "initial_access",
-            "resource": "aws_subnet.public",
-            "check_ids": [
-              "CKV_AWS_130"
-            ],
-            "evidence_preview": [
-              {
-                "check_id": "CKV_AWS_130",
-                "check_name": "Ensure VPC subnets do not assign public IP by default",
-                "check_name_ko": "퍼블릭 IP 할당",
-                "resource_address": "aws_subnet.public",
-                "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
-                "evaluated_keys": [
-                  "map_public_ip_on_launch"
-                ]
-              }
-            ]
-          },
-          {
-            "stage_rank": 1,
-            "stage": "privilege_or_credential_expansion",
-            "resource": "aws_vpc.vpc",
-            "check_ids": [
-              "CKV2_AWS_12"
-            ],
-            "evidence_preview": [
-              {
-                "check_id": "CKV2_AWS_12",
-                "check_name": "Ensure the default security group of every VPC restricts all traffic",
-                "check_name_ko": "기본 SG 미제한",
-                "resource_address": "aws_vpc.vpc",
-                "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
-                "evaluated_keys": [
-                  "egress/to_port",
-                  "egress/from_port",
-                  "resource_type",
-                  "ingress/from_port",
-                  "egress/cidr_blocks",
-                  "ingress/protocol",
-                  "egress/protocol",
-                  "ingress/to_port",
-                  "ingress/self"
-                ]
-              }
-            ]
-          },
-          {
-            "stage_rank": 2,
-            "stage": "execution_or_visibility_control",
-            "resource": "aws_vpc.vpc",
-            "check_ids": [
-              "CKV2_AWS_11"
-            ],
-            "evidence_preview": [
-              {
-                "check_id": "CKV2_AWS_11",
-                "check_name": "Ensure VPC flow logging is enabled in all VPCs",
-                "check_name_ko": "VPC Flow Logs 미설정",
-                "resource_address": "aws_vpc.vpc",
-                "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
-                "evaluated_keys": [
-                  "networking",
-                  "resource_type"
-                ]
-              }
-            ]
-          }
-        ],
-        "path_evaluated": [
-          "aws_subnet.public",
-          "aws_route_table_association.public_subnet_route_association",
-          "aws_route_table.public_subnet",
-          "aws_internet_gateway.internet_gateway",
-          "aws_vpc.vpc"
-        ],
-        "path_direction": "forward",
-        "path_category": "network_to_iam_chain",
-        "path_category_ko": "네트워크->IAM 혼합 경로",
-        "attack_scenario": "`aws_subnet.public` -> `aws_vpc.vpc` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 권한·자격 확장\n  - resource: `aws_vpc.vpc`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `egress/to_port, egress/from_port 외 7개`\n\n[3] 실행·탐지우회\n  - resource: `aws_vpc.vpc`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `networking, resource_type`",
-        "node_findings": [
-          {
-            "node": "aws_subnet.public",
-            "findings": [
-              {
-                "check_id": "CKV_AWS_130",
-                "severity": null,
-                "check_name": "Ensure VPC subnets do not assign public IP by default",
-                "description": null,
-                "resource": "aws_subnet.public",
-                "normalized_resource": "aws_subnet.public",
-                "resource_address": "aws_subnet.public",
-                "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
-                "file_path": "/vpc.tf",
-                "file_line_range": [
-                  18,
-                  27
-                ],
-                "evaluated_keys": [
-                  "map_public_ip_on_launch"
-                ]
-              }
-            ]
-          },
-          {
-            "node": "aws_vpc.vpc",
-            "findings": [
-              {
-                "check_id": "CKV2_AWS_11",
-                "severity": null,
-                "check_name": "Ensure VPC flow logging is enabled in all VPCs",
-                "description": null,
-                "resource": "aws_vpc.vpc",
-                "normalized_resource": "aws_vpc.vpc",
-                "resource_address": "aws_vpc.vpc",
-                "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
-                "file_path": "/vpc.tf",
-                "file_line_range": [
-                  1,
-                  8
-                ],
-                "evaluated_keys": [
-                  "networking",
-                  "resource_type"
-                ]
-              },
-              {
-                "check_id": "CKV2_AWS_12",
-                "severity": null,
-                "check_name": "Ensure the default security group of every VPC restricts all traffic",
-                "description": null,
-                "resource": "aws_vpc.vpc",
-                "normalized_resource": "aws_vpc.vpc",
-                "resource_address": "aws_vpc.vpc",
-                "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
-                "file_path": "/vpc.tf",
-                "file_line_range": [
-                  1,
-                  8
-                ],
-                "evaluated_keys": [
-                  "egress/to_port",
-                  "egress/from_port",
-                  "resource_type",
-                  "ingress/from_port",
-                  "egress/cidr_blocks",
-                  "ingress/protocol",
-                  "egress/protocol",
-                  "ingress/to_port",
-                  "ingress/self"
-                ]
-              }
-            ]
-          }
-        ]
       }
     ],
     "other_chain": []
@@ -1204,16 +2030,6 @@
       ]
     },
     {
-      "from": "aws_iam_policy.ec2_mighty_policy",
-      "to": "aws_iam_role.ec2_mighty_role",
-      "hops": 1,
-      "reason": "insufficient_stage_progress",
-      "path": [
-        "aws_iam_policy.ec2_mighty_policy",
-        "aws_iam_role.ec2_mighty_role"
-      ]
-    },
-    {
       "from": "aws_iam_policy.kerrigan_policy",
       "to": "aws_iam_user_policy_attachment.kerrigan_attachment",
       "hops": 1,
@@ -1241,16 +2057,6 @@
       "path": [
         "aws_iam_role.ec2_meek_role",
         "aws_iam_policy.ec2_meek_policy"
-      ]
-    },
-    {
-      "from": "aws_iam_role.ec2_mighty_role",
-      "to": "aws_iam_policy.ec2_mighty_policy",
-      "hops": 1,
-      "reason": "insufficient_stage_progress",
-      "path": [
-        "aws_iam_role.ec2_mighty_role",
-        "aws_iam_policy.ec2_mighty_policy"
       ]
     },
     {
@@ -4369,6 +5175,16 @@
         "aws_route_table.public_subnet",
         "aws_internet_gateway.internet_gateway",
         "aws_vpc.vpc"
+      ]
+    },
+    {
+      "from": "aws_iam_policy.ec2_mighty_policy",
+      "to": "aws_iam_role.ec2_mighty_role",
+      "hops": 1,
+      "reason": "duplicate_scenario",
+      "path": [
+        "aws_iam_policy.ec2_mighty_policy",
+        "aws_iam_role.ec2_mighty_role"
       ]
     },
     {

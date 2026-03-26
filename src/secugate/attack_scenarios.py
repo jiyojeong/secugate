@@ -24,13 +24,17 @@ class FindingEvidence:
 
 @dataclass(frozen=True)
 class NormalizeRule:
-    capability: str
+    capability_key: str
+    capability_id: str | None
+    capability: str | None
+    mitre_tactic: str | None
+    stage: str | None
     check_ids: set[str]
 
 
 @dataclass(frozen=True)
 class AtomicMappingRule:
-    capability: str
+    capability_key: str
     atomic_ids: list[str]
     name: str | None
     confidence: Any
@@ -42,7 +46,7 @@ class ScenarioRule:
     title: str | None
     description: str | None
     score: str
-    requires_capabilities: list[str]
+    requires_capability_keys: list[str]
     requires_check_ids: list[str]
     atomic_chain: list[str]
 
@@ -64,8 +68,8 @@ def _parse_json_object(path: Path) -> dict[str, Any]:
 def _parse_normalize_rules(raw_rules: list[dict[str, Any]]) -> list[NormalizeRule]:
     normalized: list[NormalizeRule] = []
     for raw in raw_rules:
-        capability = str(raw.get("capability", "")).strip()
-        if not capability:
+        capability_key = str(raw.get("capability_key", "")).strip()
+        if not capability_key:
             continue
         check_ids = {
             str(check_id).strip()
@@ -74,15 +78,24 @@ def _parse_normalize_rules(raw_rules: list[dict[str, Any]]) -> list[NormalizeRul
         }
         if not check_ids:
             continue
-        normalized.append(NormalizeRule(capability=capability, check_ids=check_ids))
+        normalized.append(
+            NormalizeRule(
+                capability_key=capability_key,
+                capability_id=(str(raw.get("capability_id", "")).strip() or None),
+                capability=(str(raw.get("capability", "")).strip() or None),
+                mitre_tactic=(str(raw.get("mitre_tactic", "")).strip() or None),
+                stage=(str(raw.get("stage", "")).strip() or None),
+                check_ids=check_ids,
+            )
+        )
     return normalized
 
 
 def _parse_atomic_mapping_rules(raw_rules: list[dict[str, Any]]) -> list[AtomicMappingRule]:
     parsed: list[AtomicMappingRule] = []
     for raw in raw_rules:
-        capability = str(raw.get("capability", "")).strip()
-        if not capability:
+        capability_key = str(raw.get("capability_key", "")).strip()
+        if not capability_key:
             continue
         atomic_ids = [
             str(atomic_id).strip()
@@ -93,7 +106,7 @@ def _parse_atomic_mapping_rules(raw_rules: list[dict[str, Any]]) -> list[AtomicM
             continue
         parsed.append(
             AtomicMappingRule(
-                capability=capability,
+                capability_key=capability_key,
                 atomic_ids=atomic_ids,
                 name=raw.get("name"),
                 confidence=raw.get("confidence"),
@@ -114,9 +127,13 @@ def _parse_scenario_rules(raw_scenarios: list[dict[str, Any]]) -> list[ScenarioR
                 title=raw.get("title"),
                 description=raw.get("description"),
                 score=str(raw.get("score", "medium")),
-                requires_capabilities=[
+                requires_capability_keys=[
                     str(cap).strip()
-                    for cap in (raw.get("requires_capabilities") or [])
+                    for cap in (
+                        raw.get("requires_capability_keys")
+                        or raw.get("requires_capabilities")
+                        or []
+                    )
                     if str(cap).strip()
                 ],
                 requires_check_ids=[
@@ -185,8 +202,8 @@ def _extract_evaluated_keys(finding: dict[str, Any]) -> Any:
 
 def _map_findings_to_capabilities(
     failed_findings: list[dict[str, Any]], normalize_rules: list[NormalizeRule]
-) -> tuple[dict[str, list[FindingEvidence]], set[str]]:
-    capabilities: dict[str, list[FindingEvidence]] = defaultdict(list)
+) -> tuple[dict[str, dict[str, Any]], set[str]]:
+    capabilities: dict[str, dict[str, Any]] = {}
     matched_check_ids: set[str] = set()
 
     for finding in failed_findings:
@@ -199,7 +216,18 @@ def _map_findings_to_capabilities(
                 continue
 
             matched_check_ids.add(check_id)
-            capabilities[rule.capability].append(
+            entry = capabilities.setdefault(
+                rule.capability_key,
+                {
+                    "capability_key": rule.capability_key,
+                    "capability_id": rule.capability_id,
+                    "capability": rule.capability,
+                    "mitre_tactic": rule.mitre_tactic,
+                    "stage": rule.stage,
+                    "evidence": [],
+                },
+            )
+            entry["evidence"].append(
                 FindingEvidence(
                     check_id=check_id,
                     resource=finding.get("resource"),
@@ -221,18 +249,18 @@ def _map_findings_to_capabilities(
 
 
 def _build_atomic_coverage(
-    capabilities: dict[str, list[FindingEvidence]], atomic_rules: list[AtomicMappingRule]
+    capabilities: dict[str, dict[str, Any]], atomic_rules: list[AtomicMappingRule]
 ) -> dict[str, dict[str, Any]]:
     by_atomic: dict[str, dict[str, Any]] = {}
 
     for rule in atomic_rules:
-        if rule.capability not in capabilities:
+        if rule.capability_key not in capabilities:
             continue
 
         for atomic_id in rule.atomic_ids:
             existing = by_atomic.get(atomic_id, {"atomic_id": atomic_id, "capabilities": []})
-            if rule.capability not in existing["capabilities"]:
-                existing["capabilities"].append(rule.capability)
+            if rule.capability_key not in existing["capabilities"]:
+                existing["capabilities"].append(rule.capability_key)
             if "name" not in existing and rule.name:
                 existing["name"] = rule.name
             if "confidence" not in existing and rule.confidence:
@@ -244,7 +272,7 @@ def _build_atomic_coverage(
 
 
 def _evaluate_scenario_matches(
-    capabilities: dict[str, list[FindingEvidence]],
+    capabilities: dict[str, dict[str, Any]],
     scenario_rules: list[ScenarioRule],
     check_id_counter: Counter[str],
     failed_findings: list[dict[str, Any]],
@@ -252,11 +280,11 @@ def _evaluate_scenario_matches(
     output: list[dict[str, Any]] = []
 
     for scenario in scenario_rules:
-        if not scenario.requires_capabilities and not scenario.requires_check_ids:
+        if not scenario.requires_capability_keys and not scenario.requires_check_ids:
             continue
 
-        if scenario.requires_capabilities and not all(
-            cap in capabilities for cap in scenario.requires_capabilities
+        if scenario.requires_capability_keys and not all(
+            cap in capabilities for cap in scenario.requires_capability_keys
         ):
             continue
 
@@ -266,8 +294,11 @@ def _evaluate_scenario_matches(
             continue
 
         cap_evidence_count = (
-            sum(len(capabilities[cap]) for cap in scenario.requires_capabilities)
-            if scenario.requires_capabilities
+            sum(
+                len(capabilities[cap].get("evidence", []))
+                for cap in scenario.requires_capability_keys
+            )
+            if scenario.requires_capability_keys
             else 0
         )
         check_evidence_count = (
@@ -280,8 +311,8 @@ def _evaluate_scenario_matches(
         evidence_items: list[dict[str, Any]] = []
         seen_keys: set[tuple[str, str, str]] = set()
 
-        for cap in scenario.requires_capabilities:
-            for item in capabilities.get(cap, []):
+        for cap in scenario.requires_capability_keys:
+            for item in capabilities.get(cap, {}).get("evidence", []):
                 key = (
                     str(item.check_id),
                     str(item.resource_address or item.resource or ""),
@@ -336,7 +367,7 @@ def _evaluate_scenario_matches(
                 "title": scenario.title,
                 "description": scenario.description,
                 "score": scenario.score,
-                "matched_capabilities": scenario.requires_capabilities,
+                "matched_capability_keys": scenario.requires_capability_keys,
                 "matched_check_ids": scenario.requires_check_ids,
                 "atomic_chain": scenario.atomic_chain,
                 "evidence_count": evidence_count,
@@ -364,7 +395,7 @@ def _render_markdown_report(result: dict[str, Any]) -> str:
     lines.append("")
     lines.append(f"- Failed findings: {summary.get('failed_findings', 0)}")
     lines.append(f"- Mapped findings: {summary.get('mapped_findings', 0)}")
-    lines.append(f"- Capabilities: {summary.get('capabilities', 0)}")
+    lines.append(f"- Technique groups: {summary.get('capabilities', 0)}")
     lines.append(f"- Atomic IDs: {summary.get('atomic_ids', 0)}")
     lines.append(f"- Scenarios: {summary.get('scenarios', 0)}")
     lines.append(f"- Unmapped check IDs: {summary.get('unmapped_check_ids', 0)}")
@@ -387,7 +418,7 @@ def _render_markdown_report(result: dict[str, Any]) -> str:
                 f"- Atomic chain: {', '.join(scenario.get('atomic_chain') or ['-'])}"
             )
             lines.append(
-                f"- Matched capabilities: {', '.join(scenario.get('matched_capabilities') or ['-'])}"
+                f"- Matched capability keys: {', '.join(scenario.get('matched_capability_keys') or ['-'])}"
             )
             lines.append(
                 f"- Matched check IDs: {', '.join(scenario.get('matched_check_ids') or ['-'])}"
@@ -416,15 +447,22 @@ def _render_markdown_report(result: dict[str, Any]) -> str:
                 lines.append(f"  - ... and {len(evidence) - 5} more")
             lines.append("")
 
-    lines.append("## Capabilities")
+    lines.append("## Technique Groups")
     lines.append("")
     capabilities = result.get("capabilities") or []
     if not capabilities:
-        lines.append("- No mapped capabilities")
+        lines.append("- No mapped technique groups")
     else:
         for cap in capabilities:
-            lines.append(f"### `{cap.get('capability', '-')}`")
+            title = cap.get("capability_key") or cap.get("capability") or "-"
+            lines.append(f"### `{title}`")
             lines.append("")
+            lines.append(f"- MITRE tactic: `{cap.get('mitre_tactic', '-')}`")
+            lines.append(f"- Stage: `{cap.get('stage', '-')}`")
+            if cap.get("capability_id"):
+                lines.append(f"- Capability ID: `{cap.get('capability_id')}`")
+            if cap.get("capability"):
+                lines.append(f"- Description: {cap.get('capability')}")
             lines.append(f"- Findings: {cap.get('finding_count', 0)}")
 
             checks = cap.get("checks") or {}
@@ -530,9 +568,15 @@ def generate_attack_scenarios(
         },
         "capabilities": [
             {
-                "capability": capability,
-                "finding_count": len(evidence_items),
-                "checks": dict(Counter(item.check_id for item in evidence_items)),
+                "capability_key": capability,
+                "capability_id": evidence_items.get("capability_id"),
+                "capability": evidence_items.get("capability"),
+                "mitre_tactic": evidence_items.get("mitre_tactic"),
+                "stage": evidence_items.get("stage"),
+                "finding_count": len(evidence_items.get("evidence", [])),
+                "checks": dict(
+                    Counter(item.check_id for item in evidence_items.get("evidence", []))
+                ),
                 "evidence": [
                     {
                         "check_id": item.check_id,
@@ -544,7 +588,7 @@ def generate_attack_scenarios(
                         "file_line_range": item.file_line_range,
                         "evaluated_keys": item.evaluated_keys,
                     }
-                    for item in evidence_items
+                    for item in evidence_items.get("evidence", [])
                 ],
             }
             for capability, evidence_items in sorted(capabilities.items())
