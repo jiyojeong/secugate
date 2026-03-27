@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "source_graph": "artifacts/iac_graph.json",
-  "source_checkov": "artifacts/checkov_merged.json",
+  "source_graph": "/home/jiyoon/secugate/artifacts/iac_graph.json",
+  "source_checkov": "/home/jiyoon/secugate/artifacts/checkov_merged.json",
   "summary": {
     "checkov": {
       "failed_checks_total": 26,
@@ -375,7 +375,9 @@
               "why_fails": "퍼블릭 IP 할당",
               "mitigation": "aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화",
               "mitre_tactic": "IA",
-              "atomic_ids": [],
+              "atomic_ids": [
+                "T1190"
+              ],
               "capability_key": "subnet_auto_public_ip",
               "resource_address": "aws_subnet.public",
               "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
@@ -401,7 +403,9 @@
               "why_fails": "퍼블릭 IP 할당",
               "mitigation": "aws_instance 리소스에서 퍼블릭 IP 할당을 비활성화",
               "mitre_tactic": "IA",
-              "atomic_ids": [],
+              "atomic_ids": [
+                "T1190"
+              ],
               "capability_key": "ec2_public_ip_exposed",
               "resource_address": "aws_instance.super_critical_security_server",
               "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
@@ -474,7 +478,7 @@
               "mitigation": "aws_instance 리소스에서 \"Ensure that detailed monitoring is enabled for EC2 instances\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가",
               "mitre_tactic": "DE",
               "atomic_ids": [],
-              "capability_key": "auto_stage_execution_or_visibility_control",
+              "capability_key": "stage_execution_or_visibility_control_fallback",
               "resource_address": "aws_instance.super_critical_security_server",
               "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
               "evaluated_keys": [
@@ -490,7 +494,7 @@
               "mitigation": "aws_instance 리소스에서 \"Ensure that EC2 is EBS optimized\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가",
               "mitre_tactic": "DE",
               "atomic_ids": [],
-              "capability_key": "auto_stage_execution_or_visibility_control",
+              "capability_key": "stage_execution_or_visibility_control_fallback",
               "resource_address": "aws_instance.super_critical_security_server",
               "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
               "evaluated_keys": [
@@ -517,9 +521,10 @@
         "DE"
       ],
       "atomic_chain": [
+        "T1190",
         "T1552"
       ],
-      "attack_scenario": "`aws_internet_gateway.internet_gateway` -> `aws_instance.super_critical_security_server` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `-`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_88`\n  - check_name_en: `EC2 instance should not have public IP.`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `-`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_instance 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `associate_public_ip_address`\n\n[3] 권한·자격 확장\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `EC2 IAM Role 미부착`\n  - check_id: `CKV2_AWS_41`\n  - check_name_en: `Ensure an IAM role is attached to EC2 instance`\n  - severity: `MEDIUM`\n  - mitre_tactic: `PR`\n  - atomic_ids: `-`\n  - why_fails: EC2 IAM Role 미부착\n  - mitigation: aws_instance 리소스에 최소 권한 IAM Role/Instance Profile을 연결\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `iam_instance_profile`\n\n[4] 실행·탐지우회\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV_AWS_126`\n  - check_name_en: `Ensure that detailed monitoring is enabled for EC2 instances`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_instance 리소스에서 \"Ensure that detailed monitoring is enabled for EC2 instances\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `monitoring`",
+      "attack_scenario": "`aws_internet_gateway.internet_gateway` -> `aws_instance.super_critical_security_server` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1190`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_88`\n  - check_name_en: `EC2 instance should not have public IP.`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1190`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_instance 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `associate_public_ip_address`\n\n[3] 권한·자격 확장\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `EC2 IAM Role 미부착`\n  - check_id: `CKV2_AWS_41`\n  - check_name_en: `Ensure an IAM role is attached to EC2 instance`\n  - severity: `MEDIUM`\n  - mitre_tactic: `PR`\n  - atomic_ids: `-`\n  - why_fails: EC2 IAM Role 미부착\n  - mitigation: aws_instance 리소스에 최소 권한 IAM Role/Instance Profile을 연결\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `iam_instance_profile`\n\n[4] 실행·탐지우회\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV_AWS_126`\n  - check_name_en: `Ensure that detailed monitoring is enabled for EC2 instances`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_instance 리소스에서 \"Ensure that detailed monitoring is enabled for EC2 instances\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `monitoring`",
       "node_findings": [
         {
           "node": "aws_instance.super_critical_security_server",
@@ -838,7 +843,9 @@
               "why_fails": "퍼블릭 IP 할당",
               "mitigation": "aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화",
               "mitre_tactic": "IA",
-              "atomic_ids": [],
+              "atomic_ids": [
+                "T1190"
+              ],
               "capability_key": "subnet_auto_public_ip",
               "resource_address": "aws_subnet.public",
               "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
@@ -929,10 +936,11 @@
         "DE"
       ],
       "atomic_chain": [
+        "T1190",
         "T1021",
         "T1046"
       ],
-      "attack_scenario": "`aws_subnet.public` -> `aws_vpc.vpc` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `-`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_vpc.vpc`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `egress/to_port, egress/from_port 외 7개`\n\n[3] 실행·탐지우회\n  - resource: `aws_vpc.vpc`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `networking, resource_type`",
+      "attack_scenario": "`aws_subnet.public` -> `aws_vpc.vpc` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1190`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_vpc.vpc`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `egress/to_port, egress/from_port 외 7개`\n\n[3] 실행·탐지우회\n  - resource: `aws_vpc.vpc`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `networking, resource_type`",
       "node_findings": [
         {
           "node": "aws_subnet.public",
@@ -1209,7 +1217,9 @@
                 "why_fails": "퍼블릭 IP 할당",
                 "mitigation": "aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화",
                 "mitre_tactic": "IA",
-                "atomic_ids": [],
+                "atomic_ids": [
+                  "T1190"
+                ],
                 "capability_key": "subnet_auto_public_ip",
                 "resource_address": "aws_subnet.public",
                 "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
@@ -1300,10 +1310,11 @@
           "DE"
         ],
         "atomic_chain": [
+          "T1190",
           "T1021",
           "T1046"
         ],
-        "attack_scenario": "`aws_subnet.public` -> `aws_vpc.vpc` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `-`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_vpc.vpc`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `egress/to_port, egress/from_port 외 7개`\n\n[3] 실행·탐지우회\n  - resource: `aws_vpc.vpc`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `networking, resource_type`",
+        "attack_scenario": "`aws_subnet.public` -> `aws_vpc.vpc` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1190`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_vpc.vpc`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `egress/to_port, egress/from_port 외 7개`\n\n[3] 실행·탐지우회\n  - resource: `aws_vpc.vpc`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.vpc`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `networking, resource_type`",
         "node_findings": [
           {
             "node": "aws_subnet.public",
@@ -1729,7 +1740,9 @@
                 "why_fails": "퍼블릭 IP 할당",
                 "mitigation": "aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화",
                 "mitre_tactic": "IA",
-                "atomic_ids": [],
+                "atomic_ids": [
+                  "T1190"
+                ],
                 "capability_key": "subnet_auto_public_ip",
                 "resource_address": "aws_subnet.public",
                 "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
@@ -1755,7 +1768,9 @@
                 "why_fails": "퍼블릭 IP 할당",
                 "mitigation": "aws_instance 리소스에서 퍼블릭 IP 할당을 비활성화",
                 "mitre_tactic": "IA",
-                "atomic_ids": [],
+                "atomic_ids": [
+                  "T1190"
+                ],
                 "capability_key": "ec2_public_ip_exposed",
                 "resource_address": "aws_instance.super_critical_security_server",
                 "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
@@ -1828,7 +1843,7 @@
                 "mitigation": "aws_instance 리소스에서 \"Ensure that detailed monitoring is enabled for EC2 instances\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가",
                 "mitre_tactic": "DE",
                 "atomic_ids": [],
-                "capability_key": "auto_stage_execution_or_visibility_control",
+                "capability_key": "stage_execution_or_visibility_control_fallback",
                 "resource_address": "aws_instance.super_critical_security_server",
                 "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
                 "evaluated_keys": [
@@ -1844,7 +1859,7 @@
                 "mitigation": "aws_instance 리소스에서 \"Ensure that EC2 is EBS optimized\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가",
                 "mitre_tactic": "DE",
                 "atomic_ids": [],
-                "capability_key": "auto_stage_execution_or_visibility_control",
+                "capability_key": "stage_execution_or_visibility_control_fallback",
                 "resource_address": "aws_instance.super_critical_security_server",
                 "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
                 "evaluated_keys": [
@@ -1871,9 +1886,10 @@
           "DE"
         ],
         "atomic_chain": [
+          "T1190",
           "T1552"
         ],
-        "attack_scenario": "`aws_internet_gateway.internet_gateway` -> `aws_instance.super_critical_security_server` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `-`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_88`\n  - check_name_en: `EC2 instance should not have public IP.`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `-`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_instance 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `associate_public_ip_address`\n\n[3] 권한·자격 확장\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `EC2 IAM Role 미부착`\n  - check_id: `CKV2_AWS_41`\n  - check_name_en: `Ensure an IAM role is attached to EC2 instance`\n  - severity: `MEDIUM`\n  - mitre_tactic: `PR`\n  - atomic_ids: `-`\n  - why_fails: EC2 IAM Role 미부착\n  - mitigation: aws_instance 리소스에 최소 권한 IAM Role/Instance Profile을 연결\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `iam_instance_profile`\n\n[4] 실행·탐지우회\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV_AWS_126`\n  - check_name_en: `Ensure that detailed monitoring is enabled for EC2 instances`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_instance 리소스에서 \"Ensure that detailed monitoring is enabled for EC2 instances\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `monitoring`",
+        "attack_scenario": "`aws_internet_gateway.internet_gateway` -> `aws_instance.super_critical_security_server` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1190`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/testterraform/vpc.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_88`\n  - check_name_en: `EC2 instance should not have public IP.`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - atomic_ids: `T1190`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_instance 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `associate_public_ip_address`\n\n[3] 권한·자격 확장\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `EC2 IAM Role 미부착`\n  - check_id: `CKV2_AWS_41`\n  - check_name_en: `Ensure an IAM role is attached to EC2 instance`\n  - severity: `MEDIUM`\n  - mitre_tactic: `PR`\n  - atomic_ids: `-`\n  - why_fails: EC2 IAM Role 미부착\n  - mitigation: aws_instance 리소스에 최소 권한 IAM Role/Instance Profile을 연결\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `iam_instance_profile`\n\n[4] 실행·탐지우회\n  - resource: `aws_instance.super_critical_security_server`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV_AWS_126`\n  - check_name_en: `Ensure that detailed monitoring is enabled for EC2 instances`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - atomic_ids: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_instance 리소스에서 \"Ensure that detailed monitoring is enabled for EC2 instances\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_instance.super_critical_security_server`\n  - file: `/home/jiyoon/testterraform/ec2.tf`\n  - evaluated_keys: `monitoring`",
         "node_findings": [
           {
             "node": "aws_instance.super_critical_security_server",

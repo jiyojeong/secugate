@@ -53,7 +53,7 @@ STAGE_LABELS_KO: dict[int, str] = {
 DROP_REASON_LABELS_KO: dict[str, str] = {
     "empty_path": "빈 경로",
     "invalid_node_id": "잘못된 노드 ID",
-    "non_runtime_endpoint": "시작점 또는 끝점이 런타임 AWS 리소스가 아님(내부참조값 등임)",
+    "non_runtime_endpoint": "시작점 또는 끝점이 런타임 AWS 리소스가 아님(내부참조값 등)",
     "contains_non_runtime_node": "경로에 var/local/data 같은 비런타임 노드 포함",
     "invalid_path": "유효하지 않은 경로",
     "hops_exceeded": "최대 홉 수 초과",
@@ -257,7 +257,9 @@ def _load_attack_stage_index(path: Path) -> dict[str, str]:
     return out
 
 
-def _load_check_stage_index(attack_mapping_path: Path, fallback_catalog_path: Path) -> dict[str, int]:
+def _load_check_stage_index(
+    attack_mapping_path: Path, fallback_catalog_path: Path
+) -> dict[str, int]:
     out: dict[str, int] = {}
 
     for check_id, stage in _load_attack_stage_index(attack_mapping_path).items():
@@ -276,7 +278,9 @@ def _load_check_stage_index(attack_mapping_path: Path, fallback_catalog_path: Pa
     return out
 
 
-def _load_checkov_korean_index(labels_path: Path, fallback_path: Path) -> dict[str, str]:
+def _load_checkov_korean_index(
+    labels_path: Path, fallback_path: Path
+) -> dict[str, str]:
     # 우선 별도 매핑 파일(check_id -> label_ko)을 읽고, 없으면 기존 why_fails에서 fallback
     if labels_path.is_file():
         data = _load_json(labels_path)
@@ -285,7 +289,9 @@ def _load_checkov_korean_index(labels_path: Path, fallback_path: Path) -> dict[s
             out = {
                 str(check_id): str(label).strip()
                 for check_id, label in mapping.items()
-                if isinstance(check_id, str) and isinstance(label, str) and label.strip()
+                if isinstance(check_id, str)
+                and isinstance(label, str)
+                and label.strip()
             }
             if out:
                 return out
@@ -659,7 +665,9 @@ def _classify_attack_path(
     has_network_resource = any(
         node.startswith(NETWORK_RESOURCE_PREFIXES) for node in path_nodes
     )
-    has_iam_resource = any(node.startswith(IAM_RESOURCE_PREFIXES) for node in path_nodes)
+    has_iam_resource = any(
+        node.startswith(IAM_RESOURCE_PREFIXES) for node in path_nodes
+    )
     has_compute_resource = any(
         node.startswith(COMPUTE_RESOURCE_PREFIXES) for node in path_nodes
     )
@@ -667,7 +675,11 @@ def _classify_attack_path(
     has_initial_access = 0 in ranks
     has_iam_vector = 1 in ranks
 
-    if has_initial_access and has_network_resource and (has_iam_resource or has_iam_vector):
+    if (
+        has_initial_access
+        and has_network_resource
+        and (has_iam_resource or has_iam_vector)
+    ):
         code = "network_to_iam_chain"
     elif has_iam_resource or has_iam_vector:
         code = "iam_privilege_chain"
@@ -724,7 +736,9 @@ def _format_path_markdown(
         )
         attack_tactic_chain = item.get("attack_tactic_chain", [])
         if isinstance(attack_tactic_chain, list) and attack_tactic_chain:
-            lines.append(f"- ATT&CK chain: {', '.join(str(x) for x in attack_tactic_chain)}")
+            lines.append(
+                f"- ATT&CK chain: {', '.join(str(x) for x in attack_tactic_chain)}"
+            )
         atomic_chain = item.get("atomic_chain", [])
         if isinstance(atomic_chain, list) and atomic_chain:
             lines.append(f"- Atomic chain: {', '.join(str(x) for x in atomic_chain)}")
@@ -881,7 +895,9 @@ def _representative_score(item: dict[str, Any]) -> tuple[int, int, int, int, str
     endpoint_score = max(_endpoint_priority(start_node), _endpoint_priority(end_node))
     hops = item.get("hops", 0) if isinstance(item.get("hops"), int) else 0
     finding_count = (
-        item.get("finding_count", 0) if isinstance(item.get("finding_count"), int) else 0
+        item.get("finding_count", 0)
+        if isinstance(item.get("finding_count"), int)
+        else 0
     )
     raw_finding_count = (
         item.get("raw_finding_count", 0)
@@ -912,8 +928,12 @@ def _format_category_counts(category_counts: dict[str, Any]) -> list[str]:
     return lines
 
 
-def _group_paths_by_category(paths: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
-    grouped: dict[str, list[dict[str, Any]]] = {code: [] for code in PATH_CATEGORY_ORDER}
+def _group_paths_by_category(
+    paths: list[dict[str, Any]],
+) -> dict[str, list[dict[str, Any]]]:
+    grouped: dict[str, list[dict[str, Any]]] = {
+        code: [] for code in PATH_CATEGORY_ORDER
+    }
     for item in paths:
         if not isinstance(item, dict):
             continue
@@ -1107,7 +1127,11 @@ def _filter_and_annotate_paths(
                 if not isinstance(evidence, dict):
                     continue
                 tactic = evidence.get("mitre_tactic")
-                if isinstance(tactic, str) and tactic.strip() and tactic.strip() not in attack_tactic_chain:
+                if (
+                    isinstance(tactic, str)
+                    and tactic.strip()
+                    and tactic.strip() not in attack_tactic_chain
+                ):
                     attack_tactic_chain.append(tactic.strip())
                 atomic_ids = evidence.get("atomic_ids") or []
                 if isinstance(atomic_ids, list):

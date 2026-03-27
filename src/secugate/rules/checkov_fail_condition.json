@@ -26105,8 +26105,8 @@
       "check_id": "CKV_AWS_28",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "Severity": "Critical",
+      "atomic_ids": ["T1485", "T1490"],
       "examples": [
         {
           "resource_type": "aws_dynamodb_table",
@@ -26114,7 +26114,7 @@
           "description": "Ensure DynamoDB point in time recovery (backup) is enabled",
           "terraform_fail_hcl": "resource \"aws_dynamodb_table\" \"aws_dynamodb_table_example_1\" {\n  point_in_time_recovery {\n    enabled = false\n  }\n}",
           "why_fails": "백업/복구 비활성화",
-          "mitigation": "aws_dynamodb_table 리소스에 자동 백업 또는 복구 시점 보존 설정을 활성화"
+          "mitigation": "aws_dynamodb_table 리소스에 자동 백업 또는 복구 시점 보존 설정(point_in_time_recovery)을 활성화"
         }
       ]
     },
@@ -27431,7 +27431,7 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": ["T1040","T1557"],
       "examples": [
         {
           "resource_type": "aws_ecs_task_definition",
@@ -27439,7 +27439,7 @@
           "description": "Ensure Encryption in transit is enabled for EFS volumes in ECS Task definitions",
           "terraform_fail_hcl": "resource \"aws_ecs_task_definition\" \"aws_ecs_task_definition_example_1\" {\n  encrypted = false\n}",
           "why_fails": "암호화 비활성화",
-          "mitigation": "aws_ecs_task_definition 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용"
+          "mitigation": "EFS transit encryption 활성화(transit_encryption = \"ENABLED\")"
         }
       ]
     },
@@ -27456,7 +27456,7 @@
           "description": "Ensure all data stored in the Sagemaker Endpoint is securely encrypted at rest",
           "terraform_fail_hcl": "resource \"aws_sagemaker_endpoint_configuration\" \"aws_sagemaker_endpoint_configuration_example_1\" {\n  encrypted = false\n}",
           "why_fails": "암호화 비활성화",
-          "mitigation": "aws_sagemaker_endpoint_configuration 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용"
+          "mitigation": "aws_sagemaker_endpoint리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용, 모델 아티팩트 저장된 S3은 SSE-KMS 적용 필요"
         }
       ]
     },
@@ -27473,7 +27473,7 @@
           "description": "Ensure Glue Security Configuration Encryption is enabled",
           "terraform_fail_hcl": "resource \"aws_glue_security_configuration\" \"aws_glue_security_configuration_example_1\" {\n  encrypted = false\n}",
           "why_fails": "암호화 비활성화",
-          "mitigation": "aws_glue_security_configuration 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용"
+          "mitigation": "aws_glue 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용"
         }
       ]
     },
@@ -27557,7 +27557,7 @@
           "description": "Ensure that load balancer is using at least TLS 1.2",
           "terraform_fail_hcl": "resource \"aws_lb_listener\" \"aws_lb_listener_example_3\" {\n  protocol = \"HTTP\"\n}",
           "why_fails": "암호화 전송 미사용",
-          "mitigation": "aws_lb_listener 리소스가 HTTPS/TLS만 사용하도록 설정"
+          "mitigation": "aws_lb_listener 리소스가 TLSv1.2 사용하도록 설정, 최신 SSL policy적용, HTTPS 강제 "
         }
       ]
     },
@@ -27947,8 +27947,8 @@
       "check_id": "CKV_AWS_127",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "Severity": "HIGH",
+      "atomic_ids": ["T1557","T1040"],
       "examples": [
         {
           "resource_type": "aws_elb",
@@ -27956,7 +27956,7 @@
           "description": "Ensure that Elastic Load Balancer(s) uses SSL certificates provided by AWS Certificate Manager",
           "terraform_fail_hcl": "resource \"aws_elb\" \"aws_elb_example_1\" {\n  protocol = \"HTTP\"\n}",
           "why_fails": "암호화 전송 미사용",
-          "mitigation": "aws_elb 리소스가 HTTPS/TLS만 사용하도록 설정"
+          "mitigation": "aws_elb 리소스가 관리된 ACM 인증서 사용하여 자동갱신 및 통합관리되도록 설정"
         }
       ]
     },
@@ -28564,8 +28564,8 @@
       "check_id": "CKV_AWS_163",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "Severity": "Critical",
+      "atomic_ids": ["T1195","T1204"],
       "examples": [
         {
           "resource_type": "aws_ecr_repository",
@@ -28573,7 +28573,7 @@
           "description": "Ensure ECR image scanning on push is enabled",
           "terraform_fail_hcl": "resource \"aws_ecr_repository\" \"aws_ecr_repository_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_ecr_repository 리소스에서 \"Ensure ECR image scanning on push is enabled\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "aws_ecr_repository 리소스에 image scan on push 설정 활성화"
         }
       ]
     },
@@ -30501,7 +30501,7 @@
           "description": "Ensure that Comprehend Entity Recognizer’s volume is encrypted by KMS using a customer managed Key (CMK)",
           "terraform_fail_hcl": "resource \"aws_comprehend_entity_recognizer\" \"aws_comprehend_entity_recognizer_example_1\" {\n  encrypted = false\n}",
           "why_fails": "암호화 비활성화",
-          "mitigation": "aws_comprehend_entity_recognizer 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용"
+          "mitigation": "aws_comprehend_entity_recognizer 학습용 Volume 데이터 암호화를 활성화, 가능하면 KMS CMK를 사용, 필요시 output data도 암호화"
         }
       ]
     },
@@ -30544,7 +30544,7 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": ["T1530", "T1005"],
       "examples": [
         {
           "resource_type": "aws_dynamodb_table_replica",
@@ -30552,7 +30552,7 @@
           "description": "Ensure DynamoDB table replica KMS encryption uses CMK",
           "terraform_fail_hcl": "resource \"aws_dynamodb_table_replica\" \"aws_dynamodb_table_replica_example_1\" {\n  encrypted = false\n}",
           "why_fails": "암호화 비활성화",
-          "mitigation": "aws_dynamodb_table_replica 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용"
+          "mitigation": "aws_dynamodb_table_replica 암호화, 특히 리전별 CMK 필요"
         }
       ]
     },
@@ -31125,7 +31125,7 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": ["T1005"],
       "examples": [
         {
           "resource_type": "aws_docdb_global_cluster",
@@ -31133,7 +31133,7 @@
           "description": "Ensure DocumentDB Global Cluster is encrypted at rest (default is unencrypted)",
           "terraform_fail_hcl": "resource \"aws_docdb_global_cluster\" \"aws_docdb_global_cluster_example_1\" {\n  encrypted = false\n}",
           "why_fails": "암호화 비활성화",
-          "mitigation": "aws_docdb_global_cluster 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용"
+          "mitigation": "at-rest encryption 활성화 또는 CMK적용, 특히 글로벌 뿐 아니라 리전별 클러스터 모두 적용 필요."
         }
       ]
     },
@@ -31176,7 +31176,7 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": ["T1552"],
       "examples": [
         {
           "resource_type": "aws_datasync_location_object_storage",
@@ -31184,7 +31184,7 @@
           "description": "Ensure DataSync Location Object Storage doesn’t expose secrets",
           "terraform_fail_hcl": "resource \"aws_datasync_location_object_storage\" \"aws_datasync_location_object_storage_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_datasync_location_object_storage 리소스에서 \"Ensure DataSync Location Object Storage doesn’t expose secrets\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "aws_datasync_location_object_storage 리소스에서 하드코딩 된 key값 제거, IAM role 또는 Secrets Manager로 분리"
         }
       ]
     },
@@ -31193,7 +31193,7 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": ["T1005"],
       "examples": [
         {
           "resource_type": "aws_dms_endpoint",
@@ -31201,7 +31201,7 @@
           "description": "Ensure DMS endpoint uses Customer Managed Key (CMK)",
           "terraform_fail_hcl": "resource \"aws_dms_endpoint\" \"aws_dms_endpoint_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_dms_endpoint 리소스에서 \"Ensure DMS endpoint uses Customer Managed Key (CMK)\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "DMS endpoint에 CMK 적용"
         }
       ]
     },
@@ -31209,8 +31209,8 @@
       "check_id": "CKV_AWS_297",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "Severity": "HIGH",
+      "atomic_ids": ["T1530"],
       "examples": [
         {
           "resource_type": "aws_scheduler_schedule",
@@ -31218,7 +31218,7 @@
           "description": "Ensure EventBridge Scheduler Schedule uses Customer Managed Key (CMK)",
           "terraform_fail_hcl": "resource \"aws_scheduler_schedule\" \"aws_scheduler_schedule_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_scheduler_schedule 리소스에서 \"Ensure EventBridge Scheduler Schedule uses Customer Managed Key (CMK)\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "aws_scheduler_schedule 리소스에서 CMK 적용, 민감데이터는 Secrets Manager로 분리"
         }
       ]
     },
@@ -31439,7 +31439,7 @@
           "description": "Ensure that CodeBuild S3 logs are encrypted",
           "terraform_fail_hcl": "resource \"aws_codebuild_project\" \"aws_codebuild_project_example_1\" {\n  encrypted = false\n}",
           "why_fails": "암호화 비활성화",
-          "mitigation": "aws_codebuild_project 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용"
+          "mitigation": "aws_codebuild_project 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용(최소 SSE-S3사용)"
         }
       ]
     },
@@ -31448,7 +31448,7 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": ["T1562"],
       "examples": [
         {
           "resource_type": "aws_elastic_beanstalk_environment",
@@ -31456,7 +31456,7 @@
           "description": "Ensure Elastic Beanstalk environments have enhanced health reporting enabled",
           "terraform_fail_hcl": "resource \"aws_elastic_beanstalk_environment\" \"aws_elastic_beanstalk_environment_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_elastic_beanstalk_environment 리소스에서 \"Ensure Elastic Beanstalk environments have enhanced health reporting enabled\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "Enhanced Health Reporting 활성화 설정"
         }
       ]
     },
@@ -31768,8 +31768,8 @@
       "check_id": "CKV_AWS_329",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "Severity": "HIGH",
+      "atomic_ids": ["T1530", "T1083"],
       "examples": [
         {
           "resource_type": "aws_efs_access_point",
@@ -31777,7 +31777,7 @@
           "description": "EFS access points should enforce a root directory",
           "terraform_fail_hcl": "resource \"aws_efs_access_point\" \"aws_efs_access_point_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_efs_access_point 리소스에서 \"EFS access points should enforce a root directory\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "aws_efs_access_point 에서 root_directory 강제 설정"
         }
       ]
     },
