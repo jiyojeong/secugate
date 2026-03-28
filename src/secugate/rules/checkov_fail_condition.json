@@ -8,7 +8,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_network_acl",
@@ -33,7 +35,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_ebs_volume",
@@ -58,7 +62,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_guardduty_detector",
@@ -83,7 +89,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_method_settings",
@@ -108,7 +116,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_security_group",
@@ -125,7 +135,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -150,7 +163,11 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_emr_cluster",
@@ -175,7 +192,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_rds_cluster",
@@ -192,7 +212,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_backup_selection",
@@ -209,7 +232,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudtrail",
@@ -272,7 +297,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_group",
@@ -297,7 +325,9 @@
       "platform": "aws_tf",
       "example_count": 3,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_autoscaling_group",
@@ -330,7 +360,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_appautoscaling_target",
@@ -355,7 +387,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_backup_selection",
@@ -372,7 +407,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_eip",
@@ -397,7 +434,9 @@
       "platform": "aws_tf",
       "example_count": 4,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb",
@@ -438,7 +477,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_group_membership",
@@ -455,7 +497,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_user",
@@ -472,7 +516,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_route53_record",
@@ -489,7 +535,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_rds_cluster",
@@ -514,7 +562,11 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb",
@@ -539,7 +591,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_rest_api",
@@ -564,7 +619,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -589,7 +646,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_wafv2_web_acl",
@@ -606,7 +665,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -623,7 +684,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190"
+      ],
       "examples": [
         {
           "resource_type": "aws_appsync_graphql_api",
@@ -640,7 +703,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ssm_parameter",
@@ -657,7 +723,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_route",
@@ -682,7 +750,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ssm_parameter",
@@ -707,7 +778,9 @@
       "platform": "aws_tf",
       "example_count": 1496,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws",
@@ -12684,7 +12757,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1565",
+        "T1557"
+      ],
       "examples": [
         {
           "resource_type": "aws_route53_zone",
@@ -12692,7 +12768,7 @@
           "description": "Ensure Domain Name System Security Extensions (DNSSEC) signing is enabled for Amazon Route 53 public hosted zones",
           "terraform_fail_hcl": "resource \"aws_route53_zone\" \"aws_route53_zone_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_route53_zone 리소스에서 \"Ensure Domain Name System Security Extensions (DNSSEC) signing is enabled for Amazon Route 53 public hosted zones\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "DNSSEC 활성화"
         }
       ]
     },
@@ -12701,7 +12777,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_route53_zone",
@@ -12719,8 +12797,8 @@
       "example_count": 6,
       "Severity": "HIGH",
       "atomic_ids": [
-        "T1098.003",
-        "T1078.004"
+        "T1098",
+        "T1078"
       ],
       "examples": [
         {
@@ -12778,7 +12856,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_instance",
@@ -12795,7 +12876,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -12812,7 +12895,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket_acl",
@@ -12829,7 +12914,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_route",
@@ -12854,7 +12941,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_config_configuration_recorder",
@@ -12879,7 +12968,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -12896,7 +12987,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1059"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -12921,7 +13015,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_config_configuration_recorder",
@@ -12938,7 +13034,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_dms_endpoint",
@@ -12955,7 +13053,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticache_replication_group",
@@ -12972,7 +13072,9 @@
       "platform": "aws_tf",
       "example_count": 3,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_stage",
@@ -13005,7 +13107,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticsearch_domain",
@@ -13030,7 +13134,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_method",
@@ -13047,7 +13153,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -13064,7 +13172,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_emr_cluster",
@@ -13080,8 +13190,11 @@
       "check_id": "CKV2_AWS_56",
       "platform": "aws_tf",
       "example_count": 7,
-      "Severity": "HIGH",
-      "atomic_ids": [],
+      "Severity": "CRITICAL",
+      "atomic_ids": [
+        "T1098",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_group_policy_attachment",
@@ -13146,7 +13259,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_secretsmanager_secret",
@@ -13163,7 +13279,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_neptune_cluster",
@@ -13180,7 +13299,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticsearch_domain",
@@ -13205,7 +13326,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -13222,7 +13346,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -13239,7 +13365,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -13256,7 +13384,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_networkfirewall_firewall",
@@ -13273,7 +13403,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_kms_key",
@@ -13290,7 +13422,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket_ownership_controls",
@@ -13307,7 +13441,11 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1059",
+        "T1552"
+      ],
       "examples": [
         {
           "resource_type": "aws_mwaa_environment",
@@ -13324,7 +13462,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_role",
@@ -13349,7 +13490,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1040",
+        "T1557"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -13374,7 +13518,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_method",
@@ -13391,7 +13537,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1098",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_acm_certificate",
@@ -13408,7 +13557,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -13425,7 +13576,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_sqs_queue",
@@ -13442,7 +13595,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb_listener",
@@ -13467,7 +13622,9 @@
       "platform": "aws_tf",
       "example_count": 1496,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws",
@@ -25444,7 +25601,10 @@
       "platform": "aws_tf",
       "example_count": 3,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1059"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb",
@@ -25477,7 +25637,10 @@
       "platform": "aws_tf",
       "example_count": 3,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1059"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_stage",
@@ -25510,7 +25673,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1059"
+      ],
       "examples": [
         {
           "resource_type": "aws_appsync_graphql_api",
@@ -25535,7 +25701,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb_listener",
@@ -25560,7 +25728,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_ebs_volume",
@@ -25577,7 +25747,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticsearch_domain",
@@ -25602,7 +25774,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticsearch_domain",
@@ -25627,7 +25801,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_kms_key",
@@ -25644,7 +25820,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_instance",
@@ -25669,7 +25847,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_account_password_policy",
@@ -25686,7 +25866,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_account_password_policy",
@@ -25703,7 +25885,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_account_password_policy",
@@ -25720,7 +25904,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_account_password_policy",
@@ -25737,7 +25923,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1078","T1110"],
+      "atomic_ids": [
+        "T1078",
+        "T1110"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_account_password_policy",
@@ -25754,7 +25943,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_account_password_policy",
@@ -25771,7 +25962,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_account_password_policy",
@@ -25788,7 +25981,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -25805,7 +26001,11 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -25830,7 +26030,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -25847,7 +26049,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -25872,7 +26077,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1041"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -25880,7 +26088,7 @@
           "description": "S3 Bucket has an ACL defined which allows public READ access.",
           "terraform_fail_hcl": "resource \"aws_s3_bucket\" \"aws_s3_bucket_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_s3_bucket 리소스에서 \"S3 Bucket has an ACL defined which allows public READ access.\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "aws_s3_bucket 리소스에서 READ access 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
         },
         {
           "resource_type": "aws_s3_bucket_acl",
@@ -25888,7 +26096,7 @@
           "description": "S3 Bucket has an ACL defined which allows public READ access.",
           "terraform_fail_hcl": "resource \"aws_s3_bucket_acl\" \"aws_s3_bucket_acl_example_2\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_s3_bucket_acl 리소스에서 \"S3 Bucket has an ACL defined which allows public READ access.\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "aws_s3_bucket_acl 리소스에서 public READ access. 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
         }
       ]
     },
@@ -25897,7 +26105,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -25922,7 +26132,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_sagemaker_notebook_instance",
@@ -25939,7 +26151,9 @@
       "platform": "aws_tf",
       "example_count": 7,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_security_group",
@@ -26039,7 +26253,11 @@
       "platform": "aws_tf",
       "example_count": 3,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_security_group",
@@ -26072,7 +26290,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_sns_topic",
@@ -26089,7 +26309,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_sqs_queue",
@@ -26106,7 +26328,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "CRITICAL",
-      "atomic_ids": ["T1485", "T1490"],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_dynamodb_table",
@@ -26123,7 +26348,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticache_replication_group",
@@ -26140,7 +26367,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1040",
+        "T1557"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticache_replication_group",
@@ -26157,7 +26387,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1040",
+        "T1557"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticache_replication_group",
@@ -26174,7 +26407,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecr_repository_policy",
@@ -26191,7 +26427,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1098",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_kms_key",
@@ -26208,7 +26447,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -26225,7 +26466,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudtrail",
@@ -26242,7 +26485,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudtrail",
@@ -26259,7 +26504,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_eks_cluster",
@@ -26276,7 +26523,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_eks_cluster",
@@ -26293,7 +26543,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_eks_cluster",
@@ -26311,7 +26564,7 @@
       "example_count": 3,
       "Severity": "HIGH",
       "atomic_ids": [
-        "T1078.004"
+        "T1078"
       ],
       "examples": [
         {
@@ -26344,8 +26597,12 @@
       "check_id": "CKV_AWS_41",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
-      "atomic_ids": [],
+      "Severity": "CRITICAL",
+      "atomic_ids": [
+        "T1552",
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws",
@@ -26353,7 +26610,7 @@
           "description": "Ensure no hard coded AWS access key and secret key exists in provider",
           "terraform_fail_hcl": "provider \"aws\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws 리소스에서 \"Ensure no hard coded AWS access key and secret key exists in provider\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "Credential 코드에서 제거, IAM Role 사용, Secret Manager사용"
         }
       ]
     },
@@ -26362,7 +26619,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_efs_file_system",
@@ -26379,7 +26639,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_kinesis_stream",
@@ -26396,7 +26659,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_neptune_cluster",
@@ -26413,7 +26679,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_lambda_function",
@@ -26421,7 +26690,7 @@
           "description": "Ensure no hard-coded secrets exist in lambda environment",
           "terraform_fail_hcl": "resource \"aws_lambda_function\" \"aws_lambda_function_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_lambda_function 리소스에서 \"Ensure no hard-coded secrets exist in lambda environment\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "aws_lambda_function 하드코딩 된 환경변수 제거 & AWS Secrets Manager 사용, IAM Role 기반 접근"
         }
       ]
     },
@@ -26429,8 +26698,12 @@
       "check_id": "CKV_AWS_46",
       "platform": "aws_tf",
       "example_count": 3,
-      "Severity": "HIGH",
-      "atomic_ids": [],
+      "Severity": "CRITICAL",
+      "atomic_ids": [
+        "T1552",
+        "T1087",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_instance",
@@ -26438,7 +26711,7 @@
           "description": "Ensure no hard-coded secrets exist in EC2 user data",
           "terraform_fail_hcl": "resource \"aws_instance\" \"aws_instance_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_instance 리소스에서 \"Ensure no hard-coded secrets exist in EC2 user data\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "User Data에서 secret 제거"
         },
         {
           "resource_type": "aws_launch_configuration",
@@ -26446,7 +26719,7 @@
           "description": "Ensure no hard-coded secrets exist in EC2 user data",
           "terraform_fail_hcl": "resource \"aws_launch_configuration\" \"aws_launch_configuration_example_2\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_launch_configuration 리소스에서 \"Ensure no hard-coded secrets exist in EC2 user data\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "하드코딩 된 EC2 user data 제거"
         },
         {
           "resource_type": "aws_launch_template",
@@ -26454,7 +26727,7 @@
           "description": "Ensure no hard-coded secrets exist in EC2 user data",
           "terraform_fail_hcl": "resource \"aws_launch_template\" \"aws_launch_template_example_3\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_launch_template 리소스에서 \"Ensure no hard-coded secrets exist in EC2 user data\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "aws_launch_template 하드코딩 된 EC2 user data 제거"
         }
       ]
     },
@@ -26463,7 +26736,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_dax_cluster",
@@ -26480,7 +26756,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_mq_broker",
@@ -26497,7 +26775,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "CRITICAL",
-      "atomic_ids": ["T1078"],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_policy_document",
@@ -26514,7 +26794,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_lambda_function",
@@ -26531,7 +26813,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecr_repository",
@@ -26548,7 +26832,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket_public_access_block",
@@ -26565,7 +26852,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket_public_access_block",
@@ -26582,7 +26872,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket_public_access_block",
@@ -26599,7 +26892,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket_public_access_block",
@@ -26615,8 +26911,12 @@
       "check_id": "CKV_AWS_57",
       "platform": "aws_tf",
       "example_count": 2,
-      "Severity": "HIGH",
-      "atomic_ids": [],
+      "Severity": "CRITICAL",
+      "atomic_ids": [
+        "T1565",
+        "T1195",
+        "T1496"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -26624,7 +26924,7 @@
           "description": "S3 Bucket has an ACL defined which allows public WRITE access.",
           "terraform_fail_hcl": "resource \"aws_s3_bucket\" \"aws_s3_bucket_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_s3_bucket 리소스에서 \"S3 Bucket has an ACL defined which allows public WRITE access.\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "aws_s3_bucket 리소스에서 WRITE access 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
         },
         {
           "resource_type": "aws_s3_bucket_acl",
@@ -26632,7 +26932,7 @@
           "description": "S3 Bucket has an ACL defined which allows public WRITE access.",
           "terraform_fail_hcl": "resource \"aws_s3_bucket_acl\" \"aws_s3_bucket_acl_example_2\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_s3_bucket_acl 리소스에서 \"S3 Bucket has an ACL defined which allows public WRITE access.\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "aws_s3_bucket_acl 리소스에서 ACL WRITE access 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
         }
       ]
     },
@@ -26641,7 +26941,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_eks_cluster",
@@ -26658,7 +26961,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_method",
@@ -26675,7 +26980,11 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "CRITICAL",
-      "atomic_ids": ["T1078","T1098","T1570"],
+      "atomic_ids": [
+        "T1078",
+        "T1098",
+        "T1570"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_role",
@@ -26684,7 +26993,7 @@
           "terraform_fail_hcl": "resource \"aws_iam_role\" \"aws_iam_role_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
           "mitigation": "aws_iam_role 리소스에서 Principal을 명확히 제한"
-          }
+        }
       ]
     },
     {
@@ -26692,7 +27001,11 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "CRITICAL",
-      "atomic_ids": ["T1078","T1098","T1570"],
+      "atomic_ids": [
+        "T1078",
+        "T1098",
+        "T1570"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_role",
@@ -26813,7 +27126,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshift_cluster",
@@ -26830,7 +27146,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecs_cluster",
@@ -26847,7 +27165,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudwatch_log_group",
@@ -26864,7 +27184,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudtrail",
@@ -26881,7 +27203,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -26898,7 +27222,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_mq_broker",
@@ -26915,7 +27242,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -26940,7 +27269,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshift_cluster",
@@ -26957,7 +27288,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_sqs_queue_policy",
@@ -26974,7 +27308,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_stage",
@@ -26991,7 +27327,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_docdb_cluster",
@@ -27008,7 +27347,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_globalaccelerator_accelerator",
@@ -27025,7 +27366,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_stage",
@@ -27050,7 +27393,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_athena_database",
@@ -27067,7 +27413,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_codebuild_project",
@@ -27119,7 +27467,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_msk_cluster",
@@ -27136,7 +27486,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1040",
+        "T1557"
+      ],
       "examples": [
         {
           "resource_type": "aws_msk_cluster",
@@ -27153,7 +27506,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_athena_workgroup",
@@ -27170,7 +27525,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticsearch_domain",
@@ -27195,7 +27552,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticsearch_domain",
@@ -27220,7 +27579,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_docdb_cluster",
@@ -27237,7 +27598,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -27254,7 +27617,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshift_cluster",
@@ -27271,7 +27637,11 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_instance",
@@ -27296,7 +27666,11 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_dms_replication_instance",
@@ -27313,7 +27687,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_docdb_cluster_parameter_group",
@@ -27330,7 +27706,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb",
@@ -27355,7 +27733,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_elb",
@@ -27372,7 +27752,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -27397,7 +27779,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1530"],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_glue_data_catalog_encryption_settings",
@@ -27414,7 +27798,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1530","T1005"],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_rds_cluster",
@@ -27431,7 +27818,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1040","T1557"],
+      "atomic_ids": [
+        "T1040",
+        "T1557"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecs_task_definition",
@@ -27448,7 +27838,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_sagemaker_endpoint_configuration",
@@ -27465,7 +27858,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_glue_security_configuration",
@@ -27482,7 +27878,11 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1110",
+        "T1021",
+        "T1611"
+      ],
       "examples": [
         {
           "resource_type": "aws_eks_node_group",
@@ -27490,7 +27890,7 @@
           "description": "Ensure AWS EKS node group does not have implicit SSH access from 0.0.0.0/0",
           "terraform_fail_hcl": "resource \"aws_eks_node_group\" \"aws_eks_node_group_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_eks_node_group 리소스에서 \"Ensure AWS EKS node group does not have implicit SSH access from 0.0.0.0/0\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "aws_eks_node_group 리소스에서 SSH 접근제한/제거 또는 특정 IP만 허용/Bastion Host 사용"
         }
       ]
     },
@@ -27499,7 +27899,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_neptune_cluster",
@@ -27516,7 +27918,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1190","T1046"],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_neptune_cluster_instance",
@@ -27533,7 +27938,9 @@
       "platform": "aws_tf",
       "example_count": 3,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb_listener",
@@ -27566,7 +27973,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_docdb_cluster_parameter_group",
@@ -27583,7 +27992,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshift_parameter_group",
@@ -27600,7 +28011,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_ebs_encryption_by_default",
@@ -27617,7 +28030,11 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552",
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_policy_document",
@@ -27634,7 +28051,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1537",
+        "T1041"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_policy_document",
@@ -27651,7 +28071,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_policy_document",
@@ -27668,7 +28091,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_policy_document",
@@ -27685,7 +28110,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_policy_document",
@@ -27702,7 +28130,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1040",
+        "T1557"
+      ],
       "examples": [
         {
           "resource_type": "aws_ssm_document",
@@ -27719,7 +28150,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ssm_document",
@@ -27736,7 +28170,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_emr_cluster",
@@ -27753,7 +28189,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_lambda_function",
@@ -27770,7 +28208,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_lambda_function",
@@ -27787,7 +28227,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_lambda_function",
@@ -27804,7 +28246,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -27829,7 +28273,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_dynamodb_table",
@@ -27846,7 +28293,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_stage",
@@ -27863,7 +28312,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_config_configuration_aggregator",
@@ -27880,7 +28331,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_sagemaker_notebook_instance",
@@ -27897,7 +28350,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1537"
+      ],
       "examples": [
         {
           "resource_type": "aws_vpc_endpoint_service",
@@ -27914,7 +28370,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudformation_stack",
@@ -27931,7 +28389,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_instance",
@@ -27948,7 +28408,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1557","T1040"],
+      "atomic_ids": [
+        "T1557",
+        "T1040"
+      ],
       "examples": [
         {
           "resource_type": "aws_elb",
@@ -27965,7 +28428,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -27982,7 +28447,11 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_subnet",
@@ -27999,7 +28468,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb",
@@ -28024,7 +28495,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -28049,7 +28523,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticache_cluster",
@@ -28066,7 +28543,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_instance",
@@ -28083,7 +28562,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecr_repository",
@@ -28100,7 +28581,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticsearch_domain",
@@ -28125,7 +28608,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elb",
@@ -28142,7 +28627,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_rds_cluster",
@@ -28159,7 +28647,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_rds_global_cluster",
@@ -28176,7 +28666,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshift_cluster",
@@ -28193,7 +28685,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshift_cluster",
@@ -28210,7 +28705,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -28227,7 +28724,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -28252,7 +28751,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket",
@@ -28277,7 +28779,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_cluster_snapshot",
@@ -28294,7 +28799,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_codebuild_project",
@@ -28311,7 +28818,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_default_vpc",
@@ -28328,7 +28837,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_secretsmanager_secret",
@@ -28345,7 +28857,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb",
@@ -28370,7 +28885,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb",
@@ -28395,7 +28912,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_autoscaling_group",
@@ -28412,7 +28931,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshift_cluster",
@@ -28429,7 +28950,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_workspaces_workspace",
@@ -28446,7 +28969,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_workspaces_workspace",
@@ -28463,7 +28988,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -28480,7 +29007,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudwatch_log_group",
@@ -28497,7 +29026,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_athena_workgroup",
@@ -28514,7 +29045,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_timestreamwrite_database",
@@ -28531,7 +29065,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -28548,7 +29085,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_rds_cluster",
@@ -28565,7 +29105,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "CRITICAL",
-      "atomic_ids": ["T1195","T1204"],
+      "atomic_ids": [
+        "T1195",
+        "T1204"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecr_repository",
@@ -28582,7 +29125,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_transfer_server",
@@ -28599,7 +29145,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_dynamodb_global_table",
@@ -28616,7 +29165,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_backup_vault",
@@ -28633,7 +29185,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_glacier_vault",
@@ -28650,7 +29205,11 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": ["T1190","T1078","T1530"],
+      "atomic_ids": [
+        "T1190",
+        "T1078",
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_sqs_queue",
@@ -28675,7 +29234,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_sns_topic_policy",
@@ -28692,7 +29254,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_qldb_ledger",
@@ -28709,7 +29273,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_emr_security_configuration",
@@ -28726,7 +29292,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_qldb_ledger",
@@ -28743,7 +29312,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_lambda_function",
@@ -28760,7 +29331,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -28777,7 +29350,9 @@
       "platform": "aws_tf",
       "example_count": 3,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_waf_web_acl",
@@ -28810,7 +29385,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_waf_web_acl",
@@ -28835,7 +29412,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_kinesis_video_stream",
@@ -28852,7 +29431,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_fsx_ontap_file_system",
@@ -28869,7 +29450,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_fsx_windows_file_system",
@@ -28886,7 +29469,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_imagebuilder_component",
@@ -28903,7 +29488,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_object_copy",
@@ -28920,7 +29508,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_docdb_cluster",
@@ -28937,7 +29528,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_ebs_snapshot_copy",
@@ -28954,7 +29548,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_efs_file_system",
@@ -28971,7 +29568,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_kinesis_stream",
@@ -28988,7 +29587,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket_object",
@@ -29005,7 +29607,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_sagemaker_domain",
@@ -29030,7 +29634,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_ebs_volume",
@@ -29047,7 +29653,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_fsx_lustre_file_system",
@@ -29064,7 +29672,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticache_replication_group",
@@ -29080,8 +29690,11 @@
       "check_id": "CKV_AWS_192",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "Severity": "HIGH",
+      "atomic_ids": [
+        "T1190",
+        "T1059"
+      ],
       "examples": [
         {
           "resource_type": "aws_wafv2_web_acl",
@@ -29089,7 +29702,7 @@
           "description": "Ensure WAF prevents message lookup in Log4j2. See CVE-2021-44228 aka log4jshell",
           "terraform_fail_hcl": "resource \"aws_wafv2_web_acl\" \"aws_wafv2_web_acl_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_wafv2_web_acl 리소스에서 \"Ensure WAF prevents message lookup in Log4j2. See CVE-2021-44228 aka log4jshell\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "aws_wafv2_web_acl 리소스에서 Log4j JNDI 패턴 차단"
         }
       ]
     },
@@ -29098,7 +29711,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_appsync_graphql_api",
@@ -29115,7 +29730,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_appsync_graphql_api",
@@ -29132,7 +29749,9 @@
       "platform": "aws_tf",
       "example_count": 3,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_glue_crawler",
@@ -29165,7 +29784,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticache_security_group",
@@ -29182,7 +29803,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_mq_broker",
@@ -29199,7 +29822,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_security_group",
@@ -29216,7 +29841,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_imagebuilder_distribution_configuration",
@@ -29233,7 +29860,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_imagebuilder_image_recipe",
@@ -29250,7 +29879,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_memorydb_cluster",
@@ -29267,7 +29899,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1040",
+        "T1557"
+      ],
       "examples": [
         {
           "resource_type": "aws_memorydb_cluster",
@@ -29284,7 +29919,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_fsx_openzfs_file_system",
@@ -29301,7 +29938,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_ami",
@@ -29318,7 +29957,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ami_launch_permission",
@@ -29335,7 +29976,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_domain_name",
@@ -29352,7 +29995,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_mq_broker",
@@ -29369,7 +30014,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_mq_broker",
@@ -29394,7 +30041,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_mq_broker",
@@ -29411,7 +30060,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_batch_job_definition",
@@ -29428,7 +30079,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -29445,7 +30098,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_dms_replication_instance",
@@ -29462,7 +30117,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_load_balancer_policy",
@@ -29479,7 +30137,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_appsync_api_cache",
@@ -29496,7 +30156,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1040",
+        "T1557"
+      ],
       "examples": [
         {
           "resource_type": "aws_appsync_api_cache",
@@ -29513,7 +30176,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -29530,7 +30195,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_deployment",
@@ -29547,7 +30214,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudsearch_domain",
@@ -29564,7 +30233,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_codepipeline",
@@ -29581,7 +30252,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudsearch_domain",
@@ -29598,7 +30271,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_codeartifact_domain",
@@ -29615,7 +30290,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_dms_replication_instance",
@@ -29632,7 +30309,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecs_cluster",
@@ -29649,7 +30328,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecs_cluster",
@@ -29666,7 +30347,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_method_settings",
@@ -29683,7 +30366,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -29708,7 +30393,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_kms_key",
@@ -29725,7 +30412,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticsearch_domain",
@@ -29750,7 +30439,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_network_acl",
@@ -29775,7 +30466,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_network_acl",
@@ -29800,7 +30493,11 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_network_acl",
@@ -29825,7 +30522,11 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_network_acl",
@@ -29850,7 +30551,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_acm_certificate",
@@ -29867,7 +30570,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_acm_certificate",
@@ -29884,7 +30589,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_ami_copy",
@@ -29901,7 +30608,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_ami_copy",
@@ -29918,7 +30627,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_rest_api",
@@ -29935,7 +30646,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_guardduty_detector",
@@ -29952,7 +30665,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_dax_cluster",
@@ -29969,7 +30684,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_kinesis_firehose_delivery_stream",
@@ -29986,7 +30703,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_kinesis_firehose_delivery_stream",
@@ -30003,7 +30722,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_mwaa_environment",
@@ -30020,7 +30741,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_mwaa_environment",
@@ -30037,7 +30760,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_mwaa_environment",
@@ -30054,7 +30779,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance_automated_backups_replication",
@@ -30071,7 +30799,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_rds_cluster_activity_stream",
@@ -30088,7 +30818,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticsearch_domain",
@@ -30113,7 +30845,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticsearch_domain",
@@ -30138,7 +30872,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecs_task_definition",
@@ -30155,7 +30891,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -30180,7 +30918,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudtrail",
@@ -30197,7 +30937,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudtrail",
@@ -30214,7 +30956,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_dlm_lifecycle_policy",
@@ -30231,7 +30975,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_dlm_lifecycle_policy",
@@ -30248,7 +30994,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_dlm_lifecycle_policy",
@@ -30265,7 +31013,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_dlm_lifecycle_policy",
@@ -30282,7 +31032,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_codecommit_approval_rule_template",
@@ -30299,7 +31051,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_lambda_function_url",
@@ -30316,7 +31070,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_response_headers_policy",
@@ -30333,7 +31090,11 @@
       "platform": "aws_tf",
       "example_count": 3,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_security_group",
@@ -30366,7 +31127,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb_target_group",
@@ -30391,7 +31154,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_kendra_index",
@@ -30408,7 +31173,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_appflow_flow",
@@ -30425,7 +31192,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_appflow_connector_profile",
@@ -30442,7 +31211,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_keyspaces_table",
@@ -30459,7 +31230,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_snapshot_copy",
@@ -30476,7 +31250,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_comprehend_entity_recognizer",
@@ -30493,7 +31269,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_comprehend_entity_recognizer",
@@ -30510,7 +31288,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_connect_instance_storage_config",
@@ -30527,7 +31307,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": ["1530"],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_connect_instance_storage_config",
@@ -30544,7 +31326,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1530", "T1005"],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_dynamodb_table_replica",
@@ -30561,7 +31346,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_lambda_function",
@@ -30579,7 +31366,7 @@
       "example_count": 1,
       "Severity": "HIGH",
       "atomic_ids": [
-        "T1078.004"
+        "T1078"
       ],
       "examples": [
         {
@@ -30597,7 +31384,10 @@
       "platform": "aws_tf",
       "example_count": 6,
       "Severity": "CRITICAL",
-      "atomic_ids": ["T1078","T1098"],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_group_policy_attachment",
@@ -30653,8 +31443,11 @@
       "check_id": "CKV_AWS_275",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
-      "atomic_ids": [],
+      "Severity": "CRITICAL",
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_policy",
@@ -30662,7 +31455,7 @@
           "description": "Disallow policies from using the AWS AdministratorAccess policy",
           "terraform_fail_hcl": "resource \"aws_iam_policy\" \"aws_iam_policy_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_iam_policy 리소스에서 \"Disallow policies from using the AWS AdministratorAccess policy\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "Custom Policy로 최소 권한 설계"
         }
       ]
     },
@@ -30671,7 +31464,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_method_settings",
@@ -30688,7 +31483,9 @@
       "platform": "aws_tf",
       "example_count": 3,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_security_group",
@@ -30721,7 +31518,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1530","T1005"],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_memorydb_snapshot",
@@ -30738,7 +31538,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1530"],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_neptune_cluster_snapshot",
@@ -30755,7 +31557,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1530"],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_neptune_cluster_snapshot",
@@ -30772,7 +31576,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1530"],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshift_snapshot_copy_grant",
@@ -30789,7 +31595,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1530","T1005"],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshiftserverless_namespace",
@@ -30805,8 +31614,12 @@
       "check_id": "CKV_AWS_283",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "Severity": "HIGH",
+      "atomic_ids": [
+        "T1530",
+        "T1190",
+        "T1537"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_policy_document",
@@ -30823,7 +31636,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_sfn_state_machine",
@@ -30840,7 +31655,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_sfn_state_machine",
@@ -30858,7 +31675,7 @@
       "example_count": 5,
       "Severity": "HIGH",
       "atomic_ids": [
-        "T1098.003"
+        "T1098"
       ],
       "examples": [
         {
@@ -30907,8 +31724,12 @@
       "check_id": "CKV_AWS_287",
       "platform": "aws_tf",
       "example_count": 5,
-      "Severity": "HIGH",
-      "atomic_ids": [],
+      "Severity": "CRITICAL",
+      "atomic_ids": [
+        "T1552",
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_group_policy",
@@ -30957,7 +31778,10 @@
       "platform": "aws_tf",
       "example_count": 5,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1537",
+        "T1041"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_group_policy",
@@ -31005,9 +31829,11 @@
       "check_id": "CKV_AWS_289",
       "platform": "aws_tf",
       "example_count": 5,
-      "Severity": "HIGH",
+      "Severity": "CRITICAL",
       "atomic_ids": [
-        "T1098.003"
+        "T1098",
+        "T1078",
+        "T1537"
       ],
       "examples": [
         {
@@ -31056,9 +31882,11 @@
       "check_id": "CKV_AWS_290",
       "platform": "aws_tf",
       "example_count": 5,
-      "Severity": "HIGH",
+      "Severity": "CRITICAL",
       "atomic_ids": [
-        "T1098.003"
+        "T1098",
+        "T1578",
+        "T1485"
       ],
       "examples": [
         {
@@ -31107,8 +31935,12 @@
       "check_id": "CKV_AWS_291",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "Severity": "HIGH",
+      "atomic_ids": [
+        "T1530",
+        "T1190",
+        "T1499"
+      ],
       "examples": [
         {
           "resource_type": "aws_msk_cluster",
@@ -31116,7 +31948,7 @@
           "description": "Ensure MSK nodes are private",
           "terraform_fail_hcl": "resource \"aws_msk_cluster\" \"aws_msk_cluster_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_msk_cluster 리소스에서 \"Ensure MSK nodes are private\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "MSK를 Private 네트워크로 제한(SG사용), TLS적용"
         }
       ]
     },
@@ -31125,7 +31957,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1005"],
+      "atomic_ids": [
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_docdb_global_cluster",
@@ -31142,7 +31976,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -31159,7 +31996,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudtrail_event_data_store",
@@ -31176,7 +32015,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1552"],
+      "atomic_ids": [
+        "T1552"
+      ],
       "examples": [
         {
           "resource_type": "aws_datasync_location_object_storage",
@@ -31193,7 +32034,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": ["T1005"],
+      "atomic_ids": [
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_dms_endpoint",
@@ -31210,7 +32053,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1530"],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_scheduler_schedule",
@@ -31227,7 +32072,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1530","T1005"],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_dms_s3_endpoint",
@@ -31244,7 +32092,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket_lifecycle_configuration",
@@ -31261,7 +32111,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_lambda_permission",
@@ -31278,7 +32131,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_snapshot",
@@ -31295,7 +32151,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_ssm_document",
@@ -31312,7 +32171,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1078","T1552"],
+      "atomic_ids": [
+        "T1078",
+        "T1552"
+      ],
       "examples": [
         {
           "resource_type": "aws_secretsmanager_secret_rotation",
@@ -31329,7 +32191,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -31346,7 +32210,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_sagemaker_notebook_instance",
@@ -31363,7 +32229,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_sagemaker_notebook_instance",
@@ -31380,7 +32248,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_api_gateway_method_settings",
@@ -31397,7 +32267,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_apigatewayv2_route",
@@ -31414,7 +32286,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -31431,7 +32305,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_codebuild_project",
@@ -31448,7 +32325,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": ["T1562"],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_elastic_beanstalk_environment",
@@ -31465,7 +32344,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_rds_cluster",
@@ -31482,7 +32364,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_codebuild_project",
@@ -31499,7 +32383,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_autoscaling_group",
@@ -31516,7 +32402,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_codebuild_project",
@@ -31533,7 +32421,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticsearch_domain",
@@ -31558,7 +32448,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticsearch_domain",
@@ -31583,7 +32475,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudwatch_metric_alarm",
@@ -31600,7 +32494,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshift_cluster",
@@ -31617,7 +32513,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshift_cluster",
@@ -31634,7 +32532,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticache_cluster",
@@ -31651,7 +32551,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elasticache_cluster",
@@ -31668,7 +32570,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_rds_cluster",
@@ -31685,7 +32589,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_rds_cluster",
@@ -31702,7 +32608,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_rds_cluster",
@@ -31719,7 +32627,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_rds_cluster",
@@ -31735,8 +32645,11 @@
       "check_id": "CKV_AWS_328",
       "platform": "aws_tf",
       "example_count": 3,
-      "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "Severity": "HIGH",
+      "atomic_ids": [
+        "T1190",
+        "T1557"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb",
@@ -31769,7 +32682,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1530", "T1083"],
+      "atomic_ids": [
+        "T1530",
+        "T1083"
+      ],
       "examples": [
         {
           "resource_type": "aws_efs_access_point",
@@ -31786,7 +32702,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_efs_access_point",
@@ -31803,7 +32721,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ec2_transit_gateway",
@@ -31820,7 +32740,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecs_service",
@@ -31837,7 +32759,11 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecs_service",
@@ -31854,7 +32780,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecs_task_definition",
@@ -31871,7 +32799,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecs_task_definition",
@@ -31888,7 +32818,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ecs_task_definition",
@@ -31905,7 +32837,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1552"],
+      "atomic_ids": [
+        "T1552"
+      ],
       "examples": [
         {
           "resource_type": "aws_ssm_parameter",
@@ -31922,7 +32856,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudwatch_log_group",
@@ -31938,8 +32874,11 @@
       "check_id": "CKV_AWS_339",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "Severity": "HIGH",
+      "atomic_ids": [
+        "T1190",
+        "T1068"
+      ],
       "examples": [
         {
           "resource_type": "aws_eks_cluster",
@@ -31947,7 +32886,7 @@
           "description": "Ensure EKS clusters run on a supported Kubernetes version",
           "terraform_fail_hcl": "resource \"aws_eks_cluster\" \"aws_eks_cluster_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_eks_cluster 리소스에서 \"Ensure EKS clusters run on a supported Kubernetes version\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "EOL Kubernetes 버전 사용(지원되는 최신 버전으로 업그레이드)"
         }
       ]
     },
@@ -31956,7 +32895,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elastic_beanstalk_environment",
@@ -31973,7 +32914,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_launch_configuration",
@@ -31998,7 +32941,9 @@
       "platform": "aws_tf",
       "example_count": 6,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190"
+      ],
       "examples": [
         {
           "resource_type": "aws_waf_rule_group",
@@ -32055,7 +33000,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshift_cluster",
@@ -32072,7 +33020,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1485", "T1562"],
+      "atomic_ids": [
+        "T1485",
+        "T1562"
+      ],
       "examples": [
         {
           "resource_type": "aws_networkfirewall_firewall",
@@ -32080,7 +33031,7 @@
           "description": "Ensure that Network firewalls have deletion protection enabled",
           "terraform_fail_hcl": "resource \"aws_networkfirewall_firewall\" \"aws_networkfirewall_firewall_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_networkfirewall_firewall 리소스에서 delete_protection 설정, 삭제 보호 활성화" 
+          "mitigation": "aws_networkfirewall_firewall 리소스에서 delete_protection 설정, 삭제 보호 활성화"
         }
       ]
     },
@@ -32089,7 +33040,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": ["T1562","T1530"],
+      "atomic_ids": [
+        "T1562",
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_networkfirewall_firewall",
@@ -32114,7 +33068,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1562","T1083"],
+      "atomic_ids": [
+        "T1562",
+        "T1083"
+      ],
       "examples": [
         {
           "resource_type": "aws_networkfirewall_firewall_policy",
@@ -32131,7 +33088,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1530","T1005"],
+      "atomic_ids": [
+        "T1530",
+        "T1005"
+      ],
       "examples": [
         {
           "resource_type": "aws_neptune_cluster",
@@ -32148,7 +33108,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "CRITICAL",
-      "atomic_ids": ["T1078","T1098"],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_access_key",
@@ -32165,7 +33128,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_emr_security_configuration",
@@ -32182,7 +33147,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": ["T1005","T1530"],
+      "atomic_ids": [
+        "T1005",
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_emr_security_configuration",
@@ -32199,7 +33167,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_emr_security_configuration",
@@ -32216,7 +33186,11 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1046",
+        "T1190",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_network_acl_rule",
@@ -32224,7 +33198,7 @@
           "description": "Ensure NACL ingress does not allow all Ports",
           "terraform_fail_hcl": "resource \"aws_network_acl_rule\" \"aws_network_acl_rule_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_network_acl_rule 리소스에서 \"Ensure NACL ingress does not allow all Ports\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "필요한 포트만 허용, Deny rule 추가하고 필요 서비스/IP만 명시적으로 추가"
         }
       ]
     },
@@ -32233,7 +33207,9 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -32258,7 +33234,10 @@
       "platform": "aws_tf",
       "example_count": 2,
       "Severity": "HIGH",
-      "atomic_ids": ["T1082","T1530"],
+      "atomic_ids": [
+        "T1082",
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -32284,8 +33263,8 @@
       "example_count": 5,
       "Severity": "HIGH",
       "atomic_ids": [
-        "T1098.003",
-        "T1078.004"
+        "T1530",
+        "T1078"
       ],
       "examples": [
         {
@@ -32335,7 +33314,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530",
+        "T1083"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_policy_document",
@@ -32343,7 +33325,7 @@
           "description": "Ensure no IAM policies documents allow “*” as a statement’s resource for restrictable actions",
           "terraform_fail_hcl": "resource \"aws_iam_policy_document\" \"aws_iam_policy_document_example_1\" {\n  policy = jsonencode({\n    Version = \"2012-10-17\"\n    Statement = [{\n      Effect = \"Allow\"\n      Action = \"*\"\n      Resource = \"*\"\n    }]\n  })\n}",
           "why_fails": "Action/Resource 와일드카드 정책",
-          "mitigation": "aws_iam_policy_document 정책에서 Action/Resource 와일드카드를 제거하고 최소 권한으로 축소"
+          "mitigation": "aws_iam_policy_document 정책에서 Resource 와일드카드를 제거하고 최소 권한으로 축소"
         }
       ]
     },
@@ -32352,7 +33334,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1040","T1557"],
+      "atomic_ids": [
+        "T1040",
+        "T1557"
+      ],
       "examples": [
         {
           "resource_type": "aws_transfer_server",
@@ -32369,7 +33354,11 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": ["T1078","T1552","T1195"],
+      "atomic_ids": [
+        "T1078",
+        "T1552",
+        "T1195"
+      ],
       "examples": [
         {
           "resource_type": "aws_iam_policy_document",
@@ -32386,7 +33375,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_neptune_cluster",
@@ -32403,7 +33395,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_docdb_cluster",
@@ -32420,7 +33415,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_neptune_cluster",
@@ -32437,7 +33435,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1485",
+        "T1490"
+      ],
       "examples": [
         {
           "resource_type": "aws_neptune_cluster",
@@ -32454,7 +33455,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_lambda_function",
@@ -32470,8 +33473,12 @@
       "check_id": "CKV_AWS_364",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "Severity": "HIGH",
+      "atomic_ids": [
+        "T1190",
+        "T1078",
+        "T1496"
+      ],
       "examples": [
         {
           "resource_type": "aws_lambda_permission",
@@ -32479,7 +33486,7 @@
           "description": "Ensure that AWS Lambda function permissions delegated to AWS services are limited by SourceArn or SourceAccount",
           "terraform_fail_hcl": "resource \"aws_lambda_permission\" \"aws_lambda_permission_example_1\" {\n  # check-specific required setting intentionally omitted\n}",
           "why_fails": "필수 보안 설정 누락(설명 기반)",
-          "mitigation": "aws_lambda_permission 리소스에서 \"Ensure that AWS Lambda function permissions delegated to AWS services are limited by SourceArn or SourceAccount\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가"
+          "mitigation": "SourceArn(특정 SNS / S3만 허용) / SourceAccount로 호출 주체 제한"
         }
       ]
     },
@@ -32488,7 +33495,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ses_configuration_set",
@@ -32505,7 +33514,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cognito_identity_pool",
@@ -32522,7 +33533,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_sagemaker_data_quality_job_definition",
@@ -32539,7 +33552,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_sagemaker_data_quality_job_definition",
@@ -32556,7 +33571,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_sagemaker_data_quality_job_definition",
@@ -32573,7 +33590,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_sagemaker_model",
@@ -32590,7 +33609,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1552"
+      ],
       "examples": [
         {
           "resource_type": "aws_sagemaker_notebook_instance",
@@ -32607,7 +33628,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_sagemaker_flow_definition",
@@ -32624,7 +33647,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1530"
+      ],
       "examples": [
         {
           "resource_type": "aws_bedrockagent_agent",
@@ -32641,7 +33666,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_cloudfront_distribution",
@@ -32658,7 +33685,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket_acl",
@@ -32675,7 +33704,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_elb",
@@ -32692,7 +33723,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_route53domains_registered_domain",
@@ -32709,7 +33742,9 @@
       "platform": "aws_tf",
       "example_count": 4,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_alb_listener",
@@ -32750,7 +33785,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_bucket_acl",
@@ -32767,7 +33804,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_transfer_server",
@@ -32784,7 +33823,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_codegurureviewer_repository_association",
@@ -32836,7 +33877,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_bedrockagent_agent",
@@ -32853,7 +33896,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078",
+        "T1098"
+      ],
       "examples": [
         {
           "resource_type": "aws_sns_topic_policy",
@@ -32870,7 +33916,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "MEDIUM",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_ami",
@@ -32887,7 +33935,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1098",
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_sqs_queue_policy",
@@ -32904,7 +33955,9 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1078"
+      ],
       "examples": [
         {
           "resource_type": "aws_db_instance",
@@ -32921,7 +33974,11 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046",
+        "T1021"
+      ],
       "examples": [
         {
           "resource_type": "aws_launch_configuration",
@@ -32938,7 +33995,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_emr_block_public_access_configuration",
@@ -32955,7 +34015,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_redshift_cluster",
@@ -32972,7 +34035,10 @@
       "platform": "aws_tf",
       "example_count": 1,
       "Severity": "HIGH",
-      "atomic_ids": [],
+      "atomic_ids": [
+        "T1190",
+        "T1046"
+      ],
       "examples": [
         {
           "resource_type": "aws_s3_access_point",
