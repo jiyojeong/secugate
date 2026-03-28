@@ -3,6 +3,9 @@ English | [한국어](README.ko.md)
 
 SecuGate turns Terraform security findings into ATT&CK-aligned attack paths and CI gate decisions.
 
+## Representative Output
+- [IaC Graph Checkov Paths Report](artifacts/iac_graph_checkov_paths.md)
+
 # Overview
 SecuGate analyzes Terraform configurations before deployment and asks a practical question: "Can these findings be connected into a meaningful attack path?"
 

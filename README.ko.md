@@ -4,6 +4,9 @@
 ## Overview
 SecuGate는 Terraform 보안 설정 문제를 개별 finding이 아니라 공격 경로 관점에서 해석하는 IaC 보안 분석 프로젝트입니다.
 
+## 대표 결과물
+- [IaC Graph Checkov Paths Report](artifacts/iac_graph_checkov_paths.md)
+
 이 프로젝트는 Checkov 결과를 그대로 나열하는 대신,
 - Terraform plan / HCL 기준으로 finding을 수집하고
 - 이를 공격자 capability로 정규화한 뒤
