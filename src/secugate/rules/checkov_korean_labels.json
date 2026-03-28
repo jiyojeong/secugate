@@ -195,7 +195,7 @@
     "CKV_AWS_123": "필수 보안 설정 누락(설명 기반)",
     "CKV_AWS_124": "필수 보안 설정 누락(설명 기반)",
     "CKV_AWS_126": "필수 보안 설정 누락(설명 기반)",
-    "CKV_AWS_127": "*Elastic Load Balancing에서 HTTPS/TLS 인증서가 AWS Certificate Manager (ACM) 아님, 관리되지 않은 인증서(TLS) 사용",
+    "CKV_AWS_127": "Elastic Load Balancing에서 HTTPS/TLS 인증서가 AWS Certificate Manager (ACM) 아님, 관리되지 않은 인증서(TLS) 사용",
     "CKV_AWS_129": "필수 보안 설정 누락(설명 기반)",
     "CKV_AWS_130": "퍼블릭 IP 할당",
     "CKV_AWS_131": "필수 보안 설정 누락(설명 기반)",
