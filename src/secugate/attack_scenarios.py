@@ -29,6 +29,7 @@ class NormalizeRule:
     capability: str | None
     mitre_tactic: str | None
     stage: str | None
+    group_type: str | None
     check_ids: set[str]
 
 
@@ -85,6 +86,7 @@ def _parse_normalize_rules(raw_rules: list[dict[str, Any]]) -> list[NormalizeRul
                 capability=(str(raw.get("capability", "")).strip() or None),
                 mitre_tactic=(str(raw.get("mitre_tactic", "")).strip() or None),
                 stage=(str(raw.get("stage", "")).strip() or None),
+                group_type=(str(raw.get("group_type", "")).strip() or None),
                 check_ids=check_ids,
             )
         )
@@ -211,9 +213,19 @@ def _map_findings_to_capabilities(
         if not check_id:
             continue
 
-        for rule in normalize_rules:
-            if check_id not in rule.check_ids:
-                continue
+        matched_rules = [rule for rule in normalize_rules if check_id in rule.check_ids]
+        if not matched_rules:
+            continue
+
+        # Prefer specific rules over fallback buckets when both match the same check.
+        if any((rule.group_type or "").strip().lower() == "specific" for rule in matched_rules):
+            matched_rules = [
+                rule
+                for rule in matched_rules
+                if (rule.group_type or "").strip().lower() == "specific"
+            ]
+
+        for rule in matched_rules:
 
             matched_check_ids.add(check_id)
             entry = capabilities.setdefault(

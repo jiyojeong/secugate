@@ -67,6 +67,9 @@ jobs:
       - name: Gate
         run: |
           python ./secugate/scripts/gate_attack_scenarios.py \
-            --input "${OUT_DIR}/attack_scenarios.json" \
-            --fail-on-score high \
+            --input "${OUT_DIR}/iac_graph_checkov_paths.json" \
+            --checkov-merged "${OUT_DIR}/checkov_merged.json" \
+            --checkov-fail-condition "./secugate/src/secugate/rules/checkov_fail_condition.json" \
+            --fail-on-any-scenario \
+            --fail-on-finding-severity critical \
             --max-unmapped-check-ids 0

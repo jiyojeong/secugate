@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-NON_RUNTIME_PREFIXES = (
+DEFAULT_NON_RUNTIME_PREFIXES = (
     "data.",
     "var.",
     "local.",
@@ -79,7 +79,7 @@ PATH_CATEGORY_ORDER = [
     "other_chain",
 ]
 
-NETWORK_RESOURCE_PREFIXES = (
+DEFAULT_NETWORK_RESOURCE_PREFIXES = (
     "aws_internet_gateway",
     "aws_route_table",
     "aws_route_table_association",
@@ -94,9 +94,9 @@ NETWORK_RESOURCE_PREFIXES = (
     "aws_elb",
 )
 
-IAM_RESOURCE_PREFIXES = ("aws_iam_",)
+DEFAULT_IAM_RESOURCE_PREFIXES = ("aws_iam_",)
 
-COMPUTE_RESOURCE_PREFIXES = (
+DEFAULT_COMPUTE_RESOURCE_PREFIXES = (
     "aws_instance",
     "aws_launch_template",
     "aws_launch_configuration",
@@ -107,14 +107,28 @@ COMPUTE_RESOURCE_PREFIXES = (
     "aws_eks_",
 )
 
-ATTACK_ENDPOINT_PRIORITY: list[tuple[tuple[str, ...], int]] = [
-    (IAM_RESOURCE_PREFIXES, 500),
-    (COMPUTE_RESOURCE_PREFIXES, 400),
+DEFAULT_ATTACK_ENDPOINT_PRIORITY: list[tuple[tuple[str, ...], int]] = [
+    (DEFAULT_IAM_RESOURCE_PREFIXES, 500),
+    (DEFAULT_COMPUTE_RESOURCE_PREFIXES, 400),
     (("aws_lambda_function", "aws_ecs_service", "aws_ecs_task_definition"), 350),
     (("aws_secretsmanager_", "aws_ssm_parameter", "aws_kms_"), 320),
     (("aws_s3_bucket", "aws_db_", "aws_rds_", "aws_redshift_"), 300),
-    (NETWORK_RESOURCE_PREFIXES, 200),
+    (DEFAULT_NETWORK_RESOURCE_PREFIXES, 200),
 ]
+
+NON_RUNTIME_PREFIXES = DEFAULT_NON_RUNTIME_PREFIXES
+NETWORK_RESOURCE_PREFIXES = DEFAULT_NETWORK_RESOURCE_PREFIXES
+IAM_RESOURCE_PREFIXES = DEFAULT_IAM_RESOURCE_PREFIXES
+COMPUTE_RESOURCE_PREFIXES = DEFAULT_COMPUTE_RESOURCE_PREFIXES
+ATTACK_ENDPOINT_PRIORITY = DEFAULT_ATTACK_ENDPOINT_PRIORITY
+
+SEVERITY_RANK: dict[str, int] = {
+    "CRITICAL": 4,
+    "HIGH": 3,
+    "MEDIUM": 2,
+    "LOW": 1,
+    "INFO": 0,
+}
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -122,6 +136,63 @@ def _load_json(path: Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise ValueError(f"{path} JSON root must be an object")
     return data
+
+
+def _load_resource_classification(path: Path) -> None:
+    global NON_RUNTIME_PREFIXES
+    global NETWORK_RESOURCE_PREFIXES
+    global IAM_RESOURCE_PREFIXES
+    global COMPUTE_RESOURCE_PREFIXES
+    global ATTACK_ENDPOINT_PRIORITY
+
+    if not path.is_file():
+        return
+
+    data = _load_json(path)
+
+    non_runtime = data.get("non_runtime_prefixes")
+    if isinstance(non_runtime, list):
+        values = tuple(
+            str(item).strip() for item in non_runtime if str(item).strip()
+        )
+        if values:
+            NON_RUNTIME_PREFIXES = values
+
+    resource_prefixes = data.get("resource_prefixes")
+    if isinstance(resource_prefixes, dict):
+        network = resource_prefixes.get("network")
+        iam = resource_prefixes.get("iam")
+        compute = resource_prefixes.get("compute")
+        if isinstance(network, list):
+            values = tuple(str(item).strip() for item in network if str(item).strip())
+            if values:
+                NETWORK_RESOURCE_PREFIXES = values
+        if isinstance(iam, list):
+            values = tuple(str(item).strip() for item in iam if str(item).strip())
+            if values:
+                IAM_RESOURCE_PREFIXES = values
+        if isinstance(compute, list):
+            values = tuple(str(item).strip() for item in compute if str(item).strip())
+            if values:
+                COMPUTE_RESOURCE_PREFIXES = values
+
+    endpoint_priority = data.get("attack_endpoint_priority")
+    if isinstance(endpoint_priority, list):
+        configured: list[tuple[tuple[str, ...], int]] = []
+        for item in endpoint_priority:
+            if not isinstance(item, dict):
+                continue
+            prefixes = item.get("prefixes")
+            score = item.get("score")
+            if not isinstance(prefixes, list) or not isinstance(score, int):
+                continue
+            normalized_prefixes = tuple(
+                str(prefix).strip() for prefix in prefixes if str(prefix).strip()
+            )
+            if normalized_prefixes:
+                configured.append((normalized_prefixes, score))
+        if configured:
+            ATTACK_ENDPOINT_PRIORITY = configured
 
 
 def _normalize_resource_id(resource_id: str) -> str | None:
@@ -212,6 +283,84 @@ def _build_checkov_index(
         "indexed_nodes": len(index),
     }
     return index, summary
+
+
+def _count_findings_by_severity(
+    checkov_index: dict[str, list[dict[str, Any]]],
+    check_to_fail_meta: dict[str, dict[str, str]],
+) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for findings in checkov_index.values():
+        if not isinstance(findings, list):
+            continue
+        for finding in findings:
+            if not isinstance(finding, dict):
+                continue
+            check_id = finding.get("check_id")
+            severity = None
+            if isinstance(check_id, str):
+                severity = (check_to_fail_meta.get(check_id) or {}).get("severity")
+            if not severity:
+                severity = finding.get("severity")
+            severity_text = str(severity or "").strip().upper()
+            if not severity_text:
+                continue
+            counts[severity_text] = counts.get(severity_text, 0) + 1
+    return counts
+
+
+def _collect_critical_findings(
+    checkov_index: dict[str, list[dict[str, Any]]],
+    check_to_fail_meta: dict[str, dict[str, str]],
+) -> list[dict[str, str]]:
+    critical_items: list[dict[str, str]] = []
+    seen: set[tuple[str, str, str]] = set()
+
+    for findings in checkov_index.values():
+        if not isinstance(findings, list):
+            continue
+        for finding in findings:
+            if not isinstance(finding, dict):
+                continue
+            check_id = str(finding.get("check_id") or "").strip()
+            fail_meta = check_to_fail_meta.get(check_id) if check_id else {}
+            severity = str(
+                (fail_meta or {}).get("severity") or finding.get("severity") or ""
+            ).strip().upper()
+            if severity != "CRITICAL":
+                continue
+            file_path = str(
+                finding.get("file_abs_path")
+                or finding.get("file_path")
+                or finding.get("resource_address")
+                or "-"
+            ).strip()
+            issue = str(
+                (fail_meta or {}).get("why_fails")
+                or finding.get("check_name")
+                or check_id
+                or "-"
+            ).strip()
+            key = (check_id, file_path, issue)
+            if key in seen:
+                continue
+            seen.add(key)
+            critical_items.append(
+                {
+                    "check_id": check_id,
+                    "file": file_path,
+                    "issue": issue,
+                }
+            )
+
+    return sorted(
+        critical_items,
+        key=lambda item: (
+            item.get("file", ""),
+            item.get("check_id", ""),
+            item.get("issue", ""),
+        ),
+    )
 
 
 def _load_checkov_vector_index(path: Path) -> dict[str, str]:
@@ -389,17 +538,28 @@ def _load_attack_meta_index(path: Path) -> dict[str, dict[str, Any]]:
         capability_key = item.get("capability_key")
         if not isinstance(capability_key, str) or not capability_key.strip():
             continue
+        group_type = str(item.get("group_type", "")).strip().lower() or None
         meta = {
             "capability_key": capability_key.strip(),
             "capability_id": str(item.get("capability_id", "")).strip() or None,
             "capability": str(item.get("capability", "")).strip() or None,
             "mitre_tactic": str(item.get("mitre_tactic", "")).strip() or None,
             "stage": str(item.get("stage", "")).strip() or None,
+            "group_type": group_type,
             "atomic_ids": atomic_by_key.get(capability_key.strip(), []),
+            "representative_atomic_id": (
+                atomic_by_key.get(capability_key.strip(), [None])[0]
+                if atomic_by_key.get(capability_key.strip())
+                else None
+            ),
         }
         for check_id in item.get("check_ids", []) or []:
             if isinstance(check_id, str) and check_id.strip():
-                out[check_id.strip()] = meta
+                key = check_id.strip()
+                existing = out.get(key)
+                if existing and existing.get("group_type") == "specific" and group_type != "specific":
+                    continue
+                out[key] = meta
     return out
 
 
@@ -514,54 +674,125 @@ def _build_stage_details(
             stage_to_checks.setdefault(rank, set()).add(cid)
 
         for rank, cids in sorted(stage_to_checks.items()):
-            # 단계별 대표 증거 2개만 추출
-            evidence_preview: list[dict[str, Any]] = []
+            stage_evidences: list[dict[str, Any]] = []
             for f in findings:
                 cid = f.get("check_id")
                 if not isinstance(cid, str) or cid not in cids:
                     continue
-                evidence_preview.append(
-                    {
-                        "check_id": cid,
-                        "check_name": f.get("check_name"),
-                        "check_name_ko": check_to_korean.get(cid),
-                        "severity": (
-                            (check_to_fail_meta.get(cid) or {}).get("severity")
-                            or f.get("severity")
-                        ),
-                        "why_fails": (check_to_fail_meta.get(cid) or {}).get(
-                            "why_fails"
-                        ),
-                        "mitigation": (check_to_fail_meta.get(cid) or {}).get(
-                            "mitigation"
-                        ),
-                        "mitre_tactic": (check_to_attack_meta.get(cid) or {}).get(
-                            "mitre_tactic"
-                        ),
-                        "atomic_ids": (check_to_attack_meta.get(cid) or {}).get(
-                            "atomic_ids", []
-                        ),
-                        "capability_key": (check_to_attack_meta.get(cid) or {}).get(
-                            "capability_key"
-                        ),
-                        "resource_address": f.get("resource_address")
-                        or f.get("resource"),
-                        "file_abs_path": f.get("file_abs_path"),
-                        "evaluated_keys": f.get("evaluated_keys"),
-                    }
+                stage_evidences.append(
+                    _build_evidence_entry(
+                        f,
+                        check_to_korean,
+                        check_to_fail_meta,
+                        check_to_attack_meta,
+                    )
                 )
-            evidence_preview = evidence_preview[:2]
+            representative = _pick_representative_evidence(stage_evidences)
+            ordered_evidences = sorted(
+                stage_evidences, key=_evidence_sort_key, reverse=True
+            )
+            evidence_preview = ordered_evidences[:2]
             details.append(
                 {
                     "stage_rank": rank,
                     "stage": STAGE_LABELS.get(rank, f"stage_{rank}"),
                     "resource": node,
                     "check_ids": sorted(cids),
+                    "representative_evidence": representative,
                     "evidence_preview": evidence_preview,
                 }
             )
 
     return details
+
+
+def _build_evidence_entry(
+    finding: dict[str, Any],
+    check_to_korean: dict[str, str],
+    check_to_fail_meta: dict[str, dict[str, str]],
+    check_to_attack_meta: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    cid = finding.get("check_id")
+    attack_meta = check_to_attack_meta.get(cid) if isinstance(cid, str) else {}
+    fail_meta = check_to_fail_meta.get(cid) if isinstance(cid, str) else {}
+    return {
+        "check_id": cid,
+        "check_name": finding.get("check_name"),
+        "check_name_ko": check_to_korean.get(cid) if isinstance(cid, str) else None,
+        "severity": fail_meta.get("severity") or finding.get("severity"),
+        "why_fails": fail_meta.get("why_fails"),
+        "mitigation": fail_meta.get("mitigation"),
+        "mitre_tactic": attack_meta.get("mitre_tactic"),
+        "atomic_ids": attack_meta.get("atomic_ids", []),
+        "representative_atomic_id": attack_meta.get("representative_atomic_id"),
+        "capability_key": attack_meta.get("capability_key"),
+        "capability": attack_meta.get("capability"),
+        "group_type": attack_meta.get("group_type"),
+        "resource_address": finding.get("resource_address") or finding.get("resource"),
+        "file_abs_path": finding.get("file_abs_path"),
+        "evaluated_keys": finding.get("evaluated_keys"),
+    }
+
+
+def _severity_score(value: Any) -> int:
+    text = str(value or "").strip().upper()
+    return SEVERITY_RANK.get(text, -1)
+
+
+def _evidence_sort_key(evidence: dict[str, Any]) -> tuple[int, int, int, int, str]:
+    group_type = str(evidence.get("group_type") or "").strip().lower()
+    is_specific = 1 if group_type == "specific" else 0
+    severity = _severity_score(evidence.get("severity"))
+    has_atomic = 1 if evidence.get("representative_atomic_id") else 0
+    has_tactic = 1 if str(evidence.get("mitre_tactic") or "").strip() else 0
+    check_id = str(evidence.get("check_id") or "")
+    return (is_specific, severity, has_atomic, has_tactic, check_id)
+
+
+def _pick_representative_evidence(
+    evidences: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    if not evidences:
+        return None
+    return max(evidences, key=_evidence_sort_key)
+
+
+def _dedupe_preserve_order(values: list[str]) -> list[str]:
+    out: list[str] = []
+    for value in values:
+        text = str(value).strip()
+        if text and text not in out:
+            out.append(text)
+    return out
+
+
+def _build_attack_chains(
+    stage_details: list[dict[str, Any]],
+) -> tuple[list[str], list[str]]:
+    attack_tactic_chain: list[str] = []
+    atomic_chain: list[str] = []
+    for detail in stage_details:
+        if not isinstance(detail, dict):
+            continue
+        rep = detail.get("representative_evidence")
+        if not isinstance(rep, dict):
+            preview = detail.get("evidence_preview") or []
+            rep = preview[0] if isinstance(preview, list) and preview else None
+        if not isinstance(rep, dict):
+            continue
+        tactic = str(rep.get("mitre_tactic") or "").strip()
+        if tactic:
+            attack_tactic_chain.append(tactic)
+        rep_atomic = str(rep.get("representative_atomic_id") or "").strip()
+        if rep_atomic:
+            atomic_chain.append(rep_atomic)
+            continue
+        atomic_ids = rep.get("atomic_ids") or []
+        if isinstance(atomic_ids, list) and atomic_ids:
+            atomic_chain.append(str(atomic_ids[0]))
+    return _dedupe_preserve_order(attack_tactic_chain), _dedupe_preserve_order(
+        atomic_chain
+    )
 
 
 def _build_scenario_text(
@@ -580,9 +811,12 @@ def _build_scenario_text(
         rank = s.get("stage_rank")
         resource = s.get("resource")
         stage_ko = STAGE_LABELS_KO.get(rank, str(s.get("stage", "단계")))
-        ev = s.get("evidence_preview", [])
-        if isinstance(ev, list) and ev:
-            e0 = ev[0]
+        rep = s.get("representative_evidence")
+        if not isinstance(rep, dict):
+            ev = s.get("evidence_preview", [])
+            rep = ev[0] if isinstance(ev, list) and ev else None
+        if isinstance(rep, dict):
+            e0 = rep
             check_name = (
                 e0.get("check_name_ko")
                 or e0.get("check_name")
@@ -597,7 +831,12 @@ def _build_scenario_text(
             mitigation = e0.get("mitigation") or "-"
             mitre_tactic = e0.get("mitre_tactic") or "-"
             atomic_ids = e0.get("atomic_ids") or []
-            atomic_text = ", ".join(str(x) for x in atomic_ids) if atomic_ids else "-"
+            representative_atomic = e0.get("representative_atomic_id")
+            atomic_text = (
+                str(representative_atomic).strip()
+                if representative_atomic
+                else (", ".join(str(x) for x in atomic_ids) if atomic_ids else "-")
+            )
             evaluated_keys = e0.get("evaluated_keys")
             if isinstance(evaluated_keys, list):
                 eval_text = ", ".join(str(k) for k in evaluated_keys[:2])
@@ -613,7 +852,7 @@ def _build_scenario_text(
                 f"  - check_name_en: `{check_name_en}`\n"
                 f"  - severity: `{severity}`\n"
                 f"  - mitre_tactic: `{mitre_tactic}`\n"
-                f"  - atomic_ids: `{atomic_text}`\n"
+                f"  - representative_atomic_id: `{atomic_text}`\n"
                 f"  - why_fails: {why_fails}\n"
                 f"  - mitigation: {mitigation}\n"
                 f"  - resource_address: `{resource_address}`\n"
@@ -747,51 +986,6 @@ def _format_path_markdown(
         scenario = item.get("attack_scenario")
         if isinstance(scenario, str) and scenario.strip():
             lines.append(f"- Scenario: {scenario}")
-
-        stage_details = item.get("stage_details", [])
-        if isinstance(stage_details, list) and stage_details:
-            lines.append("- Stage details:")
-            for detail in stage_details[:6]:
-                rank = detail.get("stage_rank", "-")
-                stage_name = detail.get("stage", "-")
-                resource = detail.get("resource", "-")
-                detail_check_ids = detail.get("check_ids", [])
-                if isinstance(detail_check_ids, list) and detail_check_ids:
-                    detail_checks_text = ", ".join(str(x) for x in detail_check_ids[:5])
-                    if len(detail_check_ids) > 5:
-                        detail_checks_text += f" 외 {len(detail_check_ids) - 5}개"
-                else:
-                    detail_checks_text = "-"
-                lines.append(
-                    f"  - [{rank}] {stage_name} / `{resource}` / checks: {detail_checks_text}"
-                )
-                evidence_preview = detail.get("evidence_preview", [])
-                if isinstance(evidence_preview, list) and evidence_preview:
-                    rep = evidence_preview[0]
-                    rep_check = (
-                        rep.get("check_name_ko")
-                        or rep.get("check_name")
-                        or rep.get("check_id")
-                        or "-"
-                    )
-                    rep_severity = rep.get("severity") or "-"
-                    rep_why = rep.get("why_fails")
-                    rep_mitigation = rep.get("mitigation")
-                    rep_tactic = rep.get("mitre_tactic")
-                    rep_atomic = rep.get("atomic_ids") or []
-                    lines.append(
-                        f"    - Representative check: `{rep_check}` (`{rep_severity}`)"
-                    )
-                    if isinstance(rep_tactic, str) and rep_tactic.strip():
-                        lines.append(f"    - ATT&CK tactic: `{rep_tactic.strip()}`")
-                    if isinstance(rep_atomic, list) and rep_atomic:
-                        lines.append(
-                            f"    - Atomic IDs: {', '.join(str(x) for x in rep_atomic)}"
-                        )
-                    if isinstance(rep_why, str) and rep_why.strip():
-                        lines.append(f"    - Why fails: {rep_why.strip()}")
-                    if isinstance(rep_mitigation, str) and rep_mitigation.strip():
-                        lines.append(f"    - Mitigation: {rep_mitigation.strip()}")
         lines.append("")
 
     if len(ordered_paths) > limit:
@@ -947,6 +1141,8 @@ def _group_paths_by_category(
 def _build_markdown_report(result: dict[str, Any]) -> str:
     summary = result.get("summary", {})
     checkov_summary = summary.get("checkov", {})
+    severity_summary = summary.get("severity_counts", {})
+    critical_findings = summary.get("critical_findings", {})
     dfs_summary = summary.get("dfs_paths", {})
     grouped_validated = result.get("dfs_all_paths_validated_by_category", {})
 
@@ -962,14 +1158,31 @@ def _build_markdown_report(result: dict[str, Any]) -> str:
         "",
         f"- Checkov indexed nodes: {checkov_summary.get('indexed_nodes', 0)}",
         f"- Checkov failed checks: {checkov_summary.get('failed_checks_total', 0)}",
+        f"- CRITICAL findings: {severity_summary.get('CRITICAL', 0)}",
         f"- DFS validated: {dfs_summary.get('paths_validated', 0)} / {dfs_summary.get('paths_total', 0)}",
         f"- Max hops: {summary.get('max_hops', '-')}",
         "",
+    ]
+
+    if isinstance(critical_findings, list) and critical_findings:
+        lines.extend(["### CRITICAL Finding Details", ""])
+        for item in critical_findings:
+            if not isinstance(item, dict):
+                continue
+            check_id = item.get("check_id", "-")
+            file_path = item.get("file", "-")
+            issue = item.get("issue", "-")
+            lines.append(f"- `{check_id}` | `{file_path}` | {issue}")
+        lines.append("")
+
+    lines.extend(
+        [
         "## Path Categories",
         "",
         *_format_category_counts(dfs_summary.get("category_counts", {})),
         "",
-    ]
+        ]
+    )
 
     lines.extend(["## DFS Validated Paths By Category", ""])
     for code in PATH_CATEGORY_ORDER:
@@ -1117,28 +1330,7 @@ def _filter_and_annotate_paths(
         )
         enriched["path_category"] = category_code
         enriched["path_category_ko"] = category_ko
-        attack_tactic_chain: list[str] = []
-        atomic_chain: list[str] = []
-        for detail in stage_details:
-            preview = detail.get("evidence_preview") or []
-            if not isinstance(preview, list):
-                continue
-            for evidence in preview:
-                if not isinstance(evidence, dict):
-                    continue
-                tactic = evidence.get("mitre_tactic")
-                if (
-                    isinstance(tactic, str)
-                    and tactic.strip()
-                    and tactic.strip() not in attack_tactic_chain
-                ):
-                    attack_tactic_chain.append(tactic.strip())
-                atomic_ids = evidence.get("atomic_ids") or []
-                if isinstance(atomic_ids, list):
-                    for atomic_id in atomic_ids:
-                        atomic_text = str(atomic_id).strip()
-                        if atomic_text and atomic_text not in atomic_chain:
-                            atomic_chain.append(atomic_text)
+        attack_tactic_chain, atomic_chain = _build_attack_chains(stage_details)
         enriched["attack_tactic_chain"] = attack_tactic_chain
         enriched["atomic_chain"] = atomic_chain
         enriched["attack_scenario"] = _build_scenario_text(
@@ -1214,6 +1406,12 @@ def main() -> None:
         help="Fallback path to checkov_fail_condition.json",
     )
     parser.add_argument(
+        "--resource-classification",
+        type=Path,
+        default=Path("src/secugate/rules/resource_classification.json"),
+        help="Path to resource_classification.json for resource prefix/category rules",
+    )
+    parser.add_argument(
         "--max-hops",
         type=int,
         default=6,
@@ -1229,6 +1427,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    _load_resource_classification(args.resource_classification)
     graph = _load_json(args.graph)
     checkov = _load_json(args.checkov_merged)
     check_to_stage_rank = _load_check_stage_index(
@@ -1241,6 +1440,8 @@ def main() -> None:
     check_to_attack_meta = _load_attack_meta_index(args.attack_mapping)
 
     checkov_index, checkov_summary = _build_checkov_index(checkov)
+    severity_counts = _count_findings_by_severity(checkov_index, check_to_fail_meta)
+    critical_findings = _collect_critical_findings(checkov_index, check_to_fail_meta)
     dfs_paths = graph.get("dfs_all_paths", [])
     if not isinstance(dfs_paths, list):
         dfs_paths = []
@@ -1262,6 +1463,8 @@ def main() -> None:
         "source_checkov": str(args.checkov_merged),
         "summary": {
             "checkov": checkov_summary,
+            "severity_counts": severity_counts,
+            "critical_findings": critical_findings,
             "dfs_paths": dfs_summary,
             "max_hops": args.max_hops,
         },

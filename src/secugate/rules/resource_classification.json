@@ -1,0 +1,104 @@
+{
+  "non_runtime_prefixes": [
+    "data.",
+    "var.",
+    "local.",
+    "module.",
+    "path.",
+    "terraform.",
+    "count.",
+    "each."
+  ],
+  "resource_prefixes": {
+    "network": [
+      "aws_internet_gateway",
+      "aws_route_table",
+      "aws_route_table_association",
+      "aws_subnet",
+      "aws_security_group",
+      "aws_security_group_rule",
+      "aws_network_acl",
+      "aws_networkfirewall",
+      "aws_vpc",
+      "aws_lb",
+      "aws_alb",
+      "aws_elb"
+    ],
+    "iam": [
+      "aws_iam_"
+    ],
+    "compute": [
+      "aws_instance",
+      "aws_launch_template",
+      "aws_launch_configuration",
+      "aws_autoscaling_group",
+      "aws_lambda_function",
+      "aws_ecs_service",
+      "aws_ecs_task_definition",
+      "aws_eks_"
+    ]
+  },
+  "attack_endpoint_priority": [
+    {
+      "prefixes": [
+        "aws_iam_"
+      ],
+      "score": 500
+    },
+    {
+      "prefixes": [
+        "aws_instance",
+        "aws_launch_template",
+        "aws_launch_configuration",
+        "aws_autoscaling_group",
+        "aws_lambda_function",
+        "aws_ecs_service",
+        "aws_ecs_task_definition",
+        "aws_eks_"
+      ],
+      "score": 400
+    },
+    {
+      "prefixes": [
+        "aws_lambda_function",
+        "aws_ecs_service",
+        "aws_ecs_task_definition"
+      ],
+      "score": 350
+    },
+    {
+      "prefixes": [
+        "aws_secretsmanager_",
+        "aws_ssm_parameter",
+        "aws_kms_"
+      ],
+      "score": 320
+    },
+    {
+      "prefixes": [
+        "aws_s3_bucket",
+        "aws_db_",
+        "aws_rds_",
+        "aws_redshift_"
+      ],
+      "score": 300
+    },
+    {
+      "prefixes": [
+        "aws_internet_gateway",
+        "aws_route_table",
+        "aws_route_table_association",
+        "aws_subnet",
+        "aws_security_group",
+        "aws_security_group_rule",
+        "aws_network_acl",
+        "aws_networkfirewall",
+        "aws_vpc",
+        "aws_lb",
+        "aws_alb",
+        "aws_elb"
+      ],
+      "score": 200
+    }
+  ]
+}

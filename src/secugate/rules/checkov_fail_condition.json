@@ -324,7 +324,7 @@
       "check_id": "CKV2_AWS_15",
       "platform": "aws_tf",
       "example_count": 3,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -406,7 +406,7 @@
       "check_id": "CKV2_AWS_19",
       "platform": "aws_tf",
       "example_count": 2,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -435,7 +435,8 @@
       "example_count": 4,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -777,7 +778,7 @@
       "check_id": "CKV2_AWS_37",
       "platform": "aws_tf",
       "example_count": 1496,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -12877,7 +12878,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -13035,7 +13037,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -13052,7 +13055,7 @@
       "check_id": "CKV2_AWS_50",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -13154,7 +13157,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -13258,7 +13262,7 @@
       "check_id": "CKV2_AWS_57",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1552",
         "T1078"
@@ -13325,7 +13329,7 @@
       "check_id": "CKV2_AWS_60",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1485",
         "T1490"
@@ -13402,7 +13406,7 @@
       "check_id": "CKV2_AWS_64",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1530"
       ],
@@ -13536,7 +13540,7 @@
       "check_id": "CKV2_AWS_71",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1098",
         "T1078"
@@ -13558,7 +13562,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -13594,7 +13599,7 @@
       "check_id": "CKV2_AWS_74",
       "platform": "aws_tf",
       "example_count": 2,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -13621,7 +13626,7 @@
       "check_id": "CKV2_AWS_75",
       "platform": "aws_tf",
       "example_count": 1496,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -25702,7 +25707,8 @@
       "example_count": 2,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -25846,7 +25852,7 @@
       "check_id": "CKV_AWS_9",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -25865,7 +25871,7 @@
       "check_id": "CKV_AWS_10",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -25884,7 +25890,7 @@
       "check_id": "CKV_AWS_11",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -25903,7 +25909,7 @@
       "check_id": "CKV_AWS_12",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -25922,7 +25928,7 @@
       "check_id": "CKV_AWS_13",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078",
         "T1110"
@@ -25942,7 +25948,7 @@
       "check_id": "CKV_AWS_14",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -25961,7 +25967,7 @@
       "check_id": "CKV_AWS_15",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -26150,7 +26156,7 @@
       "check_id": "CKV_AWS_23",
       "platform": "aws_tf",
       "example_count": 7,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -26327,7 +26333,7 @@
       "check_id": "CKV_AWS_28",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "CRITICAL",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1485",
         "T1490"
@@ -26448,7 +26454,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -26465,7 +26472,7 @@
       "check_id": "CKV_AWS_35",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1562"
       ],
@@ -27526,7 +27533,8 @@
       "example_count": 2,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -27688,7 +27696,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -27939,7 +27948,8 @@
       "example_count": 3,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -28723,7 +28733,7 @@
       "check_id": "CKV_AWS_144",
       "platform": "aws_tf",
       "example_count": 2,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -28780,8 +28790,8 @@
       "example_count": 1,
       "Severity": "HIGH",
       "atomic_ids": [
-        "T1485",
-        "T1490"
+        "T1530",
+        "T1005"
       ],
       "examples": [
         {
@@ -29104,7 +29114,7 @@
       "check_id": "CKV_AWS_163",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "CRITICAL",
+      "Severity": "HIGH",
       "atomic_ids": [
         "T1195",
         "T1204"
@@ -29166,8 +29176,8 @@
       "example_count": 1,
       "Severity": "HIGH",
       "atomic_ids": [
-        "T1485",
-        "T1490"
+        "T1530",
+        "T1005"
       ],
       "examples": [
         {
@@ -29207,7 +29217,7 @@
       "Severity": "HIGH",
       "atomic_ids": [
         "T1190",
-        "T1078",
+        "T1537",
         "T1530"
       ],
       "examples": [
@@ -29332,7 +29342,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -29349,7 +29360,7 @@
       "check_id": "CKV_AWS_175",
       "platform": "aws_tf",
       "example_count": 3,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -29748,7 +29759,7 @@
       "check_id": "CKV_AWS_195",
       "platform": "aws_tf",
       "example_count": 3,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -29977,7 +29988,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -30118,8 +30130,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078",
-        "T1098"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -30215,7 +30227,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -30253,7 +30266,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -30289,7 +30303,7 @@
       "check_id": "CKV_AWS_222",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -30413,7 +30427,8 @@
       "example_count": 2,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -30550,7 +30565,7 @@
       "check_id": "CKV_AWS_233",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -30666,7 +30681,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -30780,8 +30796,8 @@
       "example_count": 1,
       "Severity": "HIGH",
       "atomic_ids": [
-        "T1485",
-        "T1490"
+        "T1530",
+        "T1005"
       ],
       "examples": [
         {
@@ -30892,7 +30908,8 @@
       "example_count": 2,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1190",
+        "T1005"
       ],
       "examples": [
         {
@@ -31052,7 +31069,7 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1190"
       ],
       "examples": [
         {
@@ -31071,8 +31088,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078",
-        "T1098"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -31128,7 +31145,8 @@
       "example_count": 2,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -31231,8 +31249,8 @@
       "example_count": 1,
       "Severity": "HIGH",
       "atomic_ids": [
-        "T1485",
-        "T1490"
+        "T1530",
+        "T1005"
       ],
       "examples": [
         {
@@ -31364,7 +31382,7 @@
       "check_id": "CKV_AWS_273",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
@@ -31829,7 +31847,7 @@
       "check_id": "CKV_AWS_289",
       "platform": "aws_tf",
       "example_count": 5,
-      "Severity": "CRITICAL",
+      "Severity": "HIGH",
       "atomic_ids": [
         "T1098",
         "T1078",
@@ -31882,7 +31900,7 @@
       "check_id": "CKV_AWS_290",
       "platform": "aws_tf",
       "example_count": 5,
-      "Severity": "CRITICAL",
+      "Severity": "HIGH",
       "atomic_ids": [
         "T1098",
         "T1578",
@@ -32052,7 +32070,7 @@
       "check_id": "CKV_AWS_297",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1530"
       ],
@@ -32132,8 +32150,8 @@
       "example_count": 1,
       "Severity": "HIGH",
       "atomic_ids": [
-        "T1485",
-        "T1490"
+        "T1530",
+        "T1537"
       ],
       "examples": [
         {
@@ -32172,7 +32190,6 @@
       "example_count": 1,
       "Severity": "HIGH",
       "atomic_ids": [
-        "T1078",
         "T1552"
       ],
       "examples": [
@@ -32268,7 +32285,7 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1190"
       ],
       "examples": [
         {
@@ -33107,7 +33124,7 @@
       "check_id": "CKV_AWS_348",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "CRITICAL",
+      "Severity": "HIGH",
       "atomic_ids": [
         "T1078",
         "T1098"
@@ -33434,7 +33451,7 @@
       "check_id": "CKV_AWS_362",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1485",
         "T1490"
@@ -33496,7 +33513,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -33705,7 +33723,8 @@
       "example_count": 1,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -33743,7 +33762,8 @@
       "example_count": 4,
       "Severity": "MEDIUM",
       "atomic_ids": [
-        "T1078"
+        "T1040",
+        "T1557"
       ],
       "examples": [
         {
@@ -33822,7 +33842,7 @@
       "check_id": "CKV_AWS_381",
       "platform": "aws_tf",
       "example_count": 1,
-      "Severity": "HIGH",
+      "Severity": "MEDIUM",
       "atomic_ids": [
         "T1078"
       ],
