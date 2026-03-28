@@ -13,37 +13,45 @@
           ]
         },
         "code_block": [
-          "resource \"aws_iam_policy\" \"ec2_mighty_policy\" {",
-          "  name        = \"cg-ec2-mighty-policy\"",
-          "  description = \"CloudGoat ${var.cgid} EC2 Mighty Policy\"",
+          "resource \"aws_iam_policy\" \"app\" {",
+          "  name = \"secugate-chain-app-policy\"",
           "",
           "  policy = jsonencode({",
           "    Version = \"2012-10-17\"",
           "    Statement = [",
           "      {",
-          "        Action   = \"*\"",
           "        Effect   = \"Allow\"",
+          "        Action   = \"*\"",
+          "        Resource = \"*\"",
+          "      },",
+          "      {",
+          "        Effect = \"Allow\"",
+          "        Action = [",
+          "          \"s3:GetObject\",",
+          "          \"s3:PutObject\",",
+          "          \"s3:ListBucket\"",
+          "        ]",
           "        Resource = \"*\"",
           "      }",
           "    ]",
           "  })",
           "}"
         ],
-        "file_path": "/iam_mighty.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "repo_file_path": "/iam_mighty.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          21,
-          35
+          96,
+          118
         ],
-        "resource": "aws_iam_policy.ec2_mighty_policy",
+        "resource": "aws_iam_policy.app",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.IAMStarResourcePolicyDocument",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.ec2_mighty_policy",
+        "resource_address": "aws_iam_policy.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -54,29 +62,7 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-355",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV_AWS_287",
@@ -89,37 +75,45 @@
           ]
         },
         "code_block": [
-          "resource \"aws_iam_policy\" \"ec2_mighty_policy\" {",
-          "  name        = \"cg-ec2-mighty-policy\"",
-          "  description = \"CloudGoat ${var.cgid} EC2 Mighty Policy\"",
+          "resource \"aws_iam_policy\" \"app\" {",
+          "  name = \"secugate-chain-app-policy\"",
           "",
           "  policy = jsonencode({",
           "    Version = \"2012-10-17\"",
           "    Statement = [",
           "      {",
-          "        Action   = \"*\"",
           "        Effect   = \"Allow\"",
+          "        Action   = \"*\"",
+          "        Resource = \"*\"",
+          "      },",
+          "      {",
+          "        Effect = \"Allow\"",
+          "        Action = [",
+          "          \"s3:GetObject\",",
+          "          \"s3:PutObject\",",
+          "          \"s3:ListBucket\"",
+          "        ]",
           "        Resource = \"*\"",
           "      }",
           "    ]",
           "  })",
           "}"
         ],
-        "file_path": "/iam_mighty.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "repo_file_path": "/iam_mighty.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          21,
-          35
+          96,
+          118
         ],
-        "resource": "aws_iam_policy.ec2_mighty_policy",
+        "resource": "aws_iam_policy.app",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.IAMCredentialsExposure",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.ec2_mighty_policy",
+        "resource_address": "aws_iam_policy.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -130,29 +124,7 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-287",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV_AWS_289",
@@ -165,37 +137,45 @@
           ]
         },
         "code_block": [
-          "resource \"aws_iam_policy\" \"ec2_mighty_policy\" {",
-          "  name        = \"cg-ec2-mighty-policy\"",
-          "  description = \"CloudGoat ${var.cgid} EC2 Mighty Policy\"",
+          "resource \"aws_iam_policy\" \"app\" {",
+          "  name = \"secugate-chain-app-policy\"",
           "",
           "  policy = jsonencode({",
           "    Version = \"2012-10-17\"",
           "    Statement = [",
           "      {",
-          "        Action   = \"*\"",
           "        Effect   = \"Allow\"",
+          "        Action   = \"*\"",
+          "        Resource = \"*\"",
+          "      },",
+          "      {",
+          "        Effect = \"Allow\"",
+          "        Action = [",
+          "          \"s3:GetObject\",",
+          "          \"s3:PutObject\",",
+          "          \"s3:ListBucket\"",
+          "        ]",
           "        Resource = \"*\"",
           "      }",
           "    ]",
           "  })",
           "}"
         ],
-        "file_path": "/iam_mighty.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "repo_file_path": "/iam_mighty.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          21,
-          35
+          96,
+          118
         ],
-        "resource": "aws_iam_policy.ec2_mighty_policy",
+        "resource": "aws_iam_policy.app",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.IAMPermissionsManagement",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.ec2_mighty_policy",
+        "resource_address": "aws_iam_policy.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -206,29 +186,7 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-289",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV_AWS_286",
@@ -241,37 +199,45 @@
           ]
         },
         "code_block": [
-          "resource \"aws_iam_policy\" \"ec2_mighty_policy\" {",
-          "  name        = \"cg-ec2-mighty-policy\"",
-          "  description = \"CloudGoat ${var.cgid} EC2 Mighty Policy\"",
+          "resource \"aws_iam_policy\" \"app\" {",
+          "  name = \"secugate-chain-app-policy\"",
           "",
           "  policy = jsonencode({",
           "    Version = \"2012-10-17\"",
           "    Statement = [",
           "      {",
-          "        Action   = \"*\"",
           "        Effect   = \"Allow\"",
+          "        Action   = \"*\"",
+          "        Resource = \"*\"",
+          "      },",
+          "      {",
+          "        Effect = \"Allow\"",
+          "        Action = [",
+          "          \"s3:GetObject\",",
+          "          \"s3:PutObject\",",
+          "          \"s3:ListBucket\"",
+          "        ]",
           "        Resource = \"*\"",
           "      }",
           "    ]",
           "  })",
           "}"
         ],
-        "file_path": "/iam_mighty.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "repo_file_path": "/iam_mighty.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          21,
-          35
+          96,
+          118
         ],
-        "resource": "aws_iam_policy.ec2_mighty_policy",
+        "resource": "aws_iam_policy.app",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.IAMPrivilegeEscalation",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.ec2_mighty_policy",
+        "resource_address": "aws_iam_policy.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -282,29 +248,7 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-286",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV_AWS_63",
@@ -318,37 +262,45 @@
           ]
         },
         "code_block": [
-          "resource \"aws_iam_policy\" \"ec2_mighty_policy\" {",
-          "  name        = \"cg-ec2-mighty-policy\"",
-          "  description = \"CloudGoat ${var.cgid} EC2 Mighty Policy\"",
+          "resource \"aws_iam_policy\" \"app\" {",
+          "  name = \"secugate-chain-app-policy\"",
           "",
           "  policy = jsonencode({",
           "    Version = \"2012-10-17\"",
           "    Statement = [",
           "      {",
-          "        Action   = \"*\"",
           "        Effect   = \"Allow\"",
+          "        Action   = \"*\"",
+          "        Resource = \"*\"",
+          "      },",
+          "      {",
+          "        Effect = \"Allow\"",
+          "        Action = [",
+          "          \"s3:GetObject\",",
+          "          \"s3:PutObject\",",
+          "          \"s3:ListBucket\"",
+          "        ]",
           "        Resource = \"*\"",
           "      }",
           "    ]",
           "  })",
           "}"
         ],
-        "file_path": "/iam_mighty.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "repo_file_path": "/iam_mighty.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          21,
-          35
+          96,
+          118
         ],
-        "resource": "aws_iam_policy.ec2_mighty_policy",
+        "resource": "aws_iam_policy.app",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.IAMStarActionPolicyDocument",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.ec2_mighty_policy",
+        "resource_address": "aws_iam_policy.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -359,29 +311,7 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-48",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV_AWS_62",
@@ -395,37 +325,45 @@
           ]
         },
         "code_block": [
-          "resource \"aws_iam_policy\" \"ec2_mighty_policy\" {",
-          "  name        = \"cg-ec2-mighty-policy\"",
-          "  description = \"CloudGoat ${var.cgid} EC2 Mighty Policy\"",
+          "resource \"aws_iam_policy\" \"app\" {",
+          "  name = \"secugate-chain-app-policy\"",
           "",
           "  policy = jsonencode({",
           "    Version = \"2012-10-17\"",
           "    Statement = [",
           "      {",
-          "        Action   = \"*\"",
           "        Effect   = \"Allow\"",
+          "        Action   = \"*\"",
+          "        Resource = \"*\"",
+          "      },",
+          "      {",
+          "        Effect = \"Allow\"",
+          "        Action = [",
+          "          \"s3:GetObject\",",
+          "          \"s3:PutObject\",",
+          "          \"s3:ListBucket\"",
+          "        ]",
           "        Resource = \"*\"",
           "      }",
           "    ]",
           "  })",
           "}"
         ],
-        "file_path": "/iam_mighty.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "repo_file_path": "/iam_mighty.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          21,
-          35
+          96,
+          118
         ],
-        "resource": "aws_iam_policy.ec2_mighty_policy",
+        "resource": "aws_iam_policy.app",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.IAMAdminPolicyDocument",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.ec2_mighty_policy",
+        "resource_address": "aws_iam_policy.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -436,29 +374,7 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-45",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV_AWS_290",
@@ -471,37 +387,45 @@
           ]
         },
         "code_block": [
-          "resource \"aws_iam_policy\" \"ec2_mighty_policy\" {",
-          "  name        = \"cg-ec2-mighty-policy\"",
-          "  description = \"CloudGoat ${var.cgid} EC2 Mighty Policy\"",
+          "resource \"aws_iam_policy\" \"app\" {",
+          "  name = \"secugate-chain-app-policy\"",
           "",
           "  policy = jsonencode({",
           "    Version = \"2012-10-17\"",
           "    Statement = [",
           "      {",
-          "        Action   = \"*\"",
           "        Effect   = \"Allow\"",
+          "        Action   = \"*\"",
+          "        Resource = \"*\"",
+          "      },",
+          "      {",
+          "        Effect = \"Allow\"",
+          "        Action = [",
+          "          \"s3:GetObject\",",
+          "          \"s3:PutObject\",",
+          "          \"s3:ListBucket\"",
+          "        ]",
           "        Resource = \"*\"",
           "      }",
           "    ]",
           "  })",
           "}"
         ],
-        "file_path": "/iam_mighty.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "repo_file_path": "/iam_mighty.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          21,
-          35
+          96,
+          118
         ],
-        "resource": "aws_iam_policy.ec2_mighty_policy",
+        "resource": "aws_iam_policy.app",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.IAMWriteAccess",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.ec2_mighty_policy",
+        "resource_address": "aws_iam_policy.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -512,29 +436,7 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-290",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV_AWS_288",
@@ -547,37 +449,45 @@
           ]
         },
         "code_block": [
-          "resource \"aws_iam_policy\" \"ec2_mighty_policy\" {",
-          "  name        = \"cg-ec2-mighty-policy\"",
-          "  description = \"CloudGoat ${var.cgid} EC2 Mighty Policy\"",
+          "resource \"aws_iam_policy\" \"app\" {",
+          "  name = \"secugate-chain-app-policy\"",
           "",
           "  policy = jsonencode({",
           "    Version = \"2012-10-17\"",
           "    Statement = [",
           "      {",
-          "        Action   = \"*\"",
           "        Effect   = \"Allow\"",
+          "        Action   = \"*\"",
+          "        Resource = \"*\"",
+          "      },",
+          "      {",
+          "        Effect = \"Allow\"",
+          "        Action = [",
+          "          \"s3:GetObject\",",
+          "          \"s3:PutObject\",",
+          "          \"s3:ListBucket\"",
+          "        ]",
           "        Resource = \"*\"",
           "      }",
           "    ]",
           "  })",
           "}"
         ],
-        "file_path": "/iam_mighty.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "repo_file_path": "/iam_mighty.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          21,
-          35
+          96,
+          118
         ],
-        "resource": "aws_iam_policy.ec2_mighty_policy",
+        "resource": "aws_iam_policy.app",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.IAMDataExfiltration",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.ec2_mighty_policy",
+        "resource_address": "aws_iam_policy.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -588,507 +498,7 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-288",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
-      },
-      {
-        "check_id": "CKV_AWS_355",
-        "bc_check_id": "BC_AWS_IAM_88",
-        "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": [
-            "policy/Statement/[0]/Action"
-          ]
-        },
-        "code_block": [
-          "resource \"aws_iam_policy\" \"kerrigan_policy\" {",
-          "  name        = \"cg-kerrigan-policy\"",
-          "  description = \"CloudGoat ${var.cgid} kerrigan policy\"",
-          "",
-          "  policy = jsonencode({",
-          "    Version = \"2012-10-17\"",
-          "    Statement = [",
-          "      {",
-          "        Effect = \"Allow\"",
-          "        Action = [",
-          "          \"iam:AddRoleToInstanceProfile\",",
-          "          \"iam:ListInstanceProfiles\",",
-          "          \"iam:ListRoles\",",
-          "          \"iam:PassRole\",",
-          "          \"iam:RemoveRoleFromInstanceProfile\"",
-          "        ]",
-          "        Resource = \"*\"",
-          "      },",
-          "      {",
-          "        Action = [",
-          "          \"ec2:AssociateIamInstanceProfile\",",
-          "          \"ec2:CreateKeyPair\",",
-          "          \"ec2:DescribeIamInstanceProfileAssociations\",",
-          "          \"ec2:DescribeInstances\",",
-          "          \"ec2:DescribeSecurityGroups\",",
-          "          \"ec2:DescribeSubnets\",",
-          "          \"ec2:DescribeVpcs\",",
-          "          \"ec2:RunInstances\"",
-          "        ]",
-          "        Effect   = \"Allow\"",
-          "        Resource = \"*\"",
-          "      }",
-          "    ]",
-          "  })",
-          "}"
-        ],
-        "file_path": "/iam.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
-        "repo_file_path": "/iam.tf",
-        "file_line_range": [
-          10,
-          44
-        ],
-        "resource": "aws_iam_policy.kerrigan_policy",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.IAMStarResourcePolicyDocument",
-        "fixed_definition": null,
-        "entity_tags": null,
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.kerrigan_policy",
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-355",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
-      },
-      {
-        "check_id": "CKV_AWS_289",
-        "bc_check_id": "BC_AWS_IAM_84",
-        "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": [
-            "policy/Statement/[0]/Action"
-          ]
-        },
-        "code_block": [
-          "resource \"aws_iam_policy\" \"kerrigan_policy\" {",
-          "  name        = \"cg-kerrigan-policy\"",
-          "  description = \"CloudGoat ${var.cgid} kerrigan policy\"",
-          "",
-          "  policy = jsonencode({",
-          "    Version = \"2012-10-17\"",
-          "    Statement = [",
-          "      {",
-          "        Effect = \"Allow\"",
-          "        Action = [",
-          "          \"iam:AddRoleToInstanceProfile\",",
-          "          \"iam:ListInstanceProfiles\",",
-          "          \"iam:ListRoles\",",
-          "          \"iam:PassRole\",",
-          "          \"iam:RemoveRoleFromInstanceProfile\"",
-          "        ]",
-          "        Resource = \"*\"",
-          "      },",
-          "      {",
-          "        Action = [",
-          "          \"ec2:AssociateIamInstanceProfile\",",
-          "          \"ec2:CreateKeyPair\",",
-          "          \"ec2:DescribeIamInstanceProfileAssociations\",",
-          "          \"ec2:DescribeInstances\",",
-          "          \"ec2:DescribeSecurityGroups\",",
-          "          \"ec2:DescribeSubnets\",",
-          "          \"ec2:DescribeVpcs\",",
-          "          \"ec2:RunInstances\"",
-          "        ]",
-          "        Effect   = \"Allow\"",
-          "        Resource = \"*\"",
-          "      }",
-          "    ]",
-          "  })",
-          "}"
-        ],
-        "file_path": "/iam.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
-        "repo_file_path": "/iam.tf",
-        "file_line_range": [
-          10,
-          44
-        ],
-        "resource": "aws_iam_policy.kerrigan_policy",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.IAMPermissionsManagement",
-        "fixed_definition": null,
-        "entity_tags": null,
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.kerrigan_policy",
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-289",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
-      },
-      {
-        "check_id": "CKV_AWS_286",
-        "bc_check_id": "BC_AWS_IAM_81",
-        "check_name": "Ensure IAM policies does not allow privilege escalation",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": [
-            "policy/Statement/[0]/Action"
-          ]
-        },
-        "code_block": [
-          "resource \"aws_iam_policy\" \"kerrigan_policy\" {",
-          "  name        = \"cg-kerrigan-policy\"",
-          "  description = \"CloudGoat ${var.cgid} kerrigan policy\"",
-          "",
-          "  policy = jsonencode({",
-          "    Version = \"2012-10-17\"",
-          "    Statement = [",
-          "      {",
-          "        Effect = \"Allow\"",
-          "        Action = [",
-          "          \"iam:AddRoleToInstanceProfile\",",
-          "          \"iam:ListInstanceProfiles\",",
-          "          \"iam:ListRoles\",",
-          "          \"iam:PassRole\",",
-          "          \"iam:RemoveRoleFromInstanceProfile\"",
-          "        ]",
-          "        Resource = \"*\"",
-          "      },",
-          "      {",
-          "        Action = [",
-          "          \"ec2:AssociateIamInstanceProfile\",",
-          "          \"ec2:CreateKeyPair\",",
-          "          \"ec2:DescribeIamInstanceProfileAssociations\",",
-          "          \"ec2:DescribeInstances\",",
-          "          \"ec2:DescribeSecurityGroups\",",
-          "          \"ec2:DescribeSubnets\",",
-          "          \"ec2:DescribeVpcs\",",
-          "          \"ec2:RunInstances\"",
-          "        ]",
-          "        Effect   = \"Allow\"",
-          "        Resource = \"*\"",
-          "      }",
-          "    ]",
-          "  })",
-          "}"
-        ],
-        "file_path": "/iam.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
-        "repo_file_path": "/iam.tf",
-        "file_line_range": [
-          10,
-          44
-        ],
-        "resource": "aws_iam_policy.kerrigan_policy",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.IAMPrivilegeEscalation",
-        "fixed_definition": null,
-        "entity_tags": null,
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.kerrigan_policy",
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-286",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
-      },
-      {
-        "check_id": "CKV_AWS_290",
-        "bc_check_id": "BC_AWS_IAM_85",
-        "check_name": "Ensure IAM policies does not allow write access without constraints",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": [
-            "policy/Statement/[1]/Action"
-          ]
-        },
-        "code_block": [
-          "resource \"aws_iam_policy\" \"kerrigan_policy\" {",
-          "  name        = \"cg-kerrigan-policy\"",
-          "  description = \"CloudGoat ${var.cgid} kerrigan policy\"",
-          "",
-          "  policy = jsonencode({",
-          "    Version = \"2012-10-17\"",
-          "    Statement = [",
-          "      {",
-          "        Effect = \"Allow\"",
-          "        Action = [",
-          "          \"iam:AddRoleToInstanceProfile\",",
-          "          \"iam:ListInstanceProfiles\",",
-          "          \"iam:ListRoles\",",
-          "          \"iam:PassRole\",",
-          "          \"iam:RemoveRoleFromInstanceProfile\"",
-          "        ]",
-          "        Resource = \"*\"",
-          "      },",
-          "      {",
-          "        Action = [",
-          "          \"ec2:AssociateIamInstanceProfile\",",
-          "          \"ec2:CreateKeyPair\",",
-          "          \"ec2:DescribeIamInstanceProfileAssociations\",",
-          "          \"ec2:DescribeInstances\",",
-          "          \"ec2:DescribeSecurityGroups\",",
-          "          \"ec2:DescribeSubnets\",",
-          "          \"ec2:DescribeVpcs\",",
-          "          \"ec2:RunInstances\"",
-          "        ]",
-          "        Effect   = \"Allow\"",
-          "        Resource = \"*\"",
-          "      }",
-          "    ]",
-          "  })",
-          "}"
-        ],
-        "file_path": "/iam.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
-        "repo_file_path": "/iam.tf",
-        "file_line_range": [
-          10,
-          44
-        ],
-        "resource": "aws_iam_policy.kerrigan_policy",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.IAMWriteAccess",
-        "fixed_definition": null,
-        "entity_tags": null,
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.kerrigan_policy",
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-290",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
-      },
-      {
-        "check_id": "CKV_AWS_273",
-        "bc_check_id": "BC_AWS_IAM_77",
-        "check_name": "Ensure access is controlled through SSO and not AWS IAM defined users",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": []
-        },
-        "code_block": [
-          "resource \"aws_iam_user\" \"kerrigan\" {",
-          "  name          = \"kerrigan\"",
-          "  force_destroy = true",
-          "}"
-        ],
-        "file_path": "/iam.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
-        "repo_file_path": "/iam.tf",
-        "file_line_range": [
-          1,
-          4
-        ],
-        "resource": "aws_iam_user.kerrigan",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.IAMUserNotUsedForAccess",
-        "fixed_definition": null,
-        "entity_tags": null,
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": "aws_iam_user.kerrigan",
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-273",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam.tf"
-      },
-      {
-        "check_id": "CKV_AWS_40",
-        "bc_check_id": "BC_AWS_IAM_16",
-        "check_name": "Ensure IAM policies are attached only to groups or roles (Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges.)",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": [
-            "user"
-          ]
-        },
-        "code_block": [
-          "resource \"aws_iam_user_policy_attachment\" \"kerrigan_attachment\" {",
-          "  user       = aws_iam_user.kerrigan.name",
-          "  policy_arn = aws_iam_policy.kerrigan_policy.arn",
-          "}"
-        ],
-        "file_path": "/iam.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam.tf",
-        "repo_file_path": "/iam.tf",
-        "file_line_range": [
-          46,
-          49
-        ],
-        "resource": "aws_iam_user_policy_attachment.kerrigan_attachment",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.IAMPolicyAttachedToGroupOrRoles",
-        "fixed_definition": null,
-        "entity_tags": null,
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": "aws_iam_user_policy_attachment.kerrigan_attachment",
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-16-iam-policy-privileges-1",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam.tf",
-        "breadcrumbs": {
-          "user": [
-            {
-              "type": "resource",
-              "name": "aws_iam_user.kerrigan",
-              "path": "/home/jiyoon/testterraform/iam.tf",
-              "module_connection": false
-            }
-          ]
-        }
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV_AWS_79",
@@ -1101,46 +511,39 @@
           ]
         },
         "code_block": [
-          "resource \"aws_instance\" \"super_critical_security_server\" {",
-          "  ami                         = data.aws_ami.ubuntu.id",
+          "resource \"aws_instance\" \"app\" {",
+          "  ami                         = \"ami-0123456789abcdef0\"",
           "  instance_type               = \"t3.micro\"",
           "  subnet_id                   = aws_subnet.public.id",
+          "  vpc_security_group_ids      = [aws_security_group.web.id]",
           "  associate_public_ip_address = true",
+          "  iam_instance_profile        = aws_iam_instance_profile.app.name",
           "",
-          "  vpc_security_group_ids = [",
-          "    aws_security_group.ec2_server.id",
-          "  ]",
-          "",
-          "  root_block_device {",
-          "    volume_type           = \"gp2\"",
-          "    volume_size           = 8",
-          "    delete_on_termination = true",
-          "  }",
-          "",
-          "  volume_tags = {",
-          "    Name = \"CloudGoat ${var.cgid} EC2 Instance Root Device\"",
+          "  metadata_options {",
+          "    http_endpoint = \"enabled\"",
+          "    http_tokens   = \"optional\"",
           "  }",
           "",
           "  tags = {",
-          "    Name = \"CloudGoat ${var.cgid} super-critical-security-server EC2 Instance\"",
+          "    Name = \"secugate-chain-app\"",
           "  }",
           "}"
         ],
-        "file_path": "/ec2.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
-        "repo_file_path": "/ec2.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          39,
-          62
+          130,
+          146
         ],
-        "resource": "aws_instance.super_critical_security_server",
+        "resource": "aws_instance.app",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.IMDSv1Disabled",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_instance.super_critical_security_server",
+        "resource_address": "aws_instance.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -1151,45 +554,79 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-31",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/ec2.tf",
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
         "breadcrumbs": {
-          "volume_tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
+          "iam_instance_profile": [
             {
               "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
+              "name": "aws_iam_instance_profile.app",
+              "path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "module_connection": false
             }
-          ],
-          "tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
+          ]
+        }
+      },
+      {
+        "check_id": "CKV_AWS_8",
+        "bc_check_id": "BC_AWS_GENERAL_13",
+        "check_name": "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "root_block_device"
+          ]
+        },
+        "code_block": [
+          "resource \"aws_instance\" \"app\" {",
+          "  ami                         = \"ami-0123456789abcdef0\"",
+          "  instance_type               = \"t3.micro\"",
+          "  subnet_id                   = aws_subnet.public.id",
+          "  vpc_security_group_ids      = [aws_security_group.web.id]",
+          "  associate_public_ip_address = true",
+          "  iam_instance_profile        = aws_iam_instance_profile.app.name",
+          "",
+          "  metadata_options {",
+          "    http_endpoint = \"enabled\"",
+          "    http_tokens   = \"optional\"",
+          "  }",
+          "",
+          "  tags = {",
+          "    Name = \"secugate-chain-app\"",
+          "  }",
+          "}"
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
+        "file_line_range": [
+          130,
+          146
+        ],
+        "resource": "aws_instance.app",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.LaunchConfigurationEBSEncryption",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": "aws_instance.app",
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "breadcrumbs": {
+          "iam_instance_profile": [
             {
               "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
+              "name": "aws_iam_instance_profile.app",
+              "path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "module_connection": false
             }
           ]
@@ -1206,46 +643,39 @@
           ]
         },
         "code_block": [
-          "resource \"aws_instance\" \"super_critical_security_server\" {",
-          "  ami                         = data.aws_ami.ubuntu.id",
+          "resource \"aws_instance\" \"app\" {",
+          "  ami                         = \"ami-0123456789abcdef0\"",
           "  instance_type               = \"t3.micro\"",
           "  subnet_id                   = aws_subnet.public.id",
+          "  vpc_security_group_ids      = [aws_security_group.web.id]",
           "  associate_public_ip_address = true",
+          "  iam_instance_profile        = aws_iam_instance_profile.app.name",
           "",
-          "  vpc_security_group_ids = [",
-          "    aws_security_group.ec2_server.id",
-          "  ]",
-          "",
-          "  root_block_device {",
-          "    volume_type           = \"gp2\"",
-          "    volume_size           = 8",
-          "    delete_on_termination = true",
-          "  }",
-          "",
-          "  volume_tags = {",
-          "    Name = \"CloudGoat ${var.cgid} EC2 Instance Root Device\"",
+          "  metadata_options {",
+          "    http_endpoint = \"enabled\"",
+          "    http_tokens   = \"optional\"",
           "  }",
           "",
           "  tags = {",
-          "    Name = \"CloudGoat ${var.cgid} super-critical-security-server EC2 Instance\"",
+          "    Name = \"secugate-chain-app\"",
           "  }",
           "}"
         ],
-        "file_path": "/ec2.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
-        "repo_file_path": "/ec2.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          39,
-          62
+          130,
+          146
         ],
-        "resource": "aws_instance.super_critical_security_server",
+        "resource": "aws_instance.app",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.EC2DetailedMonitoringEnabled",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_instance.super_critical_security_server",
+        "resource_address": "aws_instance.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -1256,45 +686,13 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/ec2.tf",
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
         "breadcrumbs": {
-          "volume_tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
+          "iam_instance_profile": [
             {
               "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ],
-          "tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
+              "name": "aws_iam_instance_profile.app",
+              "path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "module_connection": false
             }
           ]
@@ -1311,46 +709,39 @@
           ]
         },
         "code_block": [
-          "resource \"aws_instance\" \"super_critical_security_server\" {",
-          "  ami                         = data.aws_ami.ubuntu.id",
+          "resource \"aws_instance\" \"app\" {",
+          "  ami                         = \"ami-0123456789abcdef0\"",
           "  instance_type               = \"t3.micro\"",
           "  subnet_id                   = aws_subnet.public.id",
+          "  vpc_security_group_ids      = [aws_security_group.web.id]",
           "  associate_public_ip_address = true",
+          "  iam_instance_profile        = aws_iam_instance_profile.app.name",
           "",
-          "  vpc_security_group_ids = [",
-          "    aws_security_group.ec2_server.id",
-          "  ]",
-          "",
-          "  root_block_device {",
-          "    volume_type           = \"gp2\"",
-          "    volume_size           = 8",
-          "    delete_on_termination = true",
-          "  }",
-          "",
-          "  volume_tags = {",
-          "    Name = \"CloudGoat ${var.cgid} EC2 Instance Root Device\"",
+          "  metadata_options {",
+          "    http_endpoint = \"enabled\"",
+          "    http_tokens   = \"optional\"",
           "  }",
           "",
           "  tags = {",
-          "    Name = \"CloudGoat ${var.cgid} super-critical-security-server EC2 Instance\"",
+          "    Name = \"secugate-chain-app\"",
           "  }",
           "}"
         ],
-        "file_path": "/ec2.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
-        "repo_file_path": "/ec2.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          39,
-          62
+          130,
+          146
         ],
-        "resource": "aws_instance.super_critical_security_server",
+        "resource": "aws_instance.app",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.EC2EBSOptimized",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_instance.super_critical_security_server",
+        "resource_address": "aws_instance.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -1361,45 +752,13 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/ec2.tf",
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
         "breadcrumbs": {
-          "volume_tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
+          "iam_instance_profile": [
             {
               "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ],
-          "tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
+              "name": "aws_iam_instance_profile.app",
+              "path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "module_connection": false
             }
           ]
@@ -1416,46 +775,39 @@
           ]
         },
         "code_block": [
-          "resource \"aws_instance\" \"super_critical_security_server\" {",
-          "  ami                         = data.aws_ami.ubuntu.id",
+          "resource \"aws_instance\" \"app\" {",
+          "  ami                         = \"ami-0123456789abcdef0\"",
           "  instance_type               = \"t3.micro\"",
           "  subnet_id                   = aws_subnet.public.id",
+          "  vpc_security_group_ids      = [aws_security_group.web.id]",
           "  associate_public_ip_address = true",
+          "  iam_instance_profile        = aws_iam_instance_profile.app.name",
           "",
-          "  vpc_security_group_ids = [",
-          "    aws_security_group.ec2_server.id",
-          "  ]",
-          "",
-          "  root_block_device {",
-          "    volume_type           = \"gp2\"",
-          "    volume_size           = 8",
-          "    delete_on_termination = true",
-          "  }",
-          "",
-          "  volume_tags = {",
-          "    Name = \"CloudGoat ${var.cgid} EC2 Instance Root Device\"",
+          "  metadata_options {",
+          "    http_endpoint = \"enabled\"",
+          "    http_tokens   = \"optional\"",
           "  }",
           "",
           "  tags = {",
-          "    Name = \"CloudGoat ${var.cgid} super-critical-security-server EC2 Instance\"",
+          "    Name = \"secugate-chain-app\"",
           "  }",
           "}"
         ],
-        "file_path": "/ec2.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
-        "repo_file_path": "/ec2.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          39,
-          62
+          130,
+          146
         ],
-        "resource": "aws_instance.super_critical_security_server",
+        "resource": "aws_instance.app",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.EC2PublicIP",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_instance.super_critical_security_server",
+        "resource_address": "aws_instance.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -1466,49 +818,201 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-12",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/ec2.tf",
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
         "breadcrumbs": {
-          "volume_tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
+          "iam_instance_profile": [
             {
               "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ],
-          "tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
+              "name": "aws_iam_instance_profile.app",
+              "path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "module_connection": false
             }
           ]
         }
+      },
+      {
+        "check_id": "CKV_AWS_53",
+        "bc_check_id": "BC_AWS_S3_19",
+        "check_name": "Ensure S3 bucket has block public ACLS enabled",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "block_public_acls"
+          ]
+        },
+        "code_block": [
+          "resource \"aws_s3_bucket_public_access_block\" \"public\" {",
+          "  bucket                  = aws_s3_bucket.public.id",
+          "  block_public_acls       = false",
+          "  block_public_policy     = false",
+          "  ignore_public_acls      = false",
+          "  restrict_public_buckets = false",
+          "}"
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
+        "file_line_range": [
+          152,
+          158
+        ],
+        "resource": "aws_s3_bucket_public_access_block.public",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.S3BlockPublicACLs",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": "aws_s3_bucket_public_access_block.public",
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-19",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
+      },
+      {
+        "check_id": "CKV_AWS_56",
+        "bc_check_id": "BC_AWS_S3_22",
+        "check_name": "Ensure S3 bucket has 'restrict_public_buckets' enabled",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "restrict_public_buckets"
+          ]
+        },
+        "code_block": [
+          "resource \"aws_s3_bucket_public_access_block\" \"public\" {",
+          "  bucket                  = aws_s3_bucket.public.id",
+          "  block_public_acls       = false",
+          "  block_public_policy     = false",
+          "  ignore_public_acls      = false",
+          "  restrict_public_buckets = false",
+          "}"
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
+        "file_line_range": [
+          152,
+          158
+        ],
+        "resource": "aws_s3_bucket_public_access_block.public",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.S3RestrictPublicBuckets",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": "aws_s3_bucket_public_access_block.public",
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-22",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
+      },
+      {
+        "check_id": "CKV_AWS_54",
+        "bc_check_id": "BC_AWS_S3_20",
+        "check_name": "Ensure S3 bucket has block public policy enabled",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "block_public_policy"
+          ]
+        },
+        "code_block": [
+          "resource \"aws_s3_bucket_public_access_block\" \"public\" {",
+          "  bucket                  = aws_s3_bucket.public.id",
+          "  block_public_acls       = false",
+          "  block_public_policy     = false",
+          "  ignore_public_acls      = false",
+          "  restrict_public_buckets = false",
+          "}"
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
+        "file_line_range": [
+          152,
+          158
+        ],
+        "resource": "aws_s3_bucket_public_access_block.public",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.S3BlockPublicPolicy",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": "aws_s3_bucket_public_access_block.public",
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-20",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
+      },
+      {
+        "check_id": "CKV_AWS_55",
+        "bc_check_id": "BC_AWS_S3_21",
+        "check_name": "Ensure S3 bucket has ignore public ACLs enabled",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "ignore_public_acls"
+          ]
+        },
+        "code_block": [
+          "resource \"aws_s3_bucket_public_access_block\" \"public\" {",
+          "  bucket                  = aws_s3_bucket.public.id",
+          "  block_public_acls       = false",
+          "  block_public_policy     = false",
+          "  ignore_public_acls      = false",
+          "  restrict_public_buckets = false",
+          "}"
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
+        "file_line_range": [
+          152,
+          158
+        ],
+        "resource": "aws_s3_bucket_public_access_block.public",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.S3IgnorePublicACLs",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": "aws_s3_bucket_public_access_block.public",
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-21",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV_AWS_24",
@@ -1517,37 +1021,32 @@
         "check_result": {
           "result": "FAILED",
           "evaluated_keys": [
-            "ingress/[0]/from_port",
-            "ingress/[0]/to_port",
-            "ingress/[0]/cidr_blocks",
-            "ingress/[0]/ipv6_cidr_blocks"
+            "ingress/[1]/from_port",
+            "ingress/[1]/to_port",
+            "ingress/[1]/cidr_blocks",
+            "ingress/[1]/ipv6_cidr_blocks"
           ]
         },
         "code_block": [
-          "resource \"aws_security_group\" \"ec2_server\" {",
-          "  name        = \"cg-ec2-ssh-${var.cgid}\"",
-          "  description = \"CloudGoat ${var.cgid} Security Group for EC2 Instance\"",
-          "  vpc_id      = aws_vpc.vpc.id",
+          "resource \"aws_security_group\" \"web\" {",
+          "  name        = \"secugate-chain-web\"",
+          "  description = \"Deliberately open SG for CI gate testing\"",
+          "  vpc_id      = aws_vpc.main.id",
           "",
           "  ingress {",
-          "    from_port   = 22",
-          "    to_port     = 22",
-          "    protocol    = \"tcp\"",
-          "    cidr_blocks = var.cg_whitelist",
-          "  }",
-          "",
-          "  ingress {",
+          "    description = \"HTTP from anywhere\"",
           "    from_port   = 80",
           "    to_port     = 80",
           "    protocol    = \"tcp\"",
-          "    cidr_blocks = var.cg_whitelist",
+          "    cidr_blocks = [\"0.0.0.0/0\"]",
           "  }",
           "",
           "  ingress {",
-          "    from_port   = 443",
-          "    to_port     = 443",
+          "    description = \"SSH from anywhere\"",
+          "    from_port   = 22",
+          "    to_port     = 22",
           "    protocol    = \"tcp\"",
-          "    cidr_blocks = var.cg_whitelist",
+          "    cidr_blocks = [\"0.0.0.0/0\"]",
           "  }",
           "",
           "  egress {",
@@ -1556,27 +1055,23 @@
           "    protocol    = \"-1\"",
           "    cidr_blocks = [\"0.0.0.0/0\"]",
           "  }",
-          "",
-          "  tags = {",
-          "    Name = \"cg-ec2-ssh-${var.cgid}\"",
-          "  }",
           "}"
         ],
-        "file_path": "/ec2.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
-        "repo_file_path": "/ec2.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          1,
-          37
+          50,
+          77
         ],
-        "resource": "aws_security_group.ec2_server",
+        "resource": "aws_security_group.web",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.SecurityGroupUnrestrictedIngress22",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_security_group.ec2_server",
+        "resource_address": "aws_security_group.web",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -1587,117 +1082,7 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/ec2.tf",
-        "breadcrumbs": {
-          "ingress.0.cidr_blocks": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.0": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.1.cidr_blocks": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.1": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.2.cidr_blocks": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.2": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ],
-          "name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ],
-          "tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV_AWS_260",
@@ -1706,37 +1091,32 @@
         "check_result": {
           "result": "FAILED",
           "evaluated_keys": [
-            "ingress/[2]/from_port",
-            "ingress/[2]/to_port",
-            "ingress/[2]/cidr_blocks",
-            "ingress/[2]/ipv6_cidr_blocks"
+            "ingress/[0]/from_port",
+            "ingress/[0]/to_port",
+            "ingress/[0]/cidr_blocks",
+            "ingress/[0]/ipv6_cidr_blocks"
           ]
         },
         "code_block": [
-          "resource \"aws_security_group\" \"ec2_server\" {",
-          "  name        = \"cg-ec2-ssh-${var.cgid}\"",
-          "  description = \"CloudGoat ${var.cgid} Security Group for EC2 Instance\"",
-          "  vpc_id      = aws_vpc.vpc.id",
+          "resource \"aws_security_group\" \"web\" {",
+          "  name        = \"secugate-chain-web\"",
+          "  description = \"Deliberately open SG for CI gate testing\"",
+          "  vpc_id      = aws_vpc.main.id",
           "",
           "  ingress {",
-          "    from_port   = 22",
-          "    to_port     = 22",
-          "    protocol    = \"tcp\"",
-          "    cidr_blocks = var.cg_whitelist",
-          "  }",
-          "",
-          "  ingress {",
+          "    description = \"HTTP from anywhere\"",
           "    from_port   = 80",
           "    to_port     = 80",
           "    protocol    = \"tcp\"",
-          "    cidr_blocks = var.cg_whitelist",
+          "    cidr_blocks = [\"0.0.0.0/0\"]",
           "  }",
           "",
           "  ingress {",
-          "    from_port   = 443",
-          "    to_port     = 443",
+          "    description = \"SSH from anywhere\"",
+          "    from_port   = 22",
+          "    to_port     = 22",
           "    protocol    = \"tcp\"",
-          "    cidr_blocks = var.cg_whitelist",
+          "    cidr_blocks = [\"0.0.0.0/0\"]",
           "  }",
           "",
           "  egress {",
@@ -1745,27 +1125,23 @@
           "    protocol    = \"-1\"",
           "    cidr_blocks = [\"0.0.0.0/0\"]",
           "  }",
-          "",
-          "  tags = {",
-          "    Name = \"cg-ec2-ssh-${var.cgid}\"",
-          "  }",
           "}"
         ],
-        "file_path": "/ec2.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
-        "repo_file_path": "/ec2.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          1,
-          37
+          50,
+          77
         ],
-        "resource": "aws_security_group.ec2_server",
+        "resource": "aws_security_group.web",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.SecurityGroupUnrestrictedIngress80",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_security_group.ec2_server",
+        "resource_address": "aws_security_group.web",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -1776,117 +1152,7 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-groups-do-not-allow-ingress-from-00000-to-port-80",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/ec2.tf",
-        "breadcrumbs": {
-          "ingress.0.cidr_blocks": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.0": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.1.cidr_blocks": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.1": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.2.cidr_blocks": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.2": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ],
-          "name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ],
-          "tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV_AWS_382",
@@ -1902,30 +1168,25 @@
           ]
         },
         "code_block": [
-          "resource \"aws_security_group\" \"ec2_server\" {",
-          "  name        = \"cg-ec2-ssh-${var.cgid}\"",
-          "  description = \"CloudGoat ${var.cgid} Security Group for EC2 Instance\"",
-          "  vpc_id      = aws_vpc.vpc.id",
+          "resource \"aws_security_group\" \"web\" {",
+          "  name        = \"secugate-chain-web\"",
+          "  description = \"Deliberately open SG for CI gate testing\"",
+          "  vpc_id      = aws_vpc.main.id",
           "",
           "  ingress {",
-          "    from_port   = 22",
-          "    to_port     = 22",
-          "    protocol    = \"tcp\"",
-          "    cidr_blocks = var.cg_whitelist",
-          "  }",
-          "",
-          "  ingress {",
+          "    description = \"HTTP from anywhere\"",
           "    from_port   = 80",
           "    to_port     = 80",
           "    protocol    = \"tcp\"",
-          "    cidr_blocks = var.cg_whitelist",
+          "    cidr_blocks = [\"0.0.0.0/0\"]",
           "  }",
           "",
           "  ingress {",
-          "    from_port   = 443",
-          "    to_port     = 443",
+          "    description = \"SSH from anywhere\"",
+          "    from_port   = 22",
+          "    to_port     = 22",
           "    protocol    = \"tcp\"",
-          "    cidr_blocks = var.cg_whitelist",
+          "    cidr_blocks = [\"0.0.0.0/0\"]",
           "  }",
           "",
           "  egress {",
@@ -1934,27 +1195,23 @@
           "    protocol    = \"-1\"",
           "    cidr_blocks = [\"0.0.0.0/0\"]",
           "  }",
-          "",
-          "  tags = {",
-          "    Name = \"cg-ec2-ssh-${var.cgid}\"",
-          "  }",
           "}"
         ],
-        "file_path": "/ec2.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
-        "repo_file_path": "/ec2.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          1,
-          37
+          50,
+          77
         ],
-        "resource": "aws_security_group.ec2_server",
+        "resource": "aws_security_group.web",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.SecurityGroupUnrestrictedEgressAny",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_security_group.ec2_server",
+        "resource_address": "aws_security_group.web",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -1965,117 +1222,7 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/bc-aws-382",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/ec2.tf",
-        "breadcrumbs": {
-          "ingress.0.cidr_blocks": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.0": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.1.cidr_blocks": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.1": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.2.cidr_blocks": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "ingress.2": [
-            {
-              "type": "variable",
-              "name": "cg_whitelist",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
-          ],
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ],
-          "name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ],
-          "tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV_AWS_130",
@@ -2089,22 +1236,17 @@
         },
         "code_block": [
           "resource \"aws_subnet\" \"public\" {",
-          "  availability_zone       = \"${var.region}a\"",
+          "  vpc_id                  = aws_vpc.main.id",
+          "  cidr_block              = \"10.0.1.0/24\"",
           "  map_public_ip_on_launch = true",
-          "  cidr_block              = \"10.0.10.0/24\"",
-          "  vpc_id                  = aws_vpc.vpc.id",
-          "",
-          "  tags = {",
-          "    Name = \"CloudGoat-${var.cgid}-Public\"",
-          "  }",
           "}"
         ],
-        "file_path": "/vpc.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
-        "repo_file_path": "/vpc.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          18,
-          27
+          26,
+          30
         ],
         "resource": "aws_subnet.public",
         "evaluations": null,
@@ -2124,43 +1266,132 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-vpc-subnets-do-not-assign-public-ip-by-default",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/vpc.tf",
-        "breadcrumbs": {
-          "tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
+      },
+      {
+        "check_id": "CKV2_AWS_6",
+        "bc_check_id": "BC_AWS_NETWORKING_52",
+        "check_name": "Ensure that S3 bucket has a Public Access block",
+        "check_result": {
+          "result": "FAILED",
+          "entity": {
+            "aws_s3_bucket": {
+              "public": {
+                "__end_line__": 150,
+                "__start_line__": 148,
+                "bucket": [
+                  "secugate-chain-public-artifacts-demo"
+                ],
+                "__address__": "aws_s3_bucket.public",
+                "__provider_address__": "aws.default"
+              }
             }
-          ],
-          "availability_zone": [
-            {
-              "type": "tfvar",
-              "name": "region",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "region",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            }
+          },
+          "evaluated_keys": [
+            "resource_type",
+            "block_public_acls",
+            "block_public_policy"
           ]
-        }
+        },
+        "code_block": [
+          "resource \"aws_s3_bucket\" \"public\" {",
+          "  bucket = \"secugate-chain-public-artifacts-demo\"",
+          "}"
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
+        "file_line_range": [
+          148,
+          150
+        ],
+        "resource": "aws_s3_bucket.public",
+        "evaluations": null,
+        "check_class": "checkov.common.graph.checks_infra.base_check",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": "aws_s3_bucket.public",
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": {
+          "code_block": [],
+          "file_path": "/tfplan.json",
+          "file_line_range": [
+            0,
+            0
+          ],
+          "resource": "aws_s3_bucket_public_access_block.public",
+          "entity_tags": {},
+          "evaluations": null,
+          "file_abs_path": "/home/jiyoon/secugate/artifacts/tfplan.json",
+          "resource_address": "aws_s3_bucket_public_access_block.public"
+        },
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/s3-bucket-should-have-public-access-blocks-defaults-to-false-if-the-public-access-block-is-not-attached",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
+      },
+      {
+        "check_id": "CKV_AWS_18",
+        "bc_check_id": "BC_AWS_S3_13",
+        "check_name": "Ensure the S3 bucket has access logging enabled",
+        "check_result": {
+          "result": "FAILED",
+          "entity": {
+            "aws_s3_bucket": {
+              "public": {
+                "__end_line__": 150,
+                "__start_line__": 148,
+                "bucket": [
+                  "secugate-chain-public-artifacts-demo"
+                ],
+                "__address__": "aws_s3_bucket.public",
+                "__provider_address__": "aws.default"
+              }
+            }
+          },
+          "evaluated_keys": [
+            "logging",
+            "resource_type"
+          ]
+        },
+        "code_block": [
+          "resource \"aws_s3_bucket\" \"public\" {",
+          "  bucket = \"secugate-chain-public-artifacts-demo\"",
+          "}"
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
+        "file_line_range": [
+          148,
+          150
+        ],
+        "resource": "aws_s3_bucket.public",
+        "evaluations": null,
+        "check_class": "checkov.common.graph.checks_infra.base_check",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": "aws_s3_bucket.public",
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-13-enable-logging",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV2_AWS_12",
@@ -2170,63 +1401,49 @@
           "result": "FAILED",
           "entity": {
             "aws_vpc": {
-              "vpc": {
-                "__end_line__": 8,
-                "__start_line__": 1,
+              "main": {
+                "__end_line__": 24,
+                "__start_line__": 22,
                 "cidr_block": [
                   "10.0.0.0/16"
                 ],
-                "enable_dns_hostnames": [
-                  true
-                ],
-                "tags": [
-                  {
-                    "Name": "CloudGoat-demo123"
-                  }
-                ],
-                "__address__": "aws_vpc.vpc"
+                "__address__": "aws_vpc.main",
+                "__provider_address__": "aws.default"
               }
             }
           },
           "evaluated_keys": [
-            "egress/to_port",
+            "ingress/self",
             "egress/from_port",
-            "resource_type",
-            "ingress/from_port",
             "egress/cidr_blocks",
-            "ingress/protocol",
             "egress/protocol",
+            "ingress/protocol",
+            "ingress/from_port",
             "ingress/to_port",
-            "ingress/self"
+            "resource_type",
+            "egress/to_port"
           ]
         },
         "code_block": [
-          "resource \"aws_vpc\" \"vpc\" {",
-          "  cidr_block           = \"10.0.0.0/16\"",
-          "  enable_dns_hostnames = true",
-          "",
-          "  tags = {",
-          "    Name = \"CloudGoat-${var.cgid}\"",
-          "  }",
+          "resource \"aws_vpc\" \"main\" {",
+          "  cidr_block = \"10.0.0.0/16\"",
           "}"
         ],
-        "file_path": "/vpc.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
-        "repo_file_path": "/vpc.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          1,
-          8
+          22,
+          24
         ],
-        "resource": "aws_vpc.vpc",
+        "resource": "aws_vpc.main",
         "evaluations": null,
         "check_class": "checkov.common.graph.checks_infra.base_check",
         "fixed_definition": null,
-        "entity_tags": {
-          "Name": "CloudGoat-demo123"
-        },
+        "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_vpc.vpc",
+        "resource_address": "aws_vpc.main",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -2237,29 +1454,62 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-4",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/vpc.tf",
-        "breadcrumbs": {
-          "tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
+      },
+      {
+        "check_id": "CKV2_AWS_62",
+        "bc_check_id": "BC_AWS_LOGGING_36",
+        "check_name": "Ensure S3 buckets should have event notifications enabled",
+        "check_result": {
+          "result": "FAILED",
+          "entity": {
+            "aws_s3_bucket": {
+              "public": {
+                "__end_line__": 150,
+                "__start_line__": 148,
+                "bucket": [
+                  "secugate-chain-public-artifacts-demo"
+                ],
+                "__address__": "aws_s3_bucket.public",
+                "__provider_address__": "aws.default"
+              }
             }
+          },
+          "evaluated_keys": [
+            "resource_type"
           ]
-        }
+        },
+        "code_block": [
+          "resource \"aws_s3_bucket\" \"public\" {",
+          "  bucket = \"secugate-chain-public-artifacts-demo\"",
+          "}"
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
+        "file_line_range": [
+          148,
+          150
+        ],
+        "resource": "aws_s3_bucket.public",
+        "evaluations": null,
+        "check_class": "checkov.common.graph.checks_infra.base_check",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": "aws_s3_bucket.public",
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-62",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV2_AWS_11",
@@ -2269,56 +1519,42 @@
           "result": "FAILED",
           "entity": {
             "aws_vpc": {
-              "vpc": {
-                "__end_line__": 8,
-                "__start_line__": 1,
+              "main": {
+                "__end_line__": 24,
+                "__start_line__": 22,
                 "cidr_block": [
                   "10.0.0.0/16"
                 ],
-                "enable_dns_hostnames": [
-                  true
-                ],
-                "tags": [
-                  {
-                    "Name": "CloudGoat-demo123"
-                  }
-                ],
-                "__address__": "aws_vpc.vpc"
+                "__address__": "aws_vpc.main",
+                "__provider_address__": "aws.default"
               }
             }
           },
           "evaluated_keys": [
-            "networking",
-            "resource_type"
+            "resource_type",
+            "networking"
           ]
         },
         "code_block": [
-          "resource \"aws_vpc\" \"vpc\" {",
-          "  cidr_block           = \"10.0.0.0/16\"",
-          "  enable_dns_hostnames = true",
-          "",
-          "  tags = {",
-          "    Name = \"CloudGoat-${var.cgid}\"",
-          "  }",
+          "resource \"aws_vpc\" \"main\" {",
+          "  cidr_block = \"10.0.0.0/16\"",
           "}"
         ],
-        "file_path": "/vpc.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/vpc.tf",
-        "repo_file_path": "/vpc.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          1,
-          8
+          22,
+          24
         ],
-        "resource": "aws_vpc.vpc",
+        "resource": "aws_vpc.main",
         "evaluations": null,
         "check_class": "checkov.common.graph.checks_infra.base_check",
         "fixed_definition": null,
-        "entity_tags": {
-          "Name": "CloudGoat-demo123"
-        },
+        "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_vpc.vpc",
+        "resource_address": "aws_vpc.main",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -2329,29 +1565,234 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/logging-9-enable-vpc-flow-logging",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/vpc.tf",
-        "breadcrumbs": {
-          "tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
+      },
+      {
+        "check_id": "CKV_AWS_144",
+        "bc_check_id": "BC_AWS_GENERAL_72",
+        "check_name": "Ensure that S3 bucket has cross-region replication enabled",
+        "check_result": {
+          "result": "FAILED",
+          "entity": {
+            "aws_s3_bucket": {
+              "public": {
+                "__end_line__": 150,
+                "__start_line__": 148,
+                "bucket": [
+                  "secugate-chain-public-artifacts-demo"
+                ],
+                "__address__": "aws_s3_bucket.public",
+                "__provider_address__": "aws.default"
+              }
             }
+          },
+          "evaluated_keys": [
+            "replication_configuration/rules/*/status",
+            "rule/*/status",
+            "resource_type"
           ]
-        }
+        },
+        "code_block": [
+          "resource \"aws_s3_bucket\" \"public\" {",
+          "  bucket = \"secugate-chain-public-artifacts-demo\"",
+          "}"
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
+        "file_line_range": [
+          148,
+          150
+        ],
+        "resource": "aws_s3_bucket.public",
+        "evaluations": null,
+        "check_class": "checkov.common.graph.checks_infra.base_check",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": "aws_s3_bucket.public",
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-bucket-has-cross-region-replication-enabled",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
+      },
+      {
+        "check_id": "CKV_AWS_145",
+        "bc_check_id": "BC_AWS_GENERAL_56",
+        "check_name": "Ensure that S3 buckets are encrypted with KMS by default",
+        "check_result": {
+          "result": "FAILED",
+          "entity": {
+            "aws_s3_bucket": {
+              "public": {
+                "__end_line__": 150,
+                "__start_line__": 148,
+                "bucket": [
+                  "secugate-chain-public-artifacts-demo"
+                ],
+                "__address__": "aws_s3_bucket.public",
+                "__provider_address__": "aws.default"
+              }
+            }
+          },
+          "evaluated_keys": [
+            "resource_type",
+            "rule/apply_server_side_encryption_by_default/sse_algorithm",
+            "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+          ]
+        },
+        "code_block": [
+          "resource \"aws_s3_bucket\" \"public\" {",
+          "  bucket = \"secugate-chain-public-artifacts-demo\"",
+          "}"
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
+        "file_line_range": [
+          148,
+          150
+        ],
+        "resource": "aws_s3_bucket.public",
+        "evaluations": null,
+        "check_class": "checkov.common.graph.checks_infra.base_check",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": "aws_s3_bucket.public",
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-buckets-are-encrypted-with-kms-by-default",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
+      },
+      {
+        "check_id": "CKV2_AWS_61",
+        "bc_check_id": "BC_AWS_LOGGING_35",
+        "check_name": "Ensure that an S3 bucket has a lifecycle configuration",
+        "check_result": {
+          "result": "FAILED",
+          "entity": {
+            "aws_s3_bucket": {
+              "public": {
+                "__end_line__": 150,
+                "__start_line__": 148,
+                "bucket": [
+                  "secugate-chain-public-artifacts-demo"
+                ],
+                "__address__": "aws_s3_bucket.public",
+                "__provider_address__": "aws.default"
+              }
+            }
+          },
+          "evaluated_keys": [
+            "resource_type",
+            "lifecycle_rule"
+          ]
+        },
+        "code_block": [
+          "resource \"aws_s3_bucket\" \"public\" {",
+          "  bucket = \"secugate-chain-public-artifacts-demo\"",
+          "}"
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
+        "file_line_range": [
+          148,
+          150
+        ],
+        "resource": "aws_s3_bucket.public",
+        "evaluations": null,
+        "check_class": "checkov.common.graph.checks_infra.base_check",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": "aws_s3_bucket.public",
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-61",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
+      },
+      {
+        "check_id": "CKV_AWS_21",
+        "bc_check_id": "BC_AWS_S3_16",
+        "check_name": "Ensure all data stored in the S3 bucket have versioning enabled",
+        "check_result": {
+          "result": "FAILED",
+          "entity": {
+            "aws_s3_bucket": {
+              "public": {
+                "__end_line__": 150,
+                "__start_line__": 148,
+                "bucket": [
+                  "secugate-chain-public-artifacts-demo"
+                ],
+                "__address__": "aws_s3_bucket.public",
+                "__provider_address__": "aws.default"
+              }
+            }
+          },
+          "evaluated_keys": [
+            "resource_type",
+            "versioning_configuration/status",
+            "versioning/enabled"
+          ]
+        },
+        "code_block": [
+          "resource \"aws_s3_bucket\" \"public\" {",
+          "  bucket = \"secugate-chain-public-artifacts-demo\"",
+          "}"
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
+        "file_line_range": [
+          148,
+          150
+        ],
+        "resource": "aws_s3_bucket.public",
+        "evaluations": null,
+        "check_class": "checkov.common.graph.checks_infra.base_check",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": "aws_s3_bucket.public",
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-16-enable-versioning",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       },
       {
         "check_id": "CKV2_AWS_40",
@@ -2361,69 +1802,84 @@
           "result": "FAILED",
           "entity": {
             "aws_iam_policy": {
-              "ec2_mighty_policy": {
-                "__end_line__": 35,
-                "__start_line__": 21,
-                "description": [
-                  "CloudGoat demo123 EC2 Mighty Policy"
-                ],
+              "app": {
+                "__end_line__": 118,
+                "__start_line__": 96,
                 "name": [
-                  "cg-ec2-mighty-policy"
+                  "secugate-chain-app-policy"
                 ],
                 "policy": [
                   {
                     "Version": "2012-10-17",
                     "Statement": [
                       {
-                        "Action": "*",
                         "Effect": "Allow",
+                        "Action": "*",
+                        "Resource": "*"
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "s3:GetObject",
+                          "s3:PutObject",
+                          "s3:ListBucket"
+                        ],
                         "Resource": "*"
                       }
                     ]
                   }
                 ],
-                "__address__": "aws_iam_policy.ec2_mighty_policy"
+                "__address__": "aws_iam_policy.app",
+                "__provider_address__": "aws.default"
               }
             }
           },
           "evaluated_keys": [
-            "policy/Statement[?(@/Effect == Allow)]/Action[*]",
             "statement[?(@/effect == Allow)]/actions[*]",
-            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
+            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]",
+            "policy/Statement[?(@/Effect == Allow)]/Action[*]"
           ]
         },
         "code_block": [
-          "resource \"aws_iam_policy\" \"ec2_mighty_policy\" {",
-          "  name        = \"cg-ec2-mighty-policy\"",
-          "  description = \"CloudGoat ${var.cgid} EC2 Mighty Policy\"",
+          "resource \"aws_iam_policy\" \"app\" {",
+          "  name = \"secugate-chain-app-policy\"",
           "",
           "  policy = jsonencode({",
           "    Version = \"2012-10-17\"",
           "    Statement = [",
           "      {",
-          "        Action   = \"*\"",
           "        Effect   = \"Allow\"",
+          "        Action   = \"*\"",
+          "        Resource = \"*\"",
+          "      },",
+          "      {",
+          "        Effect = \"Allow\"",
+          "        Action = [",
+          "          \"s3:GetObject\",",
+          "          \"s3:PutObject\",",
+          "          \"s3:ListBucket\"",
+          "        ]",
           "        Resource = \"*\"",
           "      }",
           "    ]",
           "  })",
           "}"
         ],
-        "file_path": "/iam_mighty.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "repo_file_path": "/iam_mighty.tf",
+        "file_path": "/main.tf",
+        "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+        "repo_file_path": "/main.tf",
         "file_line_range": [
-          21,
-          35
+          96,
+          118
         ],
-        "resource": "aws_iam_policy.ec2_mighty_policy",
+        "resource": "aws_iam_policy.app",
         "evaluations": null,
         "check_class": "checkov.common.graph.checks_infra.base_check",
         "fixed_definition": null,
         "entity_tags": null,
         "caller_file_path": null,
         "caller_file_line_range": null,
-        "resource_address": "aws_iam_policy.ec2_mighty_policy",
+        "resource_address": "aws_iam_policy.app",
         "severity": null,
         "bc_category": null,
         "benchmarks": null,
@@ -2434,194 +1890,16 @@
         "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-40",
         "details": [],
         "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/iam_mighty.tf",
-        "breadcrumbs": {
-          "description": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
-      },
-      {
-        "check_id": "CKV2_AWS_41",
-        "bc_check_id": "BC_AWS_IAM_69",
-        "check_name": "Ensure an IAM role is attached to EC2 instance",
-        "check_result": {
-          "result": "FAILED",
-          "entity": {
-            "aws_instance": {
-              "super_critical_security_server": {
-                "__end_line__": 62,
-                "__start_line__": 39,
-                "ami": [
-                  "data.aws_ami.ubuntu.id"
-                ],
-                "associate_public_ip_address": [
-                  true
-                ],
-                "instance_type": [
-                  "t3.micro"
-                ],
-                "root_block_device": [
-                  {
-                    "delete_on_termination": [
-                      true
-                    ],
-                    "volume_size": [
-                      8
-                    ],
-                    "volume_type": [
-                      "gp2"
-                    ]
-                  }
-                ],
-                "subnet_id": [
-                  "aws_subnet.public.id"
-                ],
-                "tags": [
-                  {
-                    "Name": "CloudGoat demo123 super-critical-security-server EC2 Instance"
-                  }
-                ],
-                "volume_tags": [
-                  {
-                    "Name": "CloudGoat demo123 EC2 Instance Root Device"
-                  }
-                ],
-                "vpc_security_group_ids": [
-                  [
-                    "aws_security_group.ec2_server.id"
-                  ]
-                ],
-                "__address__": "aws_instance.super_critical_security_server"
-              }
-            }
-          },
-          "evaluated_keys": [
-            "iam_instance_profile"
-          ]
-        },
-        "code_block": [
-          "resource \"aws_instance\" \"super_critical_security_server\" {",
-          "  ami                         = data.aws_ami.ubuntu.id",
-          "  instance_type               = \"t3.micro\"",
-          "  subnet_id                   = aws_subnet.public.id",
-          "  associate_public_ip_address = true",
-          "",
-          "  vpc_security_group_ids = [",
-          "    aws_security_group.ec2_server.id",
-          "  ]",
-          "",
-          "  root_block_device {",
-          "    volume_type           = \"gp2\"",
-          "    volume_size           = 8",
-          "    delete_on_termination = true",
-          "  }",
-          "",
-          "  volume_tags = {",
-          "    Name = \"CloudGoat ${var.cgid} EC2 Instance Root Device\"",
-          "  }",
-          "",
-          "  tags = {",
-          "    Name = \"CloudGoat ${var.cgid} super-critical-security-server EC2 Instance\"",
-          "  }",
-          "}"
-        ],
-        "file_path": "/ec2.tf",
-        "file_abs_path": "/home/jiyoon/testterraform/ec2.tf",
-        "repo_file_path": "/ec2.tf",
-        "file_line_range": [
-          39,
-          62
-        ],
-        "resource": "aws_instance.super_critical_security_server",
-        "evaluations": null,
-        "check_class": "checkov.common.graph.checks_infra.base_check",
-        "fixed_definition": null,
-        "entity_tags": {
-          "Name": "CloudGoat demo123 super-critical-security-server EC2 Instance"
-        },
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": "aws_instance.super_critical_security_server",
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-an-iam-role-is-attached-to-ec2-instance",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/home/jiyoon/testterraform/ec2.tf",
-        "breadcrumbs": {
-          "volume_tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ],
-          "tags.Name": [
-            {
-              "type": "tfvar",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/terraform.tfvars",
-              "module_connection": false
-            },
-            {
-              "type": "variable",
-              "name": "cgid",
-              "path": "/home/jiyoon/testterraform/variables.tf",
-              "module_connection": false
-            },
-            {
-              "type": "resource",
-              "name": "aws_iam_role.ec2_meek_role",
-              "path": "/home/jiyoon/testterraform/iam_meek.tf",
-              "module_connection": false
-            }
-          ]
-        }
+        "definition_context_file_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf"
       }
     ]
   },
   "summary": {
-    "passed": 34,
-    "failed": 26,
+    "passed": 20,
+    "failed": 31,
     "skipped": 0,
     "parsing_errors": 0,
-    "resource_count": 16,
+    "resource_count": 14,
     "checkov_version": "3.2.500"
   }
 }

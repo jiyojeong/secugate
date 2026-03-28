@@ -3,16 +3,96 @@
   "source": "artifacts/checkov_merged.json",
   "rules": "/home/jiyoon/secugate/src/secugate/rules/attack_mapping.json",
   "summary": {
-    "failed_findings": 26,
-    "mapped_findings": 26,
-    "capabilities": 19,
-    "atomic_ids": 7,
-    "scenarios": 4,
-    "unmapped_check_ids": 0
+    "failed_findings": 31,
+    "mapped_findings": 30,
+    "capabilities": 22,
+    "atomic_ids": 15,
+    "scenarios": 6,
+    "unmapped_check_ids": 1
   },
   "capabilities": [
     {
-      "capability": "default_sg_not_restricted",
+      "capability_key": "backup_recovery_gap",
+      "capability_id": "EX_BACKUP_RECOVERY_GAP",
+      "capability": "백업/복구/PITR/보존 기간이 부족해 파괴 이후 복구가 어려워짐",
+      "mitre_tactic": "IM",
+      "stage": "impact_or_exfiltration",
+      "finding_count": 1,
+      "checks": {
+        "CKV_AWS_21": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_21",
+          "check_name": "Ensure all data stored in the S3 bucket have versioning enabled",
+          "resource_address": "aws_s3_bucket.public",
+          "resource": "aws_s3_bucket.public",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            148,
+            150
+          ],
+          "evaluated_keys": [
+            "resource_type",
+            "versioning_configuration/status",
+            "versioning/enabled"
+          ]
+        }
+      ]
+    },
+    {
+      "capability_key": "data_at_rest_encryption_missing",
+      "capability_id": "DE_DATA_AT_REST_ENCRYPTION_MISSING",
+      "capability": "저장 데이터/로그/아티팩트/설정 저장소의 암호화가 미흡하여 침해 후 데이터 노출 위험이 증가함",
+      "mitre_tactic": "EX",
+      "stage": "impact_or_exfiltration",
+      "finding_count": 2,
+      "checks": {
+        "CKV_AWS_8": 1,
+        "CKV_AWS_145": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_8",
+          "check_name": "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted",
+          "resource_address": "aws_instance.app",
+          "resource": "aws_instance.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            130,
+            146
+          ],
+          "evaluated_keys": [
+            "root_block_device"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_145",
+          "check_name": "Ensure that S3 buckets are encrypted with KMS by default",
+          "resource_address": "aws_s3_bucket.public",
+          "resource": "aws_s3_bucket.public",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            148,
+            150
+          ],
+          "evaluated_keys": [
+            "resource_type",
+            "rule/apply_server_side_encryption_by_default/sse_algorithm",
+            "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+          ]
+        }
+      ]
+    },
+    {
+      "capability_key": "default_sg_not_restricted",
+      "capability_id": "VIS_DEFAULT_SG_NOT_RESTRICTED",
+      "capability": "기본 보안그룹이 제한되지 않음(원격 접근/이상행위 탐지 어려움)",
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
       "finding_count": 1,
       "checks": {
         "CKV2_AWS_12": 1
@@ -20,37 +100,35 @@
       "evidence": [
         {
           "check_id": "CKV2_AWS_12",
-          "resource": "aws_vpc.vpc",
-          "file_path": "/vpc.tf",
+          "check_name": "Ensure the default security group of every VPC restricts all traffic",
+          "resource_address": "aws_vpc.main",
+          "resource": "aws_vpc.main",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            1,
-            8
+            22,
+            24
           ],
-          "check_name": "Ensure the default security group of every VPC restricts all traffic"
+          "evaluated_keys": [
+            "ingress/self",
+            "egress/from_port",
+            "egress/cidr_blocks",
+            "egress/protocol",
+            "ingress/protocol",
+            "ingress/from_port",
+            "ingress/to_port",
+            "resource_type",
+            "egress/to_port"
+          ]
         }
       ]
     },
     {
-      "capability": "ec2_instance_profile_missing",
-      "finding_count": 1,
-      "checks": {
-        "CKV2_AWS_41": 1
-      },
-      "evidence": [
-        {
-          "check_id": "CKV2_AWS_41",
-          "resource": "aws_instance.super_critical_security_server",
-          "file_path": "/ec2.tf",
-          "file_line_range": [
-            39,
-            62
-          ],
-          "check_name": "Ensure an IAM role is attached to EC2 instance"
-        }
-      ]
-    },
-    {
-      "capability": "ec2_public_ip_exposed",
+      "capability_key": "ec2_public_ip_exposed",
+      "capability_id": "CMP_EC2_PUBLIC_IP",
+      "capability": "EC2 퍼블릭 IP 직접 노출(외부에서 직접 접근 가능)",
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_88": 1
@@ -58,21 +136,30 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_88",
-          "resource": "aws_instance.super_critical_security_server",
-          "file_path": "/ec2.tf",
+          "check_name": "EC2 instance should not have public IP.",
+          "resource_address": "aws_instance.app",
+          "resource": "aws_instance.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            39,
-            62
+            130,
+            146
           ],
-          "check_name": "EC2 instance should not have public IP."
+          "evaluated_keys": [
+            "associate_public_ip_address"
+          ]
         }
       ]
     },
     {
-      "capability": "iam_policy_admin_or_wildcard",
-      "finding_count": 5,
+      "capability_key": "iam_policy_admin_or_wildcard",
+      "capability_id": "IAM_WILDCARD_POLICY",
+      "capability": "IAM 와일드카드/관리자급 권한 남용 우려. 리소스/권한 제한이 충분히 특정되지 않음.",
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "finding_count": 4,
       "checks": {
-        "CKV_AWS_355": 2,
+        "CKV_AWS_355": 1,
         "CKV_AWS_63": 1,
         "CKV_AWS_62": 1,
         "CKV2_AWS_40": 1
@@ -80,77 +167,76 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_355",
-          "resource": "aws_iam_policy.ec2_mighty_policy",
-          "file_path": "/iam_mighty.tf",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            21,
-            35
+            96,
+            118
           ],
-          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         },
         {
           "check_id": "CKV_AWS_63",
-          "resource": "aws_iam_policy.ec2_mighty_policy",
-          "file_path": "/iam_mighty.tf",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's actions",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            21,
-            35
+            96,
+            118
           ],
-          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's actions"
+          "evaluated_keys": [
+            "policy",
+            "inline_policy"
+          ]
         },
         {
           "check_id": "CKV_AWS_62",
-          "resource": "aws_iam_policy.ec2_mighty_policy",
-          "file_path": "/iam_mighty.tf",
+          "check_name": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            21,
-            35
+            96,
+            118
           ],
-          "check_name": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created"
-        },
-        {
-          "check_id": "CKV_AWS_355",
-          "resource": "aws_iam_policy.kerrigan_policy",
-          "file_path": "/iam.tf",
-          "file_line_range": [
-            10,
-            44
-          ],
-          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions"
+          "evaluated_keys": [
+            "policy",
+            "inline_policy"
+          ]
         },
         {
           "check_id": "CKV2_AWS_40",
-          "resource": "aws_iam_policy.ec2_mighty_policy",
-          "file_path": "/iam_mighty.tf",
+          "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            21,
-            35
+            96,
+            118
           ],
-          "check_name": "Ensure AWS IAM policy does not allow full IAM privileges"
+          "evaluated_keys": [
+            "statement[?(@/effect == Allow)]/actions[*]",
+            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]",
+            "policy/Statement[?(@/Effect == Allow)]/Action[*]"
+          ]
         }
       ]
     },
     {
-      "capability": "iam_policy_attached_to_user",
-      "finding_count": 1,
-      "checks": {
-        "CKV_AWS_40": 1
-      },
-      "evidence": [
-        {
-          "check_id": "CKV_AWS_40",
-          "resource": "aws_iam_user_policy_attachment.kerrigan_attachment",
-          "file_path": "/iam.tf",
-          "file_line_range": [
-            46,
-            49
-          ],
-          "check_name": "Ensure IAM policies are attached only to groups or roles (Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges.)"
-        }
-      ]
-    },
-    {
-      "capability": "iam_policy_credential_exposure",
+      "capability_key": "iam_policy_credential_exposure",
+      "capability_id": "IAM_CREDENTIAL_EXPOSURE",
+      "capability": "IAM 정책이 자격증명 접근 액션을 과도하게 허용함",
+      "mitre_tactic": "CA",
+      "stage": "privilege_or_credential_expansion",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_287": 1
@@ -158,18 +244,27 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_287",
-          "resource": "aws_iam_policy.ec2_mighty_policy",
-          "file_path": "/iam_mighty.tf",
+          "check_name": "Ensure IAM policies does not allow credentials exposure",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            21,
-            35
+            96,
+            118
           ],
-          "check_name": "Ensure IAM policies does not allow credentials exposure"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         }
       ]
     },
     {
-      "capability": "iam_policy_data_exfiltration",
+      "capability_key": "iam_policy_data_exfiltration",
+      "capability_id": "IAM_DATA_EXFILTRATION",
+      "capability": "IAM 정책이 데이터 반출 액션을 과도하게 허용함",
+      "mitre_tactic": "EX",
+      "stage": "impact_or_exfiltration",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_288": 1
@@ -177,124 +272,111 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_288",
-          "resource": "aws_iam_policy.ec2_mighty_policy",
-          "file_path": "/iam_mighty.tf",
+          "check_name": "Ensure IAM policies does not allow data exfiltration",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            21,
-            35
+            96,
+            118
           ],
-          "check_name": "Ensure IAM policies does not allow data exfiltration"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         }
       ]
     },
     {
-      "capability": "iam_policy_permission_mgmt_unscoped",
-      "finding_count": 2,
-      "checks": {
-        "CKV_AWS_289": 2
-      },
-      "evidence": [
-        {
-          "check_id": "CKV_AWS_289",
-          "resource": "aws_iam_policy.ec2_mighty_policy",
-          "file_path": "/iam_mighty.tf",
-          "file_line_range": [
-            21,
-            35
-          ],
-          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
-        },
-        {
-          "check_id": "CKV_AWS_289",
-          "resource": "aws_iam_policy.kerrigan_policy",
-          "file_path": "/iam.tf",
-          "file_line_range": [
-            10,
-            44
-          ],
-          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
-        }
-      ]
-    },
-    {
-      "capability": "iam_policy_privilege_escalation",
-      "finding_count": 2,
-      "checks": {
-        "CKV_AWS_286": 2
-      },
-      "evidence": [
-        {
-          "check_id": "CKV_AWS_286",
-          "resource": "aws_iam_policy.ec2_mighty_policy",
-          "file_path": "/iam_mighty.tf",
-          "file_line_range": [
-            21,
-            35
-          ],
-          "check_name": "Ensure IAM policies does not allow privilege escalation"
-        },
-        {
-          "check_id": "CKV_AWS_286",
-          "resource": "aws_iam_policy.kerrigan_policy",
-          "file_path": "/iam.tf",
-          "file_line_range": [
-            10,
-            44
-          ],
-          "check_name": "Ensure IAM policies does not allow privilege escalation"
-        }
-      ]
-    },
-    {
-      "capability": "iam_policy_write_unscoped",
-      "finding_count": 2,
-      "checks": {
-        "CKV_AWS_290": 2
-      },
-      "evidence": [
-        {
-          "check_id": "CKV_AWS_290",
-          "resource": "aws_iam_policy.ec2_mighty_policy",
-          "file_path": "/iam_mighty.tf",
-          "file_line_range": [
-            21,
-            35
-          ],
-          "check_name": "Ensure IAM policies does not allow write access without constraints"
-        },
-        {
-          "check_id": "CKV_AWS_290",
-          "resource": "aws_iam_policy.kerrigan_policy",
-          "file_path": "/iam.tf",
-          "file_line_range": [
-            10,
-            44
-          ],
-          "check_name": "Ensure IAM policies does not allow write access without constraints"
-        }
-      ]
-    },
-    {
-      "capability": "iam_user_present",
+      "capability_key": "iam_policy_permission_mgmt_unscoped",
+      "capability_id": "IAM_PERMISSION_MGMT_UNSCOPED",
+      "capability": "범위 제한 없는 권한/권한관리 관련 액션 허용(권한 남용/상승 경로)",
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
       "finding_count": 1,
       "checks": {
-        "CKV_AWS_273": 1
+        "CKV_AWS_289": 1
       },
       "evidence": [
         {
-          "check_id": "CKV_AWS_273",
-          "resource": "aws_iam_user.kerrigan",
-          "file_path": "/iam.tf",
+          "check_id": "CKV_AWS_289",
+          "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            1,
-            4
+            96,
+            118
           ],
-          "check_name": "Ensure access is controlled through SSO and not AWS IAM defined users"
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
         }
       ]
     },
     {
-      "capability": "imdsv1_enabled",
+      "capability_key": "iam_policy_privilege_escalation",
+      "capability_id": "IAM_PE_POLICY",
+      "capability": "Privilege Escalation 가능성이 있는 IAM Policy 권한 조합 존재",
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "finding_count": 1,
+      "checks": {
+        "CKV_AWS_286": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_286",
+          "check_name": "Ensure IAM policies does not allow privilege escalation",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            96,
+            118
+          ],
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
+        }
+      ]
+    },
+    {
+      "capability_key": "iam_policy_write_unscoped",
+      "capability_id": "IAM_WRITE_UNSCOPED",
+      "capability": "범위 제한 없는 쓰기 권한 허용(리소스 변경/정책 변경 악용 가능)",
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
+      "finding_count": 1,
+      "checks": {
+        "CKV_AWS_290": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_290",
+          "check_name": "Ensure IAM policies does not allow write access without constraints",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            96,
+            118
+          ],
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
+        }
+      ]
+    },
+    {
+      "capability_key": "imdsv1_enabled",
+      "capability_id": "CMP_IMDSV1_ENABLED",
+      "capability": "IMDSv1 활성화(인스턴스 자격증명 탈취 위험 증가)",
+      "mitre_tactic": "PE",
+      "stage": "privilege_or_credential_expansion",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_79": 1
@@ -302,18 +384,132 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_79",
-          "resource": "aws_instance.super_critical_security_server",
-          "file_path": "/ec2.tf",
+          "check_name": "Ensure Instance Metadata Service Version 1 is not enabled",
+          "resource_address": "aws_instance.app",
+          "resource": "aws_instance.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            39,
-            62
+            130,
+            146
           ],
-          "check_name": "Ensure Instance Metadata Service Version 1 is not enabled"
+          "evaluated_keys": [
+            "metadata_options/[0]/http_tokens"
+          ]
         }
       ]
     },
     {
-      "capability": "non_attack_compute_performance_hardening_missing",
+      "capability_key": "logging_visibility_gap",
+      "capability_id": "DE_LOGGING_VISIBILITY_GAP",
+      "capability": "로그/감사/실행 가시성이 부족해 침해 징후 탐지 및 사후 분석 공백이 발생함",
+      "mitre_tactic": "DE",
+      "stage": "execution_or_visibility_control",
+      "finding_count": 1,
+      "checks": {
+        "CKV_AWS_18": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_18",
+          "check_name": "Ensure the S3 bucket has access logging enabled",
+          "resource_address": "aws_s3_bucket.public",
+          "resource": "aws_s3_bucket.public",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            148,
+            150
+          ],
+          "evaluated_keys": [
+            "logging",
+            "resource_type"
+          ]
+        }
+      ]
+    },
+    {
+      "capability_key": "missing_edge_protection",
+      "capability_id": "IA_MISSING_EDGE_PROTECTION",
+      "capability": "WAF/퍼블릭 차단/엣지 보안 통제가 없어 인터넷 노출 자산의 공격 표면이 증가함",
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
+      "finding_count": 4,
+      "checks": {
+        "CKV_AWS_53": 1,
+        "CKV_AWS_56": 1,
+        "CKV_AWS_54": 1,
+        "CKV_AWS_55": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_53",
+          "check_name": "Ensure S3 bucket has block public ACLS enabled",
+          "resource_address": "aws_s3_bucket_public_access_block.public",
+          "resource": "aws_s3_bucket_public_access_block.public",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            152,
+            158
+          ],
+          "evaluated_keys": [
+            "block_public_acls"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_56",
+          "check_name": "Ensure S3 bucket has 'restrict_public_buckets' enabled",
+          "resource_address": "aws_s3_bucket_public_access_block.public",
+          "resource": "aws_s3_bucket_public_access_block.public",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            152,
+            158
+          ],
+          "evaluated_keys": [
+            "restrict_public_buckets"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_54",
+          "check_name": "Ensure S3 bucket has block public policy enabled",
+          "resource_address": "aws_s3_bucket_public_access_block.public",
+          "resource": "aws_s3_bucket_public_access_block.public",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            152,
+            158
+          ],
+          "evaluated_keys": [
+            "block_public_policy"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_55",
+          "check_name": "Ensure S3 bucket has ignore public ACLs enabled",
+          "resource_address": "aws_s3_bucket_public_access_block.public",
+          "resource": "aws_s3_bucket_public_access_block.public",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            152,
+            158
+          ],
+          "evaluated_keys": [
+            "ignore_public_acls"
+          ]
+        }
+      ]
+    },
+    {
+      "capability_key": "runtime_hardening_gap",
+      "capability_id": "DE_RUNTIME_HARDENING_GAP",
+      "capability": "워크로드/플랫폼 하드닝, 버전 관리, 격리, 실행 제약이 부족하여 침해 후 악용 가능성이 커짐",
+      "mitre_tactic": "DE",
+      "stage": "execution_or_visibility_control",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_135": 1
@@ -321,37 +517,27 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_135",
-          "resource": "aws_instance.super_critical_security_server",
-          "file_path": "/ec2.tf",
+          "check_name": "Ensure that EC2 is EBS optimized",
+          "resource_address": "aws_instance.app",
+          "resource": "aws_instance.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            39,
-            62
+            130,
+            146
           ],
-          "check_name": "Ensure that EC2 is EBS optimized"
+          "evaluated_keys": [
+            "ebs_optimized"
+          ]
         }
       ]
     },
     {
-      "capability": "non_attack_monitoring_depth_missing",
-      "finding_count": 1,
-      "checks": {
-        "CKV_AWS_126": 1
-      },
-      "evidence": [
-        {
-          "check_id": "CKV_AWS_126",
-          "resource": "aws_instance.super_critical_security_server",
-          "file_path": "/ec2.tf",
-          "file_line_range": [
-            39,
-            62
-          ],
-          "check_name": "Ensure that detailed monitoring is enabled for EC2 instances"
-        }
-      ]
-    },
-    {
-      "capability": "sg_egress_all_open",
+      "capability_key": "sg_egress_all_open",
+      "capability_id": "NET_EGRESS_ALL_OPEN",
+      "capability": "전방위 egress 허용(유출/원격 통신 경로 확대)",
+      "mitre_tactic": "EX",
+      "stage": "impact_or_exfiltration",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_382": 1
@@ -359,18 +545,30 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_382",
-          "resource": "aws_security_group.ec2_server",
-          "file_path": "/ec2.tf",
+          "check_name": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+          "resource_address": "aws_security_group.web",
+          "resource": "aws_security_group.web",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            1,
-            37
+            50,
+            77
           ],
-          "check_name": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1"
+          "evaluated_keys": [
+            "egress/[0]/from_port",
+            "egress/[0]/to_port",
+            "egress/[0]/cidr_blocks",
+            "egress/[0]/ipv6_cidr_blocks"
+          ]
         }
       ]
     },
     {
-      "capability": "sg_ingress_http_open",
+      "capability_key": "sg_ingress_http_open",
+      "capability_id": "NET_PUBLIC_HTTP",
+      "capability": "공개 HTTP 인바운드 노출(공격 표면 증가)",
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_260": 1
@@ -378,18 +576,30 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_260",
-          "resource": "aws_security_group.ec2_server",
-          "file_path": "/ec2.tf",
+          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80",
+          "resource_address": "aws_security_group.web",
+          "resource": "aws_security_group.web",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            1,
-            37
+            50,
+            77
           ],
-          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80"
+          "evaluated_keys": [
+            "ingress/[0]/from_port",
+            "ingress/[0]/to_port",
+            "ingress/[0]/cidr_blocks",
+            "ingress/[0]/ipv6_cidr_blocks"
+          ]
         }
       ]
     },
     {
-      "capability": "sg_ingress_ssh_open",
+      "capability_key": "sg_ingress_ssh_open",
+      "capability_id": "NET_PUBLIC_SSH",
+      "capability": "공개 SSH 인바운드 노출(원격 접근 표면 증가)",
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_24": 1
@@ -397,18 +607,135 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_24",
-          "resource": "aws_security_group.ec2_server",
-          "file_path": "/ec2.tf",
+          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22",
+          "resource_address": "aws_security_group.web",
+          "resource": "aws_security_group.web",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            1,
-            37
+            50,
+            77
           ],
-          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+          "evaluated_keys": [
+            "ingress/[1]/from_port",
+            "ingress/[1]/to_port",
+            "ingress/[1]/cidr_blocks",
+            "ingress/[1]/ipv6_cidr_blocks"
+          ]
         }
       ]
     },
     {
-      "capability": "subnet_auto_public_ip",
+      "capability_key": "stage_execution_or_visibility_control_fallback",
+      "capability_id": "STAGE_EXECUTION_OR_VISIBILITY_CONTROL_FALLBACK",
+      "capability": "실행·탐지우회 단계 일반 fallback 그룹",
+      "mitre_tactic": "DE",
+      "stage": "execution_or_visibility_control",
+      "finding_count": 1,
+      "checks": {
+        "CKV_AWS_126": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_126",
+          "check_name": "Ensure that detailed monitoring is enabled for EC2 instances",
+          "resource_address": "aws_instance.app",
+          "resource": "aws_instance.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            130,
+            146
+          ],
+          "evaluated_keys": [
+            "monitoring"
+          ]
+        }
+      ]
+    },
+    {
+      "capability_key": "stage_impact_or_exfiltration_fallback",
+      "capability_id": "STAGE_IMPACT_OR_EXFILTRATION_FALLBACK",
+      "capability": "영향·유출 단계 일반 fallback 그룹",
+      "mitre_tactic": "EX",
+      "stage": "impact_or_exfiltration",
+      "finding_count": 2,
+      "checks": {
+        "CKV_AWS_144": 1,
+        "CKV2_AWS_61": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_144",
+          "check_name": "Ensure that S3 bucket has cross-region replication enabled",
+          "resource_address": "aws_s3_bucket.public",
+          "resource": "aws_s3_bucket.public",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            148,
+            150
+          ],
+          "evaluated_keys": [
+            "replication_configuration/rules/*/status",
+            "rule/*/status",
+            "resource_type"
+          ]
+        },
+        {
+          "check_id": "CKV2_AWS_61",
+          "check_name": "Ensure that an S3 bucket has a lifecycle configuration",
+          "resource_address": "aws_s3_bucket.public",
+          "resource": "aws_s3_bucket.public",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            148,
+            150
+          ],
+          "evaluated_keys": [
+            "resource_type",
+            "lifecycle_rule"
+          ]
+        }
+      ]
+    },
+    {
+      "capability_key": "stage_initial_access_fallback",
+      "capability_id": "STAGE_INITIAL_ACCESS_FALLBACK",
+      "capability": "초기 접근/노출 단계 일반 fallback 그룹",
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
+      "finding_count": 1,
+      "checks": {
+        "CKV2_AWS_6": 1
+      },
+      "evidence": [
+        {
+          "check_id": "CKV2_AWS_6",
+          "check_name": "Ensure that S3 bucket has a Public Access block",
+          "resource_address": "aws_s3_bucket.public",
+          "resource": "aws_s3_bucket.public",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            148,
+            150
+          ],
+          "evaluated_keys": [
+            "resource_type",
+            "block_public_acls",
+            "block_public_policy"
+          ]
+        }
+      ]
+    },
+    {
+      "capability_key": "subnet_auto_public_ip",
+      "capability_id": "CMP_SUBNET_AUTO_PUBLIC_IP",
+      "capability": "서브넷 기본 퍼블릭 IP 자동 할당(의도치 않은 노출 가능)",
+      "mitre_tactic": "IA",
+      "stage": "initial_access",
       "finding_count": 1,
       "checks": {
         "CKV_AWS_130": 1
@@ -416,18 +743,27 @@
       "evidence": [
         {
           "check_id": "CKV_AWS_130",
+          "check_name": "Ensure VPC subnets do not assign public IP by default",
+          "resource_address": "aws_subnet.public",
           "resource": "aws_subnet.public",
-          "file_path": "/vpc.tf",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            18,
-            27
+            26,
+            30
           ],
-          "check_name": "Ensure VPC subnets do not assign public IP by default"
+          "evaluated_keys": [
+            "map_public_ip_on_launch"
+          ]
         }
       ]
     },
     {
-      "capability": "vpc_flow_logs_disabled",
+      "capability_key": "vpc_flow_logs_disabled",
+      "capability_id": "VIS_VPC_FLOW_LOGS_DISABLED",
+      "capability": "VPC Flow Logs 미설정(네트워크 가시성/탐지 공백)",
+      "mitre_tactic": "DE",
+      "stage": "execution_or_visibility_control",
       "finding_count": 1,
       "checks": {
         "CKV2_AWS_11": 1
@@ -435,22 +771,40 @@
       "evidence": [
         {
           "check_id": "CKV2_AWS_11",
-          "resource": "aws_vpc.vpc",
-          "file_path": "/vpc.tf",
+          "check_name": "Ensure VPC flow logging is enabled in all VPCs",
+          "resource_address": "aws_vpc.main",
+          "resource": "aws_vpc.main",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
           "file_line_range": [
-            1,
-            8
+            22,
+            24
           ],
-          "check_name": "Ensure VPC flow logging is enabled in all VPCs"
+          "evaluated_keys": [
+            "resource_type",
+            "networking"
+          ]
         }
       ]
     }
   ],
   "atomic_coverage": [
     {
+      "atomic_id": "T1005",
+      "capabilities": [
+        "data_at_rest_encryption_missing"
+      ],
+      "name": "저장 데이터 암호화 미흡",
+      "confidence": "medium"
+    },
+    {
       "atomic_id": "T1021",
       "capabilities": [
-        "default_sg_not_restricted"
+        "default_sg_not_restricted",
+        "ec2_public_ip_exposed",
+        "sg_ingress_http_open",
+        "subnet_auto_public_ip",
+        "missing_edge_protection"
       ],
       "name": "기본 보안그룹 개방으로 인한 원격 접근 위험",
       "confidence": "medium"
@@ -467,27 +821,40 @@
     {
       "atomic_id": "T1046",
       "capabilities": [
-        "vpc_flow_logs_disabled"
+        "ec2_public_ip_exposed",
+        "sg_ingress_http_open",
+        "subnet_auto_public_ip",
+        "vpc_flow_logs_disabled",
+        "missing_edge_protection"
       ],
-      "name": "VPC 플로우 로그 미설정에 따른 정찰 탐지 공백",
+      "name": "EC2 퍼블릭 IP 직접 노출",
+      "confidence": "medium"
+    },
+    {
+      "atomic_id": "T1068",
+      "capabilities": [
+        "runtime_hardening_gap"
+      ],
+      "name": "런타임 하드닝 미흡",
       "confidence": "low"
     },
     {
-      "atomic_id": "T1078.004",
+      "atomic_id": "T1078",
       "capabilities": [
         "iam_policy_admin_or_wildcard",
-        "iam_user_present",
-        "iam_policy_attached_to_user",
-        "ec2_instance_profile_missing"
+        "iam_policy_credential_exposure",
+        "iam_policy_permission_mgmt_unscoped",
+        "runtime_hardening_gap"
       ],
       "name": "IAM 관리자급/와일드카드 정책 악용",
       "confidence": "high"
     },
     {
-      "atomic_id": "T1098.003",
+      "atomic_id": "T1098",
       "capabilities": [
         "iam_policy_admin_or_wildcard",
         "iam_policy_privilege_escalation",
+        "iam_policy_credential_exposure",
         "iam_policy_permission_mgmt_unscoped",
         "iam_policy_write_unscoped"
       ],
@@ -497,12 +864,46 @@
     {
       "atomic_id": "T1190",
       "capabilities": [
-        "sg_ingress_ssh_open",
-        "sg_ingress_http_open",
         "ec2_public_ip_exposed",
-        "subnet_auto_public_ip"
+        "sg_ingress_http_open",
+        "sg_ingress_ssh_open",
+        "subnet_auto_public_ip",
+        "missing_edge_protection"
       ],
-      "name": "공개 SSH 인바운드 노출",
+      "name": "EC2 퍼블릭 IP 직접 노출",
+      "confidence": "medium"
+    },
+    {
+      "atomic_id": "T1485",
+      "capabilities": [
+        "iam_policy_write_unscoped",
+        "backup_recovery_gap"
+      ],
+      "name": "범위 제한 없는 쓰기 권한 허용",
+      "confidence": "medium"
+    },
+    {
+      "atomic_id": "T1490",
+      "capabilities": [
+        "backup_recovery_gap"
+      ],
+      "name": "백업/복구 공백",
+      "confidence": "medium"
+    },
+    {
+      "atomic_id": "T1530",
+      "capabilities": [
+        "data_at_rest_encryption_missing"
+      ],
+      "name": "저장 데이터 암호화 미흡",
+      "confidence": "medium"
+    },
+    {
+      "atomic_id": "T1537",
+      "capabilities": [
+        "iam_policy_data_exfiltration"
+      ],
+      "name": "IAM 정책 기반 데이터 유출 허용",
       "confidence": "high"
     },
     {
@@ -513,31 +914,131 @@
       ],
       "name": "IAM 정책으로 인한 자격증명 노출 위험",
       "confidence": "medium"
+    },
+    {
+      "atomic_id": "T1562",
+      "capabilities": [
+        "logging_visibility_gap"
+      ],
+      "name": "로깅/가시성 공백",
+      "confidence": "medium"
+    },
+    {
+      "atomic_id": "T1578",
+      "capabilities": [
+        "iam_policy_write_unscoped"
+      ],
+      "name": "범위 제한 없는 쓰기 권한 허용",
+      "confidence": "medium"
     }
   ],
   "scenarios": [
     {
       "id": "aws_initial_access_to_iam_abuse",
       "title": "공개 SSH 노출 후 IAM 권한 악용",
-      "description": "공개 SSH 인바운드 노출 자산 초기 접근 이후 관리자급/와일드카드 IAM 정책으로 권한 상승 또는 지속성 확보",
+      "description": "공개 SSH 인바운드 노출 자산에 대한 초기 접근 이후, 관리자급/와일드카드 IAM 권한을 악용해 권한 상승 또는 지속성을 확보할 수 있음",
       "score": "high",
-      "matched_capabilities": [
+      "matched_capability_keys": [
         "sg_ingress_ssh_open",
         "iam_policy_admin_or_wildcard"
       ],
       "matched_check_ids": [],
       "atomic_chain": [
         "T1190",
-        "T1098.003"
+        "T1098"
       ],
-      "evidence_count": 6
+      "evidence_count": 5,
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_24",
+          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22",
+          "resource_address": "aws_security_group.web",
+          "resource": "aws_security_group.web",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            50,
+            77
+          ],
+          "evaluated_keys": [
+            "ingress/[1]/from_port",
+            "ingress/[1]/to_port",
+            "ingress/[1]/cidr_blocks",
+            "ingress/[1]/ipv6_cidr_blocks"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_355",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            96,
+            118
+          ],
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_63",
+          "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's actions",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            96,
+            118
+          ],
+          "evaluated_keys": [
+            "policy",
+            "inline_policy"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_62",
+          "check_name": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            96,
+            118
+          ],
+          "evaluated_keys": [
+            "policy",
+            "inline_policy"
+          ]
+        },
+        {
+          "check_id": "CKV2_AWS_40",
+          "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            96,
+            118
+          ],
+          "evaluated_keys": [
+            "statement[?(@/effect == Allow)]/actions[*]",
+            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]",
+            "policy/Statement[?(@/Effect == Allow)]/Action[*]"
+          ]
+        }
+      ]
     },
     {
       "id": "aws_credential_collection_and_exfiltration",
       "title": "IMDS 자격증명 수집 후 외부 유출",
-      "description": "IMDSv1 활성화와 전방위 egress 허용 조합으로 수집 자격증명/데이터 외부 반출 위험 증가",
+      "description": "IMDSv1 활성화로 자격증명 수집이 쉬워지고, 전방위 egress 허용이 결합되면 외부 반출 위험이 증가함",
       "score": "high",
-      "matched_capabilities": [
+      "matched_capability_keys": [
         "imdsv1_enabled",
         "sg_egress_all_open"
       ],
@@ -546,31 +1047,49 @@
         "T1552",
         "T1041"
       ],
-      "evidence_count": 2
-    },
-    {
-      "id": "aws_identity_persistence_via_iam_user",
-      "title": "IAM 사용자 직접 정책 기반 지속성",
-      "description": "IAM 사용자 사용과 사용자 직접 정책 부여가 결합되면 장기 자격증명 기반 지속성이 강화됨",
-      "score": "high",
-      "matched_capabilities": [
-        "iam_user_present",
-        "iam_policy_attached_to_user",
-        "iam_policy_privilege_escalation"
-      ],
-      "matched_check_ids": [],
-      "atomic_chain": [
-        "T1078.004",
-        "T1098.003"
-      ],
-      "evidence_count": 4
+      "evidence_count": 2,
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_79",
+          "check_name": "Ensure Instance Metadata Service Version 1 is not enabled",
+          "resource_address": "aws_instance.app",
+          "resource": "aws_instance.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            130,
+            146
+          ],
+          "evaluated_keys": [
+            "metadata_options/[0]/http_tokens"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_382",
+          "check_name": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+          "resource_address": "aws_security_group.web",
+          "resource": "aws_security_group.web",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            50,
+            77
+          ],
+          "evaluated_keys": [
+            "egress/[0]/from_port",
+            "egress/[0]/to_port",
+            "egress/[0]/cidr_blocks",
+            "egress/[0]/ipv6_cidr_blocks"
+          ]
+        }
+      ]
     },
     {
       "id": "aws_visibility_gap_and_remote_access_risk",
       "title": "가시성 공백과 기본 SG 원격 접근 위험",
-      "description": "VPC 플로우 로그 미설정 상태에서 기본 보안그룹이 트래픽을 제한하지 않으면 원격 접근 활동 탐지/분석이 어려워짐",
+      "description": "VPC Flow Logs가 없고 기본 SG가 제한되지 않으면 원격 접근 시도 및 네트워크 활동에 대한 탐지/분석 공백이 커짐",
       "score": "medium",
-      "matched_capabilities": [
+      "matched_capability_keys": [
         "vpc_flow_logs_disabled",
         "default_sg_not_restricted"
       ],
@@ -579,8 +1098,201 @@
         "T1046",
         "T1021"
       ],
-      "evidence_count": 2
+      "evidence_count": 2,
+      "evidence": [
+        {
+          "check_id": "CKV2_AWS_11",
+          "check_name": "Ensure VPC flow logging is enabled in all VPCs",
+          "resource_address": "aws_vpc.main",
+          "resource": "aws_vpc.main",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            22,
+            24
+          ],
+          "evaluated_keys": [
+            "resource_type",
+            "networking"
+          ]
+        },
+        {
+          "check_id": "CKV2_AWS_12",
+          "check_name": "Ensure the default security group of every VPC restricts all traffic",
+          "resource_address": "aws_vpc.main",
+          "resource": "aws_vpc.main",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            22,
+            24
+          ],
+          "evaluated_keys": [
+            "ingress/self",
+            "egress/from_port",
+            "egress/cidr_blocks",
+            "egress/protocol",
+            "ingress/protocol",
+            "ingress/from_port",
+            "ingress/to_port",
+            "resource_type",
+            "egress/to_port"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aws_public_web_to_data_egress",
+      "title": "공개 HTTP 노출 후 외부 데이터 반출",
+      "description": "공개 HTTP 인바운드와 전방위 egress 허용이 결합되면 초기 침입 후 외부 반출 경로가 성립함",
+      "score": "high",
+      "matched_capability_keys": [
+        "sg_ingress_http_open",
+        "sg_egress_all_open"
+      ],
+      "matched_check_ids": [],
+      "atomic_chain": [
+        "T1190",
+        "T1041"
+      ],
+      "evidence_count": 2,
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_260",
+          "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80",
+          "resource_address": "aws_security_group.web",
+          "resource": "aws_security_group.web",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            50,
+            77
+          ],
+          "evaluated_keys": [
+            "ingress/[0]/from_port",
+            "ingress/[0]/to_port",
+            "ingress/[0]/cidr_blocks",
+            "ingress/[0]/ipv6_cidr_blocks"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_382",
+          "check_name": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+          "resource_address": "aws_security_group.web",
+          "resource": "aws_security_group.web",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            50,
+            77
+          ],
+          "evaluated_keys": [
+            "egress/[0]/from_port",
+            "egress/[0]/to_port",
+            "egress/[0]/cidr_blocks",
+            "egress/[0]/ipv6_cidr_blocks"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aws_public_instance_imds_credential_access",
+      "title": "퍼블릭 인스턴스 노출 후 IMDS 자격증명 수집",
+      "description": "퍼블릭 IP가 노출된 EC2 인스턴스에서 IMDSv1이 활성화되어 있으면 초기 접근 이후 자격증명 수집 위험이 커짐",
+      "score": "high",
+      "matched_capability_keys": [
+        "ec2_public_ip_exposed",
+        "imdsv1_enabled"
+      ],
+      "matched_check_ids": [],
+      "atomic_chain": [
+        "T1190",
+        "T1552"
+      ],
+      "evidence_count": 2,
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_88",
+          "check_name": "EC2 instance should not have public IP.",
+          "resource_address": "aws_instance.app",
+          "resource": "aws_instance.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            130,
+            146
+          ],
+          "evaluated_keys": [
+            "associate_public_ip_address"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_79",
+          "check_name": "Ensure Instance Metadata Service Version 1 is not enabled",
+          "resource_address": "aws_instance.app",
+          "resource": "aws_instance.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            130,
+            146
+          ],
+          "evaluated_keys": [
+            "metadata_options/[0]/http_tokens"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aws_iam_credential_access_and_exfiltration",
+      "title": "IAM 과권한으로 인한 자격증명 접근 및 데이터 반출",
+      "description": "IAM 정책이 자격증명 접근 액션과 데이터 반출 액션을 동시에 과도하게 허용하면 침해 후 수집과 반출이 연쇄적으로 가능해짐",
+      "score": "high",
+      "matched_capability_keys": [
+        "iam_policy_credential_exposure",
+        "iam_policy_data_exfiltration"
+      ],
+      "matched_check_ids": [],
+      "atomic_chain": [
+        "T1552",
+        "T1041"
+      ],
+      "evidence_count": 2,
+      "evidence": [
+        {
+          "check_id": "CKV_AWS_287",
+          "check_name": "Ensure IAM policies does not allow credentials exposure",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            96,
+            118
+          ],
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
+        },
+        {
+          "check_id": "CKV_AWS_288",
+          "check_name": "Ensure IAM policies does not allow data exfiltration",
+          "resource_address": "aws_iam_policy.app",
+          "resource": "aws_iam_policy.app",
+          "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
+          "file_path": "/main.tf",
+          "file_line_range": [
+            96,
+            118
+          ],
+          "evaluated_keys": [
+            "policy/Statement/[0]/Action"
+          ]
+        }
+      ]
     }
   ],
-  "unmapped_check_ids": []
+  "unmapped_check_ids": [
+    "CKV2_AWS_62"
+  ]
 }
