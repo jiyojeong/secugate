@@ -58,10 +58,16 @@ terraform.rc
 # Generated data files from scripts
 mapped_vectors.json
 terraformaws.cvs
-#추가
+# Runtime/cache
 .cache/
 .work/
+# Generated Terraform plan artifacts
+*.tfplan.bin
+# Generated reports and intermediate outputs
 artifacts/*
-#제외
-!artifacts/report_example.md
-!artifacts/decision_example.json
+# Portfolio/demo outputs to keep
+!artifacts/iac_graph_checkov_paths.md
+!artifacts/iac_graph_checkov_paths.json
+# Ignore scratch test outputs even if artifacts are otherwise allowlisted
+artifacts/*.test*.json
+artifacts/*.test*.md

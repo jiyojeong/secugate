@@ -1,7 +1,15 @@
+# SecuGate
+[English](README.md) | 한국어
+
 ## Overview
-SecuGate는 Terraform 기반 IaC(Infrastructure as Code) 프로젝트에서 보안 리스크를 조기에 식별하기 위한 도구입니다.  
-Checkov 분석 결과로부터 보안 Finding을 수집하고, 이를 공격자 관점의 capability 및 시나리오로 상관 분석하여 리스크를 점수화합니다.  
-생성된 결과는 CI 환경에서 정책 기반 보안 게이트로 활용될 수 있습니다.
+SecuGate는 Terraform 보안 설정 문제를 개별 finding이 아니라 공격 경로 관점에서 해석하는 IaC 보안 분석 프로젝트입니다.
+
+이 프로젝트는 Checkov 결과를 그대로 나열하는 대신,
+- Terraform plan / HCL 기준으로 finding을 수집하고
+- 이를 공격자 capability로 정규화한 뒤
+- ATT&CK 단계/Atomic ID 으로 매핑하고
+- IaC graph 상에서 연결 가능한 공격 경로를 구성하여
+- CI에서 차단 또는 경고 판단에 활용할 수 있는 결과를 생성합니다
 
 # Requirements
 - Python 3.10+
@@ -14,18 +22,18 @@ source .venv/bin/activate
 # Install (비권장)
 pip install sec-gate
 
-# 실행코드(PoC 2026-02-09)
+# 실행
 python3 main.py run --tf ./inputs/terraform --out ./artifacts
 
-# secugate
+# 분석 흐름
 ```
 Terraform 
-→ Checkov analysis 
-→ Finding normalization 
-→ Capability mapping 
-→ MITRE Tactic Mapping 
-→ Scenario detection 
-→ Risk scoring for CI decision generation
+-> Checkov finding 수집
+-> Finding 정규화
+-> Capability 매핑
+-> ATT&CK 단계 / Atomic ID 매핑
+-> IaC graph 기반 공격 경로 상관 분석
+-> CI 게이트 판단용 결과 생성
 ```
 # 출력물
 ```
@@ -37,11 +45,10 @@ artifacts/
 ```
 
 # CI Integration
-SecuGate는 특정 CI 정책을 강제하지 않습니다.
-대신 decision.json 파일을 통해 리스크 점수와 시나리오 정보를 제공하며, 조직은 이를 기반으로 원하는 정책을 구성할 수 있습니다.
+SecuGate는 특정 CI 정책을 강제하기보다, 팀이 정책을 설계할 수 있도록 판단 근거를 제공하는 쪽에 가깝습니다.
 
-예를 들어 다음과 같은 방식으로 사용할 수 있습니다.
+예를 들어 다음과 같은 방식으로 적용할 수 있습니다.
 
-- overall_score ≥ N 이면 배포 차단
-- max_scenario_score ≥ N 이면 머지 차단
-- 특정 브랜치에서만 경고 또는 차단
+- CRITICAL finding이 존재하면 차단
+- validated attack path가 생성되면 차단
+- feature branch에서는 경고, protected branch에서는 차단

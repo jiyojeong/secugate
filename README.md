@@ -1,12 +1,17 @@
 # SecuGate
 English | [한국어](README.ko.md)
 
-SecuGate correlates IaC misconfigurations into attack scenarios and produces risk scores for CI-based security gating.
+SecuGate turns Terraform security findings into ATT&CK-aligned attack paths and CI gate decisions.
 
 # Overview
-SecuGate is a security analysis tool designed to identify infrastructure risks at the Terraform IaC stage.  
-It collects security findings from Checkov and correlates them into attacker capabilities and scenarios to assess risk.  
-The resulting scores can be consumed by CI pipelines to implement policy-based security gates.
+SecuGate analyzes Terraform configurations before deployment and asks a practical question: "Can these findings be connected into a meaningful attack path?"
+
+Instead of stopping at a flat list of scanner results, it:
+- collects Checkov findings from Terraform plans and HCL
+- normalizes them into attacker capabilities
+- maps them to ATT&CK-aligned stages and representative techniques
+- builds chained attack paths from the IaC resource graph
+- produces CI-friendly outputs for blocking or warning decisions
 
 # Requirements
 - Python 3.10+
@@ -19,15 +24,15 @@ source .venv/bin/activate
 # command
 python3 main.py run --tf ./inputs/terraform --out ./artifacts
 
-# secugate
+# Analysis Flow
 ```
-Terraform 
-→ Checkov analysis 
-→ Finding normalization 
-→ Capability mapping 
-→ MITRE Tactic Mapping 
-→ Scenario detection 
-→ Risk scoring for CI decision generation
+Terraform / tfplan
+-> Checkov finding collection
+-> Finding normalization
+-> Capability mapping
+-> ATT&CK stage + atomic mapping
+-> Attack path correlation on IaC graph
+-> CI gate decision output
 ```
 
 # Outputs
@@ -40,10 +45,9 @@ artifacts/
 ```
 
 # CI Integration
-SecuGate does not enforce a single CI policy.
-Instead, it outputs a machine-readable decision.json file containing risk scores and scenario information, allowing each team to define its own enforcement rules.
+SecuGate is designed to fit into CI rather than replace it.
+Teams can use its outputs to define their own policies, such as:
 
-Example policies may include:
-- block deployment when overall_score ≥ N
-- block merges when max_scenario_score ≥ N
-- warn on feature branches and enforce on main branches
+- block when CRITICAL findings are present
+- block when validated attack paths are generated
+- warn on feature branches and enforce on protected branches
