@@ -2,8 +2,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 from typing import Any
+
+try:
+    from openai import OpenAI
+except ImportError:  # pragma: no cover - optional dependency at runtime
+    OpenAI = None
 
 DEFAULT_NON_RUNTIME_PREFIXES = (
     "data.",
@@ -130,6 +136,88 @@ SEVERITY_RANK: dict[str, int] = {
     "INFO": 0,
 }
 
+DEFAULT_LLM_MODEL = "gpt-4.1"
+
+
+def _build_llm_payload(representative: dict[str, Any]) -> dict[str, Any]:
+    stage_details = representative.get("stage_details")
+    node_findings = representative.get("node_findings")
+    return {
+        "path": representative.get("path_evaluated")
+        or representative.get("path")
+        or [],
+        "path_category": representative.get("path_category_ko")
+        or representative.get("path_category"),
+        "stage_sequence": representative.get("stage_sequence") or [],
+        "attack_tactic_chain": representative.get("attack_tactic_chain") or [],
+        "atomic_chain": representative.get("atomic_chain") or [],
+        "existing_scenario": representative.get("attack_scenario"),
+        "stage_details": stage_details if isinstance(stage_details, list) else [],
+        "node_findings": node_findings if isinstance(node_findings, list) else [],
+    }
+
+
+def summarize_with_llm(representative: dict[str, Any]) -> dict[str, str]:
+    fallback = {
+        "attack_scenario_one_liner": "",
+        "mitigation_one_liner": "",
+    }
+
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key or OpenAI is None:
+        return fallback
+
+    payload = _build_llm_payload(representative)
+    prompt = (
+        "아래 데이터는 내부 규칙 엔진이 MITRE tactic/stage 순서를 검증해 "
+        "유효하다고 판단한 최종 공격 경로다.\n"
+        "주어진 순서를 바꾸지 말고, evidence에 없는 사실은 추가하지 말라.\n"
+        "개별 finding을 나열하기보다 capability/stage 흐름을 연결해서 "
+        "사람이 읽기 쉬운 한국어 한 문장 공격 시나리오와 한 문장 대응 방안을 작성하라.\n\n"
+        "반드시 아래 JSON 형식으로만 답하라.\n"
+        "{\n"
+        '  "attack_scenario_one_liner": "...",\n'
+        '  "mitigation_one_liner": "..."\n'
+        "}\n\n"
+        f"[Representative Scenario]\n{json.dumps(payload, ensure_ascii=False, indent=2)}"
+    )
+
+    try:
+        client = OpenAI(api_key=api_key)
+        response = client.responses.create(
+            model=os.getenv("OPENAI_MODEL", DEFAULT_LLM_MODEL),
+            input=prompt,
+            text={
+                "format": {
+                    "type": "json_schema",
+                    "name": "scenario_summary",
+                    "strict": True,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "attack_scenario_one_liner": {"type": "string"},
+                            "mitigation_one_liner": {"type": "string"},
+                        },
+                        "required": [
+                            "attack_scenario_one_liner",
+                            "mitigation_one_liner",
+                        ],
+                        "additionalProperties": False,
+                    },
+                }
+            },
+        )
+        parsed = json.loads(response.output_text)
+    except Exception:
+        return fallback
+
+    attack = str(parsed.get("attack_scenario_one_liner", "")).strip()
+    mitigation = str(parsed.get("mitigation_one_liner", "")).strip()
+    return {
+        "attack_scenario_one_liner": attack,
+        "mitigation_one_liner": mitigation,
+    }
+
 
 def _load_json(path: Path) -> dict[str, Any]:
     data = json.loads(path.read_text(encoding="utf-8"))
@@ -152,9 +240,7 @@ def _load_resource_classification(path: Path) -> None:
 
     non_runtime = data.get("non_runtime_prefixes")
     if isinstance(non_runtime, list):
-        values = tuple(
-            str(item).strip() for item in non_runtime if str(item).strip()
-        )
+        values = tuple(str(item).strip() for item in non_runtime if str(item).strip())
         if values:
             NON_RUNTIME_PREFIXES = values
 
@@ -324,9 +410,11 @@ def _collect_critical_findings(
                 continue
             check_id = str(finding.get("check_id") or "").strip()
             fail_meta = check_to_fail_meta.get(check_id) if check_id else {}
-            severity = str(
-                (fail_meta or {}).get("severity") or finding.get("severity") or ""
-            ).strip().upper()
+            severity = (
+                str((fail_meta or {}).get("severity") or finding.get("severity") or "")
+                .strip()
+                .upper()
+            )
             if severity != "CRITICAL":
                 continue
             file_path = str(
@@ -557,7 +645,11 @@ def _load_attack_meta_index(path: Path) -> dict[str, dict[str, Any]]:
             if isinstance(check_id, str) and check_id.strip():
                 key = check_id.strip()
                 existing = out.get(key)
-                if existing and existing.get("group_type") == "specific" and group_type != "specific":
+                if (
+                    existing
+                    and existing.get("group_type") == "specific"
+                    and group_type != "specific"
+                ):
                     continue
                 out[key] = meta
     return out
@@ -954,6 +1046,8 @@ def _format_path_markdown(
         path_nodes = item.get("path_evaluated") or item.get("path") or []
         path_text = " -> ".join(path_nodes) if isinstance(path_nodes, list) else "-"
         check_ids = item.get("check_ids", [])
+        scenario_llm = item.get("attack_scenario_llm")
+        mitigation_llm = item.get("mitigation_llm")
         if isinstance(check_ids, list) and check_ids:
             checks_text = ", ".join(str(x) for x in check_ids[:8])
             if len(check_ids) > 8:
@@ -967,6 +1061,11 @@ def _format_path_markdown(
         lines.append(
             f"- Path category: `{item.get('path_category_ko', item.get('path_category', '-'))}`"
         )
+        if isinstance(scenario_llm, str) and scenario_llm.strip():
+            lines.append("- 요약")
+            lines.append(f"  - Scenario (LLM): {scenario_llm}")
+            if isinstance(mitigation_llm, str) and mitigation_llm.strip():
+                lines.append(f"  - Mitigation (LLM): {mitigation_llm}")
         lines.append(
             f"- Stage sequence: {_format_stage_sequence(item.get('stage_sequence'))}"
         )
@@ -1177,10 +1276,10 @@ def _build_markdown_report(result: dict[str, Any]) -> str:
 
     lines.extend(
         [
-        "## Path Categories",
-        "",
-        *_format_category_counts(dfs_summary.get("category_counts", {})),
-        "",
+            "## Path Categories",
+            "",
+            *_format_category_counts(dfs_summary.get("category_counts", {})),
+            "",
         ]
     )
 
@@ -1351,6 +1450,9 @@ def _filter_and_annotate_paths(
     category_counts: dict[str, int] = {}
     for group_items in scenario_groups.values():
         representative = max(group_items, key=_representative_score)
+        llm_summary = summarize_with_llm(representative)
+        representative["attack_scenario_llm"] = llm_summary["attack_scenario_one_liner"]
+        representative["mitigation_llm"] = llm_summary["mitigation_one_liner"]
         validated.append(representative)
         category_code = representative.get("path_category")
         if isinstance(category_code, str):

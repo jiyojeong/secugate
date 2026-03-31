@@ -36,6 +36,9 @@
 
 - Hops: 4
 - Path category: `네트워크 노출형 경로`
+- 요약
+  - Scenario (LLM): 퍼블릭 서브넷이 기본적으로 퍼블릭 IP를 할당하고, VPC의 기본 보안 그룹이 제한되지 않아 외부에서 네트워크 접근이 가능하며, 동시에 VPC Flow Logs가 미설정되어 네트워크 이상행위에 대한 가시성과 탐지가 어려운 상태입니다.
+  - Mitigation (LLM): 서브넷의 퍼블릭 IP 자동 할당을 비활성화하고, VPC 기본 보안 그룹 규칙을 모두 제한하며, VPC Flow Logs를 활성화해 네트워크 접근 및 행위에 대한 통제를 강화해야 합니다.
 - Stage sequence: 0:초기 접근/노출 -> 2:실행·탐지우회
 - Findings: 3 unique / 3 raw
 - ATT&CK chain: IA, DE
@@ -70,7 +73,7 @@
   - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거
   - resource_address: `aws_vpc.main`
   - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`
-  - evaluated_keys: `ingress/self, egress/from_port 외 7개`
+  - evaluated_keys: `egress/to_port, egress/cidr_blocks 외 7개`
 
 [3] 실행·탐지우회
   - resource: `aws_vpc.main`
@@ -90,6 +93,9 @@
 
 - Hops: 3
 - Path category: `네트워크 노출형 경로`
+- 요약
+  - Scenario (LLM): 공격자가 aws_vpc.main 리소스의 기본 보안 그룹이 제한되지 않은 점을 이용해 초기 접근에 성공하고, 이어서 VPC Flow Logs가 미설정되어 네트워크 이상 행위가 탐지되지 않는 환경에서 추가적인 악의적 활동을 은폐할 수 있습니다.
+  - Mitigation (LLM): aws_vpc.main의 기본 보안 그룹에서 불필요한 ingress와 egress 규칙을 제거하고 VPC Flow Logs를 활성화하여 네트워크 접근 통제와 이상 행위 탐지를 강화해야 합니다.
 - Stage sequence: 0:초기 접근/노출 -> 2:실행·탐지우회
 - Findings: 2 unique / 2 raw
 - ATT&CK chain: IA, DE
@@ -110,7 +116,7 @@
   - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거
   - resource_address: `aws_vpc.main`
   - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`
-  - evaluated_keys: `ingress/self, egress/from_port 외 7개`
+  - evaluated_keys: `egress/to_port, egress/cidr_blocks 외 7개`
 
 [2] 실행·탐지우회
   - resource: `aws_vpc.main`
@@ -134,6 +140,9 @@
 
 - Hops: 3
 - Path category: `IAM 권한형 경로`
+- 요약
+  - Scenario (LLM): 공격자는 `aws_iam_policy.app`에서 Action/Resource 항목에 와일드카드를 사용하여 과도하게 폭넓은 권한을 확보하고, 이후 데이터 반출 관련 액션이 과도하게 허용된 정책을 악용하여 외부로 데이터가 유출될 수 있습니다.
+  - Mitigation (LLM): aws_iam_policy.app 정책에서 Action/Resource 와일드카드 및 데이터 반출 액션을 제거하고 최소 권한 원칙에 따라 필요한 범위로만 설정하세요.
 - Stage sequence: 1:권한·자격 확장 -> 3:영향·유출
 - Findings: 9 unique / 9 raw
 - ATT&CK chain: PE, EX
@@ -174,6 +183,9 @@
 
 - Hops: 3
 - Path category: `IAM 권한형 경로`
+- 요약
+  - Scenario (LLM): EC2 인스턴스가 퍼블릭 IP로 외부에 직접 노출되고 IMDSv1 활성화로 자격증명 탈취 위험이 증가하며, 하드닝 및 실행 제약이 미흡한 환경에서 저장 데이터 암호화까지 비활성화되어 공격자가 손쉽게 접근·권한확장·탐지우회 후 민감 데이터 유출까지 이어질 수 있습니다.
+  - Mitigation (LLM): EC2 인스턴스의 퍼블릭 IP 할당을 비활성화하고 IMDSv2를 강제하며, 하드닝 및 모니터링 설정을 강화하고 저장 데이터 암호화를 반드시 활성화해 전체 공격 경로를 차단해야 합니다.
 - Stage sequence: 0:초기 접근/노출 -> 1:권한·자격 확장 -> 2:실행·탐지우회 -> 3:영향·유출
 - Findings: 5 unique / 5 raw
 - ATT&CK chain: IA, PE, DE, EX
@@ -246,6 +258,9 @@
 
 - Hops: 6
 - Path category: `네트워크->IAM 혼합 경로`
+- 요약
+  - Scenario (LLM): 공격자는 퍼블릭 서브넷과 EC2 인스턴스에 기본 퍼블릭 IP가 할당되어 인터넷에서 직접 접근이 가능한 환경에서, 인스턴스의 메타데이터 서비스(IMDSv1) 설정 미비로 자격 증명 탈취 가능성이 높아지고, 추가적으로 EC2 실행 환경의 하드닝 부족 및 저장 데이터 암호화 미설정으로 인해 침해 시 데이터가 외부로 유출될 위험이 커지는 시나리오입니다.
+  - Mitigation (LLM): 서브넷과 인스턴스에 퍼블릭 IP 자동 할당을 비활성화하고, EC2 인스턴스에 IMDSv2만 허용 및 하드닝·모니터링을 강화하며, 저장 데이터 암호화(KMS CMK 권장)를 반드시 적용해야 합니다.
 - Stage sequence: 0:초기 접근/노출 -> 1:권한·자격 확장 -> 2:실행·탐지우회 -> 3:영향·유출
 - Findings: 6 unique / 6 raw
 - ATT&CK chain: IA, PE, DE, EX
@@ -332,6 +347,9 @@
 
 - Hops: 2
 - Path category: `기타 경로`
+- 요약
+  - Scenario (LLM): S3 버킷 퍼블릭 접근 차단 및 엣지 보안 설정이 누락되어 인터넷에서 자산이 노출된 상태에서, S3 버킷에 퍼블릭 접근 차단 설정 역시 적용되지 않아 외부 노출 범위가 넓어진 후, 로깅이 비활성화되어 침해 징후 탐지와 사후 분석이 어려우며, 최종적으로 저장 데이터의 암호화까지 누락되어 민감 정보가 노출될 위험이 있는 시나리오입니다.
+  - Mitigation (LLM): S3 버킷과 퍼블릭 접근 차단 설정에서 인터넷 노출을 차단하고, 로깅 및 모니터링을 활성화하며, 저장 데이터에 대해 KMS 등을 통한 암호화를 반드시 적용해야 합니다.
 - Stage sequence: 0:초기 접근/노출 -> 2:실행·탐지우회 -> 3:영향·유출
 - Findings: 11 unique / 11 raw
 - ATT&CK chain: IA, DE, EX
@@ -366,7 +384,7 @@
   - mitigation: aws_s3_bucket 리소스에서 "Ensure that S3 bucket has a Public Access block" 요구사항을 충족하도록 보안 설정을 명시적으로 추가
   - resource_address: `aws_s3_bucket.public`
   - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`
-  - evaluated_keys: `resource_type, block_public_acls 외 1개`
+  - evaluated_keys: `resource_type, block_public_policy 외 1개`
 
 [3] 실행·탐지우회
   - resource: `aws_s3_bucket.public`
@@ -380,7 +398,7 @@
   - mitigation: aws_s3_bucket 리소스에 로깅 및 모니터링 설정을 활성화
   - resource_address: `aws_s3_bucket.public`
   - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`
-  - evaluated_keys: `logging, resource_type`
+  - evaluated_keys: `resource_type, logging`
 
 [4] 영향·유출
   - resource: `aws_s3_bucket.public`
@@ -400,6 +418,9 @@
 
 - Hops: 1
 - Path category: `기타 경로`
+- 요약
+  - Scenario (LLM): 공격자가 공개적으로 노출된 S3 버킷에 접근한 뒤, 로깅이 비활성화되어 탐지 및 사후 대응이 어려운 상태에서 데이터 암호화까지 미적용된 버킷을 통해 민감 정보가 유출될 위험이 있는 시나리오입니다.
+  - Mitigation (LLM): S3 버킷에 퍼블릭 접근 차단, 액세스 로그 활성화, 저장 데이터의 암호화 설정을 모두 적용해 무단 접근, 탐지 우회, 데이터 유출을 방지하십시오.
 - Stage sequence: 0:초기 접근/노출 -> 2:실행·탐지우회 -> 3:영향·유출
 - Findings: 7 unique / 7 raw
 - ATT&CK chain: IA, DE, EX
@@ -420,7 +441,7 @@
   - mitigation: aws_s3_bucket 리소스에서 "Ensure that S3 bucket has a Public Access block" 요구사항을 충족하도록 보안 설정을 명시적으로 추가
   - resource_address: `aws_s3_bucket.public`
   - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`
-  - evaluated_keys: `resource_type, block_public_acls 외 1개`
+  - evaluated_keys: `resource_type, block_public_policy 외 1개`
 
 [2] 실행·탐지우회
   - resource: `aws_s3_bucket.public`
@@ -434,7 +455,7 @@
   - mitigation: aws_s3_bucket 리소스에 로깅 및 모니터링 설정을 활성화
   - resource_address: `aws_s3_bucket.public`
   - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`
-  - evaluated_keys: `logging, resource_type`
+  - evaluated_keys: `resource_type, logging`
 
 [3] 영향·유출
   - resource: `aws_s3_bucket.public`
