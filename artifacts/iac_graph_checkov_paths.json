@@ -434,8 +434,8 @@
           ]
         }
       ],
-      "attack_scenario_llm": "EC2 인스턴스가 퍼블릭 IP로 외부에 직접 노출되고 IMDSv1 활성화로 자격증명 탈취 위험이 증가하며, 하드닝 및 실행 제약이 미흡한 환경에서 저장 데이터 암호화까지 비활성화되어 공격자가 손쉽게 접근·권한확장·탐지우회 후 민감 데이터 유출까지 이어질 수 있습니다.",
-      "mitigation_llm": "EC2 인스턴스의 퍼블릭 IP 할당을 비활성화하고 IMDSv2를 강제하며, 하드닝 및 모니터링 설정을 강화하고 저장 데이터 암호화를 반드시 활성화해 전체 공격 경로를 차단해야 합니다."
+      "attack_scenario_llm": "퍼블릭 IP가 할당되어 인터넷에 직접 노출된 `aws_instance.app`를 발판으로 초기 접근이 이뤄진 뒤, IMDSv2 미설정으로 인스턴스 자격증명 탈취 위험이 커지고, 필수 보안 설정 누락(상세 모니터링/하드닝 및 EBS 최적화 미흡)으로 침해 이후 악용 가능성이 확대되며, 저장 데이터 암호화 비활성화 상태로 인해 최종적으로 데이터 노출(유출) 위험이 증가하는 시나리오이다.",
+      "mitigation_llm": "`aws_instance.app`에서 퍼블릭 IP 할당을 비활성화하고 IMDSv2(http_tokens=\"required\")를 적용하며 상세 모니터링 및 EBS 최적화 등 필수 보안 설정을 명시적으로 강화하고, EBS(루트 블록 디바이스) 저장 데이터 암호화를 활성화(가능 시 KMS CMK 사용)하여 접근·자격증명 탈취·침해 후 악용 및 데이터 유출 위험을 저감하여야 한다."
     },
     {
       "from": "aws_iam_policy.app",
@@ -644,8 +644,8 @@
               ],
               "evaluated_keys": [
                 "statement[?(@/effect == Allow)]/actions[*]",
-                "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]",
-                "policy/Statement[?(@/Effect == Allow)]/Action[*]"
+                "policy/Statement[?(@/Effect == Allow)]/Action[*]",
+                "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
               ]
             },
             {
@@ -797,8 +797,8 @@
           ]
         }
       ],
-      "attack_scenario_llm": "공격자는 `aws_iam_policy.app`에서 Action/Resource 항목에 와일드카드를 사용하여 과도하게 폭넓은 권한을 확보하고, 이후 데이터 반출 관련 액션이 과도하게 허용된 정책을 악용하여 외부로 데이터가 유출될 수 있습니다.",
-      "mitigation_llm": "aws_iam_policy.app 정책에서 Action/Resource 와일드카드 및 데이터 반출 액션을 제거하고 최소 권한 원칙에 따라 필요한 범위로만 설정하세요."
+      "attack_scenario_llm": "공격자는 `aws_iam_policy.app`에 설정된 Action/Resource 와일드카드 허용으로 인해 IAM 권한·자격을 확장(PE)한 뒤, 동일 정책이 데이터 반출 관련 액션을 과도하게 허용하는 상태를 악용하여 외부로의 데이터 유출(EX)로 이어갈 수 있다.",
+      "mitigation_llm": "`aws_iam_policy.app`에서 Action/Resource 와일드카드를 제거하여 최소 권한으로 축소하고, 데이터 반출 관련 액션 범위를 필요 최소한으로 제한하도록 IAM 정책을 재정의해야 한다."
     },
     {
       "from": "aws_iam_role_policy_attachment.app",
@@ -1268,8 +1268,8 @@
           ]
         }
       ],
-      "attack_scenario_llm": "공격자는 퍼블릭 서브넷과 EC2 인스턴스에 기본 퍼블릭 IP가 할당되어 인터넷에서 직접 접근이 가능한 환경에서, 인스턴스의 메타데이터 서비스(IMDSv1) 설정 미비로 자격 증명 탈취 가능성이 높아지고, 추가적으로 EC2 실행 환경의 하드닝 부족 및 저장 데이터 암호화 미설정으로 인해 침해 시 데이터가 외부로 유출될 위험이 커지는 시나리오입니다.",
-      "mitigation_llm": "서브넷과 인스턴스에 퍼블릭 IP 자동 할당을 비활성화하고, EC2 인스턴스에 IMDSv2만 허용 및 하드닝·모니터링을 강화하며, 저장 데이터 암호화(KMS CMK 권장)를 반드시 적용해야 합니다."
+      "attack_scenario_llm": "퍼블릭 서브넷에서 퍼블릭 IP가 자동 할당되고 해당 서브넷의 EC2 인스턴스가 퍼블릭 IP로 인터넷에 직접 노출된 상태에서, IMDSv2 미설정으로 인스턴스 자격증명 탈취 위험이 커진 뒤 워크로드 하드닝·가시성 통제가 미흡한 틈을 악용하여, 최종적으로 저장 데이터 암호화 비활성화로 인해 인스턴스 EBS에 저장된 데이터 노출(유출) 위험이 발생할 수 있다.",
+      "mitigation_llm": "서브넷과 EC2에서 퍼블릭 IP 할당을 비활성화하고, EC2 metadata_options에 http_tokens=\"required\"로 IMDSv2를 강제하며, EC2에 EBS 최적화 및 상세 모니터링 등 필수 보안 설정을 명시적으로 적용하고, EBS(루트 블록 디바이스 포함) 저장 데이터 암호화를 활성화하되 가능하면 KMS CMK를 사용한다."
     },
     {
       "from": "aws_vpc.main",
@@ -1317,15 +1317,15 @@
             "resource_address": "aws_vpc.main",
             "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
             "evaluated_keys": [
+              "ingress/from_port",
               "egress/to_port",
-              "egress/cidr_blocks",
-              "resource_type",
               "egress/protocol",
+              "egress/cidr_blocks",
+              "ingress/to_port",
               "ingress/self",
               "egress/from_port",
               "ingress/protocol",
-              "ingress/from_port",
-              "ingress/to_port"
+              "resource_type"
             ]
           },
           "evidence_preview": [
@@ -1347,15 +1347,15 @@
               "resource_address": "aws_vpc.main",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
+                "ingress/from_port",
                 "egress/to_port",
-                "egress/cidr_blocks",
-                "resource_type",
                 "egress/protocol",
+                "egress/cidr_blocks",
+                "ingress/to_port",
                 "ingress/self",
                 "egress/from_port",
                 "ingress/protocol",
-                "ingress/from_port",
-                "ingress/to_port"
+                "resource_type"
               ]
             }
           ]
@@ -1385,8 +1385,8 @@
             "resource_address": "aws_vpc.main",
             "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
             "evaluated_keys": [
-              "resource_type",
-              "networking"
+              "networking",
+              "resource_type"
             ]
           },
           "evidence_preview": [
@@ -1408,8 +1408,8 @@
               "resource_address": "aws_vpc.main",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
-                "resource_type",
-                "networking"
+                "networking",
+                "resource_type"
               ]
             }
           ]
@@ -1432,7 +1432,7 @@
         "T1021",
         "T1046"
       ],
-      "attack_scenario": "`aws_vpc.main` -> `aws_route_table_association.public` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_vpc.main`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `egress/to_port, egress/cidr_blocks 외 7개`\n\n[2] 실행·탐지우회\n  - resource: `aws_vpc.main`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, networking`",
+      "attack_scenario": "`aws_vpc.main` -> `aws_route_table_association.public` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_vpc.main`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `ingress/from_port, egress/to_port 외 7개`\n\n[2] 실행·탐지우회\n  - resource: `aws_vpc.main`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `networking, resource_type`",
       "node_findings": [
         {
           "node": "aws_vpc.main",
@@ -1452,8 +1452,8 @@
                 24
               ],
               "evaluated_keys": [
-                "resource_type",
-                "networking"
+                "networking",
+                "resource_type"
               ]
             },
             {
@@ -1471,22 +1471,22 @@
                 24
               ],
               "evaluated_keys": [
+                "ingress/from_port",
                 "egress/to_port",
-                "egress/cidr_blocks",
-                "resource_type",
                 "egress/protocol",
+                "egress/cidr_blocks",
+                "ingress/to_port",
                 "ingress/self",
                 "egress/from_port",
                 "ingress/protocol",
-                "ingress/from_port",
-                "ingress/to_port"
+                "resource_type"
               ]
             }
           ]
         }
       ],
-      "attack_scenario_llm": "공격자가 aws_vpc.main 리소스의 기본 보안 그룹이 제한되지 않은 점을 이용해 초기 접근에 성공하고, 이어서 VPC Flow Logs가 미설정되어 네트워크 이상 행위가 탐지되지 않는 환경에서 추가적인 악의적 활동을 은폐할 수 있습니다.",
-      "mitigation_llm": "aws_vpc.main의 기본 보안 그룹에서 불필요한 ingress와 egress 규칙을 제거하고 VPC Flow Logs를 활성화하여 네트워크 접근 통제와 이상 행위 탐지를 강화해야 합니다."
+      "attack_scenario_llm": "기본 보안 그룹이 제한되지 않은 `aws_vpc.main` 환경을 발판으로 원격 접근(IA)이 가능해진 뒤, 동일 VPC에서 Flow Logs가 미설정되어 네트워크 가시성·탐지 공백(DE)을 이용한 정찰 및 이상 행위가 식별되지 않을 수 있다.",
+      "mitigation_llm": "`aws_default_security_group`에서 불필요한 ingress/egress 규칙을 제거해 기본 보안 그룹을 제한하고, `aws_vpc.main`에 VPC Flow Logs를 활성화하여 네트워크 활동의 가시성과 탐지 체계를 확보한다."
     },
     {
       "from": "aws_s3_bucket_policy.public",
@@ -1536,9 +1536,9 @@
             "resource_address": "aws_s3_bucket.public",
             "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
             "evaluated_keys": [
-              "resource_type",
+              "block_public_acls",
               "block_public_policy",
-              "block_public_acls"
+              "resource_type"
             ]
           },
           "evidence_preview": [
@@ -1558,9 +1558,9 @@
               "resource_address": "aws_s3_bucket.public",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
-                "resource_type",
+                "block_public_acls",
                 "block_public_policy",
-                "block_public_acls"
+                "resource_type"
               ]
             }
           ]
@@ -1590,8 +1590,8 @@
             "resource_address": "aws_s3_bucket.public",
             "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
             "evaluated_keys": [
-              "resource_type",
-              "logging"
+              "logging",
+              "resource_type"
             ]
           },
           "evidence_preview": [
@@ -1613,8 +1613,8 @@
               "resource_address": "aws_s3_bucket.public",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
-                "resource_type",
-                "logging"
+                "logging",
+                "resource_type"
               ]
             }
           ]
@@ -1648,9 +1648,9 @@
             "resource_address": "aws_s3_bucket.public",
             "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
             "evaluated_keys": [
+              "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
               "resource_type",
-              "rule/apply_server_side_encryption_by_default/sse_algorithm",
-              "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+              "rule/apply_server_side_encryption_by_default/sse_algorithm"
             ]
           },
           "evidence_preview": [
@@ -1673,9 +1673,9 @@
               "resource_address": "aws_s3_bucket.public",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
+                "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
                 "resource_type",
-                "rule/apply_server_side_encryption_by_default/sse_algorithm",
-                "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+                "rule/apply_server_side_encryption_by_default/sse_algorithm"
               ]
             },
             {
@@ -1721,7 +1721,7 @@
         "T1562",
         "T1530"
       ],
-      "attack_scenario": "`aws_s3_bucket_policy.public` -> `aws_s3_bucket.public` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_s3_bucket.public`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV2_AWS_6`\n  - check_name_en: `Ensure that S3 bucket has a Public Access block`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_s3_bucket 리소스에서 \"Ensure that S3 bucket has a Public Access block\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, block_public_policy 외 1개`\n\n[2] 실행·탐지우회\n  - resource: `aws_s3_bucket.public`\n  - check: `로깅/검증 비활성화`\n  - check_id: `CKV_AWS_18`\n  - check_name_en: `Ensure the S3 bucket has access logging enabled`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1562`\n  - why_fails: 로깅/검증 비활성화\n  - mitigation: aws_s3_bucket 리소스에 로깅 및 모니터링 설정을 활성화\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, logging`\n\n[3] 영향·유출\n  - resource: `aws_s3_bucket.public`\n  - check: `암호화 비활성화`\n  - check_id: `CKV_AWS_145`\n  - check_name_en: `Ensure that S3 buckets are encrypted with KMS by default`\n  - severity: `HIGH`\n  - mitre_tactic: `EX`\n  - representative_atomic_id: `T1530`\n  - why_fails: 암호화 비활성화\n  - mitigation: aws_s3_bucket 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, rule/apply_server_side_encryption_by_default/sse_algorithm 외 1개`",
+      "attack_scenario": "`aws_s3_bucket_policy.public` -> `aws_s3_bucket.public` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_s3_bucket.public`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV2_AWS_6`\n  - check_name_en: `Ensure that S3 bucket has a Public Access block`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_s3_bucket 리소스에서 \"Ensure that S3 bucket has a Public Access block\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `block_public_acls, block_public_policy 외 1개`\n\n[2] 실행·탐지우회\n  - resource: `aws_s3_bucket.public`\n  - check: `로깅/검증 비활성화`\n  - check_id: `CKV_AWS_18`\n  - check_name_en: `Ensure the S3 bucket has access logging enabled`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1562`\n  - why_fails: 로깅/검증 비활성화\n  - mitigation: aws_s3_bucket 리소스에 로깅 및 모니터링 설정을 활성화\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `logging, resource_type`\n\n[3] 영향·유출\n  - resource: `aws_s3_bucket.public`\n  - check: `암호화 비활성화`\n  - check_id: `CKV_AWS_145`\n  - check_name_en: `Ensure that S3 buckets are encrypted with KMS by default`\n  - severity: `HIGH`\n  - mitre_tactic: `EX`\n  - representative_atomic_id: `T1530`\n  - why_fails: 암호화 비활성화\n  - mitigation: aws_s3_bucket 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm, resource_type 외 1개`",
       "node_findings": [
         {
           "node": "aws_s3_bucket.public",
@@ -1741,9 +1741,9 @@
                 150
               ],
               "evaluated_keys": [
-                "resource_type",
+                "block_public_acls",
                 "block_public_policy",
-                "block_public_acls"
+                "resource_type"
               ]
             },
             {
@@ -1761,8 +1761,8 @@
                 150
               ],
               "evaluated_keys": [
-                "lifecycle_rule",
-                "resource_type"
+                "resource_type",
+                "lifecycle_rule"
               ]
             },
             {
@@ -1798,9 +1798,9 @@
                 150
               ],
               "evaluated_keys": [
-                "rule/*/status",
                 "replication_configuration/rules/*/status",
-                "resource_type"
+                "resource_type",
+                "rule/*/status"
               ]
             },
             {
@@ -1818,9 +1818,9 @@
                 150
               ],
               "evaluated_keys": [
+                "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
                 "resource_type",
-                "rule/apply_server_side_encryption_by_default/sse_algorithm",
-                "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+                "rule/apply_server_side_encryption_by_default/sse_algorithm"
               ]
             },
             {
@@ -1838,8 +1838,8 @@
                 150
               ],
               "evaluated_keys": [
-                "resource_type",
-                "logging"
+                "logging",
+                "resource_type"
               ]
             },
             {
@@ -1865,8 +1865,8 @@
           ]
         }
       ],
-      "attack_scenario_llm": "공격자가 공개적으로 노출된 S3 버킷에 접근한 뒤, 로깅이 비활성화되어 탐지 및 사후 대응이 어려운 상태에서 데이터 암호화까지 미적용된 버킷을 통해 민감 정보가 유출될 위험이 있는 시나리오입니다.",
-      "mitigation_llm": "S3 버킷에 퍼블릭 접근 차단, 액세스 로그 활성화, 저장 데이터의 암호화 설정을 모두 적용해 무단 접근, 탐지 우회, 데이터 유출을 방지하십시오."
+      "attack_scenario_llm": "공개 접근 차단 설정이 누락된 `aws_s3_bucket.public`에 외부에서 접근이 가능해 초기 노출이 발생하고, 해당 버킷의 액세스 로깅이 비활성화되어 침해 징후 탐지·추적이 어려운 상태에서 기본 KMS 암호화가 적용되지 않은 저장 데이터가 노출되어 유출로 이어질 수 있다.",
+      "mitigation_llm": "`aws_s3_bucket.public`에 Public Access Block을 명시적으로 적용하고 액세스 로깅을 활성화하며 기본 저장 데이터 암호화를 KMS(가능하면 CMK)로 설정하여 노출·탐지 공백·유출 위험을 동시에 저감하여야 한다."
     },
     {
       "from": "aws_s3_bucket_policy.public",
@@ -2003,9 +2003,9 @@
             "resource_address": "aws_s3_bucket.public",
             "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
             "evaluated_keys": [
-              "resource_type",
+              "block_public_acls",
               "block_public_policy",
-              "block_public_acls"
+              "resource_type"
             ]
           },
           "evidence_preview": [
@@ -2025,9 +2025,9 @@
               "resource_address": "aws_s3_bucket.public",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
-                "resource_type",
+                "block_public_acls",
                 "block_public_policy",
-                "block_public_acls"
+                "resource_type"
               ]
             }
           ]
@@ -2057,8 +2057,8 @@
             "resource_address": "aws_s3_bucket.public",
             "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
             "evaluated_keys": [
-              "resource_type",
-              "logging"
+              "logging",
+              "resource_type"
             ]
           },
           "evidence_preview": [
@@ -2080,8 +2080,8 @@
               "resource_address": "aws_s3_bucket.public",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
-                "resource_type",
-                "logging"
+                "logging",
+                "resource_type"
               ]
             }
           ]
@@ -2115,9 +2115,9 @@
             "resource_address": "aws_s3_bucket.public",
             "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
             "evaluated_keys": [
+              "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
               "resource_type",
-              "rule/apply_server_side_encryption_by_default/sse_algorithm",
-              "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+              "rule/apply_server_side_encryption_by_default/sse_algorithm"
             ]
           },
           "evidence_preview": [
@@ -2140,9 +2140,9 @@
               "resource_address": "aws_s3_bucket.public",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
+                "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
                 "resource_type",
-                "rule/apply_server_side_encryption_by_default/sse_algorithm",
-                "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+                "rule/apply_server_side_encryption_by_default/sse_algorithm"
               ]
             },
             {
@@ -2190,7 +2190,7 @@
         "T1562",
         "T1530"
       ],
-      "attack_scenario": "`aws_s3_bucket_public_access_block.public` -> `aws_s3_bucket_policy.public` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_s3_bucket_public_access_block.public`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV_AWS_56`\n  - check_name_en: `Ensure S3 bucket has 'restrict_public_buckets' enabled`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1190`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_s3_bucket_public_access_block 리소스에서 \"Ensure S3 bucket has ‘restrict_public_buckets’ enabled\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_s3_bucket_public_access_block.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `restrict_public_buckets`\n\n[2] 초기 접근/노출\n  - resource: `aws_s3_bucket.public`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV2_AWS_6`\n  - check_name_en: `Ensure that S3 bucket has a Public Access block`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_s3_bucket 리소스에서 \"Ensure that S3 bucket has a Public Access block\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, block_public_policy 외 1개`\n\n[3] 실행·탐지우회\n  - resource: `aws_s3_bucket.public`\n  - check: `로깅/검증 비활성화`\n  - check_id: `CKV_AWS_18`\n  - check_name_en: `Ensure the S3 bucket has access logging enabled`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1562`\n  - why_fails: 로깅/검증 비활성화\n  - mitigation: aws_s3_bucket 리소스에 로깅 및 모니터링 설정을 활성화\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, logging`\n\n[4] 영향·유출\n  - resource: `aws_s3_bucket.public`\n  - check: `암호화 비활성화`\n  - check_id: `CKV_AWS_145`\n  - check_name_en: `Ensure that S3 buckets are encrypted with KMS by default`\n  - severity: `HIGH`\n  - mitre_tactic: `EX`\n  - representative_atomic_id: `T1530`\n  - why_fails: 암호화 비활성화\n  - mitigation: aws_s3_bucket 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, rule/apply_server_side_encryption_by_default/sse_algorithm 외 1개`",
+      "attack_scenario": "`aws_s3_bucket_public_access_block.public` -> `aws_s3_bucket_policy.public` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_s3_bucket_public_access_block.public`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV_AWS_56`\n  - check_name_en: `Ensure S3 bucket has 'restrict_public_buckets' enabled`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1190`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_s3_bucket_public_access_block 리소스에서 \"Ensure S3 bucket has ‘restrict_public_buckets’ enabled\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_s3_bucket_public_access_block.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `restrict_public_buckets`\n\n[2] 초기 접근/노출\n  - resource: `aws_s3_bucket.public`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV2_AWS_6`\n  - check_name_en: `Ensure that S3 bucket has a Public Access block`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_s3_bucket 리소스에서 \"Ensure that S3 bucket has a Public Access block\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `block_public_acls, block_public_policy 외 1개`\n\n[3] 실행·탐지우회\n  - resource: `aws_s3_bucket.public`\n  - check: `로깅/검증 비활성화`\n  - check_id: `CKV_AWS_18`\n  - check_name_en: `Ensure the S3 bucket has access logging enabled`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1562`\n  - why_fails: 로깅/검증 비활성화\n  - mitigation: aws_s3_bucket 리소스에 로깅 및 모니터링 설정을 활성화\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `logging, resource_type`\n\n[4] 영향·유출\n  - resource: `aws_s3_bucket.public`\n  - check: `암호화 비활성화`\n  - check_id: `CKV_AWS_145`\n  - check_name_en: `Ensure that S3 buckets are encrypted with KMS by default`\n  - severity: `HIGH`\n  - mitre_tactic: `EX`\n  - representative_atomic_id: `T1530`\n  - why_fails: 암호화 비활성화\n  - mitigation: aws_s3_bucket 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm, resource_type 외 1개`",
       "node_findings": [
         {
           "node": "aws_s3_bucket.public",
@@ -2210,9 +2210,9 @@
                 150
               ],
               "evaluated_keys": [
-                "resource_type",
+                "block_public_acls",
                 "block_public_policy",
-                "block_public_acls"
+                "resource_type"
               ]
             },
             {
@@ -2230,8 +2230,8 @@
                 150
               ],
               "evaluated_keys": [
-                "lifecycle_rule",
-                "resource_type"
+                "resource_type",
+                "lifecycle_rule"
               ]
             },
             {
@@ -2267,9 +2267,9 @@
                 150
               ],
               "evaluated_keys": [
-                "rule/*/status",
                 "replication_configuration/rules/*/status",
-                "resource_type"
+                "resource_type",
+                "rule/*/status"
               ]
             },
             {
@@ -2287,9 +2287,9 @@
                 150
               ],
               "evaluated_keys": [
+                "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
                 "resource_type",
-                "rule/apply_server_side_encryption_by_default/sse_algorithm",
-                "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+                "rule/apply_server_side_encryption_by_default/sse_algorithm"
               ]
             },
             {
@@ -2307,8 +2307,8 @@
                 150
               ],
               "evaluated_keys": [
-                "resource_type",
-                "logging"
+                "logging",
+                "resource_type"
               ]
             },
             {
@@ -2411,8 +2411,8 @@
           ]
         }
       ],
-      "attack_scenario_llm": "S3 버킷 퍼블릭 접근 차단 및 엣지 보안 설정이 누락되어 인터넷에서 자산이 노출된 상태에서, S3 버킷에 퍼블릭 접근 차단 설정 역시 적용되지 않아 외부 노출 범위가 넓어진 후, 로깅이 비활성화되어 침해 징후 탐지와 사후 분석이 어려우며, 최종적으로 저장 데이터의 암호화까지 누락되어 민감 정보가 노출될 위험이 있는 시나리오입니다.",
-      "mitigation_llm": "S3 버킷과 퍼블릭 접근 차단 설정에서 인터넷 노출을 차단하고, 로깅 및 모니터링을 활성화하며, 저장 데이터에 대해 KMS 등을 통한 암호화를 반드시 적용해야 합니다."
+      "attack_scenario_llm": "S3 퍼블릭 접근 차단(Restrict Public Buckets 등) 및 버킷 단위 Public Access Block 설정이 미흡한 상태에서, S3 버킷 접근 로깅이 비활성화되어 탐지·감사 가시성이 저하되고, 저장 데이터의 기본 KMS 암호화가 적용되지 않아 버킷 내 데이터가 노출·유출될 수 있다.",
+      "mitigation_llm": "aws_s3_bucket_public_access_block 및 aws_s3_bucket에서 Public Access Block(특히 restrict_public_buckets 포함)을 명시적으로 활성화하고, S3 access logging을 켜서 가시성을 확보하며, S3 기본 서버사이드 암호화를 KMS(CMK 권장)로 적용하여 데이터 노출 위험을 저감한다."
     },
     {
       "from": "aws_subnet.public",
@@ -2518,15 +2518,15 @@
             "resource_address": "aws_vpc.main",
             "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
             "evaluated_keys": [
+              "ingress/from_port",
               "egress/to_port",
-              "egress/cidr_blocks",
-              "resource_type",
               "egress/protocol",
+              "egress/cidr_blocks",
+              "ingress/to_port",
               "ingress/self",
               "egress/from_port",
               "ingress/protocol",
-              "ingress/from_port",
-              "ingress/to_port"
+              "resource_type"
             ]
           },
           "evidence_preview": [
@@ -2548,15 +2548,15 @@
               "resource_address": "aws_vpc.main",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
+                "ingress/from_port",
                 "egress/to_port",
-                "egress/cidr_blocks",
-                "resource_type",
                 "egress/protocol",
+                "egress/cidr_blocks",
+                "ingress/to_port",
                 "ingress/self",
                 "egress/from_port",
                 "ingress/protocol",
-                "ingress/from_port",
-                "ingress/to_port"
+                "resource_type"
               ]
             }
           ]
@@ -2586,8 +2586,8 @@
             "resource_address": "aws_vpc.main",
             "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
             "evaluated_keys": [
-              "resource_type",
-              "networking"
+              "networking",
+              "resource_type"
             ]
           },
           "evidence_preview": [
@@ -2609,8 +2609,8 @@
               "resource_address": "aws_vpc.main",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
-                "resource_type",
-                "networking"
+                "networking",
+                "resource_type"
               ]
             }
           ]
@@ -2635,7 +2635,7 @@
         "T1021",
         "T1046"
       ],
-      "attack_scenario": "`aws_subnet.public` -> `aws_vpc.main` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1190`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_vpc.main`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `egress/to_port, egress/cidr_blocks 외 7개`\n\n[3] 실행·탐지우회\n  - resource: `aws_vpc.main`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, networking`",
+      "attack_scenario": "`aws_subnet.public` -> `aws_vpc.main` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1190`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_vpc.main`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `ingress/from_port, egress/to_port 외 7개`\n\n[3] 실행·탐지우회\n  - resource: `aws_vpc.main`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `networking, resource_type`",
       "node_findings": [
         {
           "node": "aws_subnet.public",
@@ -2678,8 +2678,8 @@
                 24
               ],
               "evaluated_keys": [
-                "resource_type",
-                "networking"
+                "networking",
+                "resource_type"
               ]
             },
             {
@@ -2697,22 +2697,22 @@
                 24
               ],
               "evaluated_keys": [
+                "ingress/from_port",
                 "egress/to_port",
-                "egress/cidr_blocks",
-                "resource_type",
                 "egress/protocol",
+                "egress/cidr_blocks",
+                "ingress/to_port",
                 "ingress/self",
                 "egress/from_port",
                 "ingress/protocol",
-                "ingress/from_port",
-                "ingress/to_port"
+                "resource_type"
               ]
             }
           ]
         }
       ],
-      "attack_scenario_llm": "퍼블릭 서브넷이 기본적으로 퍼블릭 IP를 할당하고, VPC의 기본 보안 그룹이 제한되지 않아 외부에서 네트워크 접근이 가능하며, 동시에 VPC Flow Logs가 미설정되어 네트워크 이상행위에 대한 가시성과 탐지가 어려운 상태입니다.",
-      "mitigation_llm": "서브넷의 퍼블릭 IP 자동 할당을 비활성화하고, VPC 기본 보안 그룹 규칙을 모두 제한하며, VPC Flow Logs를 활성화해 네트워크 접근 및 행위에 대한 통제를 강화해야 합니다."
+      "attack_scenario_llm": "퍼블릭 IP가 기본 자동 할당되는 `aws_subnet.public`으로 외부 노출이 발생한 상태에서 `aws_vpc.main`의 기본 보안 그룹이 제한되지 않아 원격 접근이 용이해지고, 이어서 `aws_vpc.main`에 VPC Flow Logs가 미설정되어 네트워크 가시성 및 탐지 공백 속에서 추가 정찰·접근 시도가 은폐될 수 있다.",
+      "mitigation_llm": "`aws_subnet.public`의 퍼블릭 IP 기본 할당을 비활성화하고 `aws_vpc.main`의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거하며 `aws_vpc.main`에 VPC Flow Logs를 활성화하여 외부 노출을 축소하고 원격 접근을 제한함과 동시에 네트워크 행위에 대한 탐지 체계를 확보해야 한다."
     }
   ],
   "dfs_all_paths_validated_by_category": {
@@ -2763,15 +2763,15 @@
               "resource_address": "aws_vpc.main",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
+                "ingress/from_port",
                 "egress/to_port",
-                "egress/cidr_blocks",
-                "resource_type",
                 "egress/protocol",
+                "egress/cidr_blocks",
+                "ingress/to_port",
                 "ingress/self",
                 "egress/from_port",
                 "ingress/protocol",
-                "ingress/from_port",
-                "ingress/to_port"
+                "resource_type"
               ]
             },
             "evidence_preview": [
@@ -2793,15 +2793,15 @@
                 "resource_address": "aws_vpc.main",
                 "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
                 "evaluated_keys": [
+                  "ingress/from_port",
                   "egress/to_port",
-                  "egress/cidr_blocks",
-                  "resource_type",
                   "egress/protocol",
+                  "egress/cidr_blocks",
+                  "ingress/to_port",
                   "ingress/self",
                   "egress/from_port",
                   "ingress/protocol",
-                  "ingress/from_port",
-                  "ingress/to_port"
+                  "resource_type"
                 ]
               }
             ]
@@ -2831,8 +2831,8 @@
               "resource_address": "aws_vpc.main",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
-                "resource_type",
-                "networking"
+                "networking",
+                "resource_type"
               ]
             },
             "evidence_preview": [
@@ -2854,8 +2854,8 @@
                 "resource_address": "aws_vpc.main",
                 "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
                 "evaluated_keys": [
-                  "resource_type",
-                  "networking"
+                  "networking",
+                  "resource_type"
                 ]
               }
             ]
@@ -2878,7 +2878,7 @@
           "T1021",
           "T1046"
         ],
-        "attack_scenario": "`aws_vpc.main` -> `aws_route_table_association.public` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_vpc.main`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `egress/to_port, egress/cidr_blocks 외 7개`\n\n[2] 실행·탐지우회\n  - resource: `aws_vpc.main`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, networking`",
+        "attack_scenario": "`aws_vpc.main` -> `aws_route_table_association.public` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_vpc.main`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `ingress/from_port, egress/to_port 외 7개`\n\n[2] 실행·탐지우회\n  - resource: `aws_vpc.main`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `networking, resource_type`",
         "node_findings": [
           {
             "node": "aws_vpc.main",
@@ -2898,8 +2898,8 @@
                   24
                 ],
                 "evaluated_keys": [
-                  "resource_type",
-                  "networking"
+                  "networking",
+                  "resource_type"
                 ]
               },
               {
@@ -2917,22 +2917,22 @@
                   24
                 ],
                 "evaluated_keys": [
+                  "ingress/from_port",
                   "egress/to_port",
-                  "egress/cidr_blocks",
-                  "resource_type",
                   "egress/protocol",
+                  "egress/cidr_blocks",
+                  "ingress/to_port",
                   "ingress/self",
                   "egress/from_port",
                   "ingress/protocol",
-                  "ingress/from_port",
-                  "ingress/to_port"
+                  "resource_type"
                 ]
               }
             ]
           }
         ],
-        "attack_scenario_llm": "공격자가 aws_vpc.main 리소스의 기본 보안 그룹이 제한되지 않은 점을 이용해 초기 접근에 성공하고, 이어서 VPC Flow Logs가 미설정되어 네트워크 이상 행위가 탐지되지 않는 환경에서 추가적인 악의적 활동을 은폐할 수 있습니다.",
-        "mitigation_llm": "aws_vpc.main의 기본 보안 그룹에서 불필요한 ingress와 egress 규칙을 제거하고 VPC Flow Logs를 활성화하여 네트워크 접근 통제와 이상 행위 탐지를 강화해야 합니다."
+        "attack_scenario_llm": "기본 보안 그룹이 제한되지 않은 `aws_vpc.main` 환경을 발판으로 원격 접근(IA)이 가능해진 뒤, 동일 VPC에서 Flow Logs가 미설정되어 네트워크 가시성·탐지 공백(DE)을 이용한 정찰 및 이상 행위가 식별되지 않을 수 있다.",
+        "mitigation_llm": "`aws_default_security_group`에서 불필요한 ingress/egress 규칙을 제거해 기본 보안 그룹을 제한하고, `aws_vpc.main`에 VPC Flow Logs를 활성화하여 네트워크 활동의 가시성과 탐지 체계를 확보한다."
       },
       {
         "from": "aws_subnet.public",
@@ -3038,15 +3038,15 @@
               "resource_address": "aws_vpc.main",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
+                "ingress/from_port",
                 "egress/to_port",
-                "egress/cidr_blocks",
-                "resource_type",
                 "egress/protocol",
+                "egress/cidr_blocks",
+                "ingress/to_port",
                 "ingress/self",
                 "egress/from_port",
                 "ingress/protocol",
-                "ingress/from_port",
-                "ingress/to_port"
+                "resource_type"
               ]
             },
             "evidence_preview": [
@@ -3068,15 +3068,15 @@
                 "resource_address": "aws_vpc.main",
                 "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
                 "evaluated_keys": [
+                  "ingress/from_port",
                   "egress/to_port",
-                  "egress/cidr_blocks",
-                  "resource_type",
                   "egress/protocol",
+                  "egress/cidr_blocks",
+                  "ingress/to_port",
                   "ingress/self",
                   "egress/from_port",
                   "ingress/protocol",
-                  "ingress/from_port",
-                  "ingress/to_port"
+                  "resource_type"
                 ]
               }
             ]
@@ -3106,8 +3106,8 @@
               "resource_address": "aws_vpc.main",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
-                "resource_type",
-                "networking"
+                "networking",
+                "resource_type"
               ]
             },
             "evidence_preview": [
@@ -3129,8 +3129,8 @@
                 "resource_address": "aws_vpc.main",
                 "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
                 "evaluated_keys": [
-                  "resource_type",
-                  "networking"
+                  "networking",
+                  "resource_type"
                 ]
               }
             ]
@@ -3155,7 +3155,7 @@
           "T1021",
           "T1046"
         ],
-        "attack_scenario": "`aws_subnet.public` -> `aws_vpc.main` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1190`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_vpc.main`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `egress/to_port, egress/cidr_blocks 외 7개`\n\n[3] 실행·탐지우회\n  - resource: `aws_vpc.main`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, networking`",
+        "attack_scenario": "`aws_subnet.public` -> `aws_vpc.main` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_subnet.public`\n  - check: `퍼블릭 IP 할당`\n  - check_id: `CKV_AWS_130`\n  - check_name_en: `Ensure VPC subnets do not assign public IP by default`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1190`\n  - why_fails: 퍼블릭 IP 할당\n  - mitigation: aws_subnet 리소스에서 퍼블릭 IP 할당을 비활성화\n  - resource_address: `aws_subnet.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `map_public_ip_on_launch`\n\n[2] 초기 접근/노출\n  - resource: `aws_vpc.main`\n  - check: `기본 SG 미제한`\n  - check_id: `CKV2_AWS_12`\n  - check_name_en: `Ensure the default security group of every VPC restricts all traffic`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1021`\n  - why_fails: 기본 SG 미제한\n  - mitigation: aws_default_security_group 리소스의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `ingress/from_port, egress/to_port 외 7개`\n\n[3] 실행·탐지우회\n  - resource: `aws_vpc.main`\n  - check: `VPC Flow Logs 미설정`\n  - check_id: `CKV2_AWS_11`\n  - check_name_en: `Ensure VPC flow logging is enabled in all VPCs`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1046`\n  - why_fails: VPC Flow Logs 미설정\n  - mitigation: aws_vpc 리소스에 VPC Flow Logs를 활성화\n  - resource_address: `aws_vpc.main`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `networking, resource_type`",
         "node_findings": [
           {
             "node": "aws_subnet.public",
@@ -3198,8 +3198,8 @@
                   24
                 ],
                 "evaluated_keys": [
-                  "resource_type",
-                  "networking"
+                  "networking",
+                  "resource_type"
                 ]
               },
               {
@@ -3217,22 +3217,22 @@
                   24
                 ],
                 "evaluated_keys": [
+                  "ingress/from_port",
                   "egress/to_port",
-                  "egress/cidr_blocks",
-                  "resource_type",
                   "egress/protocol",
+                  "egress/cidr_blocks",
+                  "ingress/to_port",
                   "ingress/self",
                   "egress/from_port",
                   "ingress/protocol",
-                  "ingress/from_port",
-                  "ingress/to_port"
+                  "resource_type"
                 ]
               }
             ]
           }
         ],
-        "attack_scenario_llm": "퍼블릭 서브넷이 기본적으로 퍼블릭 IP를 할당하고, VPC의 기본 보안 그룹이 제한되지 않아 외부에서 네트워크 접근이 가능하며, 동시에 VPC Flow Logs가 미설정되어 네트워크 이상행위에 대한 가시성과 탐지가 어려운 상태입니다.",
-        "mitigation_llm": "서브넷의 퍼블릭 IP 자동 할당을 비활성화하고, VPC 기본 보안 그룹 규칙을 모두 제한하며, VPC Flow Logs를 활성화해 네트워크 접근 및 행위에 대한 통제를 강화해야 합니다."
+        "attack_scenario_llm": "퍼블릭 IP가 기본 자동 할당되는 `aws_subnet.public`으로 외부 노출이 발생한 상태에서 `aws_vpc.main`의 기본 보안 그룹이 제한되지 않아 원격 접근이 용이해지고, 이어서 `aws_vpc.main`에 VPC Flow Logs가 미설정되어 네트워크 가시성 및 탐지 공백 속에서 추가 정찰·접근 시도가 은폐될 수 있다.",
+        "mitigation_llm": "`aws_subnet.public`의 퍼블릭 IP 기본 할당을 비활성화하고 `aws_vpc.main`의 기본 보안 그룹에서 불필요한 ingress/egress 규칙을 제거하며 `aws_vpc.main`에 VPC Flow Logs를 활성화하여 외부 노출을 축소하고 원격 접근을 제한함과 동시에 네트워크 행위에 대한 탐지 체계를 확보해야 한다."
       }
     ],
     "iam_privilege_chain": [
@@ -3618,8 +3618,8 @@
             ]
           }
         ],
-        "attack_scenario_llm": "EC2 인스턴스가 퍼블릭 IP로 외부에 직접 노출되고 IMDSv1 활성화로 자격증명 탈취 위험이 증가하며, 하드닝 및 실행 제약이 미흡한 환경에서 저장 데이터 암호화까지 비활성화되어 공격자가 손쉽게 접근·권한확장·탐지우회 후 민감 데이터 유출까지 이어질 수 있습니다.",
-        "mitigation_llm": "EC2 인스턴스의 퍼블릭 IP 할당을 비활성화하고 IMDSv2를 강제하며, 하드닝 및 모니터링 설정을 강화하고 저장 데이터 암호화를 반드시 활성화해 전체 공격 경로를 차단해야 합니다."
+        "attack_scenario_llm": "퍼블릭 IP가 할당되어 인터넷에 직접 노출된 `aws_instance.app`를 발판으로 초기 접근이 이뤄진 뒤, IMDSv2 미설정으로 인스턴스 자격증명 탈취 위험이 커지고, 필수 보안 설정 누락(상세 모니터링/하드닝 및 EBS 최적화 미흡)으로 침해 이후 악용 가능성이 확대되며, 저장 데이터 암호화 비활성화 상태로 인해 최종적으로 데이터 노출(유출) 위험이 증가하는 시나리오이다.",
+        "mitigation_llm": "`aws_instance.app`에서 퍼블릭 IP 할당을 비활성화하고 IMDSv2(http_tokens=\"required\")를 적용하며 상세 모니터링 및 EBS 최적화 등 필수 보안 설정을 명시적으로 강화하고, EBS(루트 블록 디바이스) 저장 데이터 암호화를 활성화(가능 시 KMS CMK 사용)하여 접근·자격증명 탈취·침해 후 악용 및 데이터 유출 위험을 저감하여야 한다."
       },
       {
         "from": "aws_iam_policy.app",
@@ -3828,8 +3828,8 @@
                 ],
                 "evaluated_keys": [
                   "statement[?(@/effect == Allow)]/actions[*]",
-                  "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]",
-                  "policy/Statement[?(@/Effect == Allow)]/Action[*]"
+                  "policy/Statement[?(@/Effect == Allow)]/Action[*]",
+                  "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
                 ]
               },
               {
@@ -3981,8 +3981,8 @@
             ]
           }
         ],
-        "attack_scenario_llm": "공격자는 `aws_iam_policy.app`에서 Action/Resource 항목에 와일드카드를 사용하여 과도하게 폭넓은 권한을 확보하고, 이후 데이터 반출 관련 액션이 과도하게 허용된 정책을 악용하여 외부로 데이터가 유출될 수 있습니다.",
-        "mitigation_llm": "aws_iam_policy.app 정책에서 Action/Resource 와일드카드 및 데이터 반출 액션을 제거하고 최소 권한 원칙에 따라 필요한 범위로만 설정하세요."
+        "attack_scenario_llm": "공격자는 `aws_iam_policy.app`에 설정된 Action/Resource 와일드카드 허용으로 인해 IAM 권한·자격을 확장(PE)한 뒤, 동일 정책이 데이터 반출 관련 액션을 과도하게 허용하는 상태를 악용하여 외부로의 데이터 유출(EX)로 이어갈 수 있다.",
+        "mitigation_llm": "`aws_iam_policy.app`에서 Action/Resource 와일드카드를 제거하여 최소 권한으로 축소하고, 데이터 반출 관련 액션 범위를 필요 최소한으로 제한하도록 IAM 정책을 재정의해야 한다."
       }
     ],
     "network_to_iam_chain": [
@@ -4454,8 +4454,8 @@
             ]
           }
         ],
-        "attack_scenario_llm": "공격자는 퍼블릭 서브넷과 EC2 인스턴스에 기본 퍼블릭 IP가 할당되어 인터넷에서 직접 접근이 가능한 환경에서, 인스턴스의 메타데이터 서비스(IMDSv1) 설정 미비로 자격 증명 탈취 가능성이 높아지고, 추가적으로 EC2 실행 환경의 하드닝 부족 및 저장 데이터 암호화 미설정으로 인해 침해 시 데이터가 외부로 유출될 위험이 커지는 시나리오입니다.",
-        "mitigation_llm": "서브넷과 인스턴스에 퍼블릭 IP 자동 할당을 비활성화하고, EC2 인스턴스에 IMDSv2만 허용 및 하드닝·모니터링을 강화하며, 저장 데이터 암호화(KMS CMK 권장)를 반드시 적용해야 합니다."
+        "attack_scenario_llm": "퍼블릭 서브넷에서 퍼블릭 IP가 자동 할당되고 해당 서브넷의 EC2 인스턴스가 퍼블릭 IP로 인터넷에 직접 노출된 상태에서, IMDSv2 미설정으로 인스턴스 자격증명 탈취 위험이 커진 뒤 워크로드 하드닝·가시성 통제가 미흡한 틈을 악용하여, 최종적으로 저장 데이터 암호화 비활성화로 인해 인스턴스 EBS에 저장된 데이터 노출(유출) 위험이 발생할 수 있다.",
+        "mitigation_llm": "서브넷과 EC2에서 퍼블릭 IP 할당을 비활성화하고, EC2 metadata_options에 http_tokens=\"required\"로 IMDSv2를 강제하며, EC2에 EBS 최적화 및 상세 모니터링 등 필수 보안 설정을 명시적으로 적용하고, EBS(루트 블록 디바이스 포함) 저장 데이터 암호화를 활성화하되 가능하면 KMS CMK를 사용한다."
       }
     ],
     "other_chain": [
@@ -4507,9 +4507,9 @@
               "resource_address": "aws_s3_bucket.public",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
-                "resource_type",
+                "block_public_acls",
                 "block_public_policy",
-                "block_public_acls"
+                "resource_type"
               ]
             },
             "evidence_preview": [
@@ -4529,9 +4529,9 @@
                 "resource_address": "aws_s3_bucket.public",
                 "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
                 "evaluated_keys": [
-                  "resource_type",
+                  "block_public_acls",
                   "block_public_policy",
-                  "block_public_acls"
+                  "resource_type"
                 ]
               }
             ]
@@ -4561,8 +4561,8 @@
               "resource_address": "aws_s3_bucket.public",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
-                "resource_type",
-                "logging"
+                "logging",
+                "resource_type"
               ]
             },
             "evidence_preview": [
@@ -4584,8 +4584,8 @@
                 "resource_address": "aws_s3_bucket.public",
                 "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
                 "evaluated_keys": [
-                  "resource_type",
-                  "logging"
+                  "logging",
+                  "resource_type"
                 ]
               }
             ]
@@ -4619,9 +4619,9 @@
               "resource_address": "aws_s3_bucket.public",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
+                "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
                 "resource_type",
-                "rule/apply_server_side_encryption_by_default/sse_algorithm",
-                "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+                "rule/apply_server_side_encryption_by_default/sse_algorithm"
               ]
             },
             "evidence_preview": [
@@ -4644,9 +4644,9 @@
                 "resource_address": "aws_s3_bucket.public",
                 "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
                 "evaluated_keys": [
+                  "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
                   "resource_type",
-                  "rule/apply_server_side_encryption_by_default/sse_algorithm",
-                  "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+                  "rule/apply_server_side_encryption_by_default/sse_algorithm"
                 ]
               },
               {
@@ -4692,7 +4692,7 @@
           "T1562",
           "T1530"
         ],
-        "attack_scenario": "`aws_s3_bucket_policy.public` -> `aws_s3_bucket.public` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_s3_bucket.public`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV2_AWS_6`\n  - check_name_en: `Ensure that S3 bucket has a Public Access block`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_s3_bucket 리소스에서 \"Ensure that S3 bucket has a Public Access block\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, block_public_policy 외 1개`\n\n[2] 실행·탐지우회\n  - resource: `aws_s3_bucket.public`\n  - check: `로깅/검증 비활성화`\n  - check_id: `CKV_AWS_18`\n  - check_name_en: `Ensure the S3 bucket has access logging enabled`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1562`\n  - why_fails: 로깅/검증 비활성화\n  - mitigation: aws_s3_bucket 리소스에 로깅 및 모니터링 설정을 활성화\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, logging`\n\n[3] 영향·유출\n  - resource: `aws_s3_bucket.public`\n  - check: `암호화 비활성화`\n  - check_id: `CKV_AWS_145`\n  - check_name_en: `Ensure that S3 buckets are encrypted with KMS by default`\n  - severity: `HIGH`\n  - mitre_tactic: `EX`\n  - representative_atomic_id: `T1530`\n  - why_fails: 암호화 비활성화\n  - mitigation: aws_s3_bucket 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, rule/apply_server_side_encryption_by_default/sse_algorithm 외 1개`",
+        "attack_scenario": "`aws_s3_bucket_policy.public` -> `aws_s3_bucket.public` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_s3_bucket.public`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV2_AWS_6`\n  - check_name_en: `Ensure that S3 bucket has a Public Access block`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_s3_bucket 리소스에서 \"Ensure that S3 bucket has a Public Access block\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `block_public_acls, block_public_policy 외 1개`\n\n[2] 실행·탐지우회\n  - resource: `aws_s3_bucket.public`\n  - check: `로깅/검증 비활성화`\n  - check_id: `CKV_AWS_18`\n  - check_name_en: `Ensure the S3 bucket has access logging enabled`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1562`\n  - why_fails: 로깅/검증 비활성화\n  - mitigation: aws_s3_bucket 리소스에 로깅 및 모니터링 설정을 활성화\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `logging, resource_type`\n\n[3] 영향·유출\n  - resource: `aws_s3_bucket.public`\n  - check: `암호화 비활성화`\n  - check_id: `CKV_AWS_145`\n  - check_name_en: `Ensure that S3 buckets are encrypted with KMS by default`\n  - severity: `HIGH`\n  - mitre_tactic: `EX`\n  - representative_atomic_id: `T1530`\n  - why_fails: 암호화 비활성화\n  - mitigation: aws_s3_bucket 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm, resource_type 외 1개`",
         "node_findings": [
           {
             "node": "aws_s3_bucket.public",
@@ -4712,9 +4712,9 @@
                   150
                 ],
                 "evaluated_keys": [
-                  "resource_type",
+                  "block_public_acls",
                   "block_public_policy",
-                  "block_public_acls"
+                  "resource_type"
                 ]
               },
               {
@@ -4732,8 +4732,8 @@
                   150
                 ],
                 "evaluated_keys": [
-                  "lifecycle_rule",
-                  "resource_type"
+                  "resource_type",
+                  "lifecycle_rule"
                 ]
               },
               {
@@ -4769,9 +4769,9 @@
                   150
                 ],
                 "evaluated_keys": [
-                  "rule/*/status",
                   "replication_configuration/rules/*/status",
-                  "resource_type"
+                  "resource_type",
+                  "rule/*/status"
                 ]
               },
               {
@@ -4789,9 +4789,9 @@
                   150
                 ],
                 "evaluated_keys": [
+                  "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
                   "resource_type",
-                  "rule/apply_server_side_encryption_by_default/sse_algorithm",
-                  "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+                  "rule/apply_server_side_encryption_by_default/sse_algorithm"
                 ]
               },
               {
@@ -4809,8 +4809,8 @@
                   150
                 ],
                 "evaluated_keys": [
-                  "resource_type",
-                  "logging"
+                  "logging",
+                  "resource_type"
                 ]
               },
               {
@@ -4836,8 +4836,8 @@
             ]
           }
         ],
-        "attack_scenario_llm": "공격자가 공개적으로 노출된 S3 버킷에 접근한 뒤, 로깅이 비활성화되어 탐지 및 사후 대응이 어려운 상태에서 데이터 암호화까지 미적용된 버킷을 통해 민감 정보가 유출될 위험이 있는 시나리오입니다.",
-        "mitigation_llm": "S3 버킷에 퍼블릭 접근 차단, 액세스 로그 활성화, 저장 데이터의 암호화 설정을 모두 적용해 무단 접근, 탐지 우회, 데이터 유출을 방지하십시오."
+        "attack_scenario_llm": "공개 접근 차단 설정이 누락된 `aws_s3_bucket.public`에 외부에서 접근이 가능해 초기 노출이 발생하고, 해당 버킷의 액세스 로깅이 비활성화되어 침해 징후 탐지·추적이 어려운 상태에서 기본 KMS 암호화가 적용되지 않은 저장 데이터가 노출되어 유출로 이어질 수 있다.",
+        "mitigation_llm": "`aws_s3_bucket.public`에 Public Access Block을 명시적으로 적용하고 액세스 로깅을 활성화하며 기본 저장 데이터 암호화를 KMS(가능하면 CMK)로 설정하여 노출·탐지 공백·유출 위험을 동시에 저감하여야 한다."
       },
       {
         "from": "aws_s3_bucket_policy.public",
@@ -4974,9 +4974,9 @@
               "resource_address": "aws_s3_bucket.public",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
-                "resource_type",
+                "block_public_acls",
                 "block_public_policy",
-                "block_public_acls"
+                "resource_type"
               ]
             },
             "evidence_preview": [
@@ -4996,9 +4996,9 @@
                 "resource_address": "aws_s3_bucket.public",
                 "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
                 "evaluated_keys": [
-                  "resource_type",
+                  "block_public_acls",
                   "block_public_policy",
-                  "block_public_acls"
+                  "resource_type"
                 ]
               }
             ]
@@ -5028,8 +5028,8 @@
               "resource_address": "aws_s3_bucket.public",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
-                "resource_type",
-                "logging"
+                "logging",
+                "resource_type"
               ]
             },
             "evidence_preview": [
@@ -5051,8 +5051,8 @@
                 "resource_address": "aws_s3_bucket.public",
                 "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
                 "evaluated_keys": [
-                  "resource_type",
-                  "logging"
+                  "logging",
+                  "resource_type"
                 ]
               }
             ]
@@ -5086,9 +5086,9 @@
               "resource_address": "aws_s3_bucket.public",
               "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
               "evaluated_keys": [
+                "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
                 "resource_type",
-                "rule/apply_server_side_encryption_by_default/sse_algorithm",
-                "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+                "rule/apply_server_side_encryption_by_default/sse_algorithm"
               ]
             },
             "evidence_preview": [
@@ -5111,9 +5111,9 @@
                 "resource_address": "aws_s3_bucket.public",
                 "file_abs_path": "/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf",
                 "evaluated_keys": [
+                  "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
                   "resource_type",
-                  "rule/apply_server_side_encryption_by_default/sse_algorithm",
-                  "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+                  "rule/apply_server_side_encryption_by_default/sse_algorithm"
                 ]
               },
               {
@@ -5161,7 +5161,7 @@
           "T1562",
           "T1530"
         ],
-        "attack_scenario": "`aws_s3_bucket_public_access_block.public` -> `aws_s3_bucket_policy.public` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_s3_bucket_public_access_block.public`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV_AWS_56`\n  - check_name_en: `Ensure S3 bucket has 'restrict_public_buckets' enabled`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1190`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_s3_bucket_public_access_block 리소스에서 \"Ensure S3 bucket has ‘restrict_public_buckets’ enabled\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_s3_bucket_public_access_block.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `restrict_public_buckets`\n\n[2] 초기 접근/노출\n  - resource: `aws_s3_bucket.public`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV2_AWS_6`\n  - check_name_en: `Ensure that S3 bucket has a Public Access block`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_s3_bucket 리소스에서 \"Ensure that S3 bucket has a Public Access block\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, block_public_policy 외 1개`\n\n[3] 실행·탐지우회\n  - resource: `aws_s3_bucket.public`\n  - check: `로깅/검증 비활성화`\n  - check_id: `CKV_AWS_18`\n  - check_name_en: `Ensure the S3 bucket has access logging enabled`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1562`\n  - why_fails: 로깅/검증 비활성화\n  - mitigation: aws_s3_bucket 리소스에 로깅 및 모니터링 설정을 활성화\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, logging`\n\n[4] 영향·유출\n  - resource: `aws_s3_bucket.public`\n  - check: `암호화 비활성화`\n  - check_id: `CKV_AWS_145`\n  - check_name_en: `Ensure that S3 buckets are encrypted with KMS by default`\n  - severity: `HIGH`\n  - mitre_tactic: `EX`\n  - representative_atomic_id: `T1530`\n  - why_fails: 암호화 비활성화\n  - mitigation: aws_s3_bucket 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `resource_type, rule/apply_server_side_encryption_by_default/sse_algorithm 외 1개`",
+        "attack_scenario": "`aws_s3_bucket_public_access_block.public` -> `aws_s3_bucket_policy.public` 경로입니다.\n\n[1] 초기 접근/노출\n  - resource: `aws_s3_bucket_public_access_block.public`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV_AWS_56`\n  - check_name_en: `Ensure S3 bucket has 'restrict_public_buckets' enabled`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `T1190`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_s3_bucket_public_access_block 리소스에서 \"Ensure S3 bucket has ‘restrict_public_buckets’ enabled\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_s3_bucket_public_access_block.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `restrict_public_buckets`\n\n[2] 초기 접근/노출\n  - resource: `aws_s3_bucket.public`\n  - check: `필수 보안 설정 누락(설명 기반)`\n  - check_id: `CKV2_AWS_6`\n  - check_name_en: `Ensure that S3 bucket has a Public Access block`\n  - severity: `HIGH`\n  - mitre_tactic: `IA`\n  - representative_atomic_id: `-`\n  - why_fails: 필수 보안 설정 누락(설명 기반)\n  - mitigation: aws_s3_bucket 리소스에서 \"Ensure that S3 bucket has a Public Access block\" 요구사항을 충족하도록 보안 설정을 명시적으로 추가\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `block_public_acls, block_public_policy 외 1개`\n\n[3] 실행·탐지우회\n  - resource: `aws_s3_bucket.public`\n  - check: `로깅/검증 비활성화`\n  - check_id: `CKV_AWS_18`\n  - check_name_en: `Ensure the S3 bucket has access logging enabled`\n  - severity: `MEDIUM`\n  - mitre_tactic: `DE`\n  - representative_atomic_id: `T1562`\n  - why_fails: 로깅/검증 비활성화\n  - mitigation: aws_s3_bucket 리소스에 로깅 및 모니터링 설정을 활성화\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `logging, resource_type`\n\n[4] 영향·유출\n  - resource: `aws_s3_bucket.public`\n  - check: `암호화 비활성화`\n  - check_id: `CKV_AWS_145`\n  - check_name_en: `Ensure that S3 buckets are encrypted with KMS by default`\n  - severity: `HIGH`\n  - mitre_tactic: `EX`\n  - representative_atomic_id: `T1530`\n  - why_fails: 암호화 비활성화\n  - mitigation: aws_s3_bucket 리소스에 저장 데이터 암호화를 활성화하고 가능하면 KMS CMK를 사용\n  - resource_address: `aws_s3_bucket.public`\n  - file: `/home/jiyoon/secugate/CI_Gate_Example/scenarios/chained_ec2_iam_s3/main.tf`\n  - evaluated_keys: `server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm, resource_type 외 1개`",
         "node_findings": [
           {
             "node": "aws_s3_bucket.public",
@@ -5181,9 +5181,9 @@
                   150
                 ],
                 "evaluated_keys": [
-                  "resource_type",
+                  "block_public_acls",
                   "block_public_policy",
-                  "block_public_acls"
+                  "resource_type"
                 ]
               },
               {
@@ -5201,8 +5201,8 @@
                   150
                 ],
                 "evaluated_keys": [
-                  "lifecycle_rule",
-                  "resource_type"
+                  "resource_type",
+                  "lifecycle_rule"
                 ]
               },
               {
@@ -5238,9 +5238,9 @@
                   150
                 ],
                 "evaluated_keys": [
-                  "rule/*/status",
                   "replication_configuration/rules/*/status",
-                  "resource_type"
+                  "resource_type",
+                  "rule/*/status"
                 ]
               },
               {
@@ -5258,9 +5258,9 @@
                   150
                 ],
                 "evaluated_keys": [
+                  "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
                   "resource_type",
-                  "rule/apply_server_side_encryption_by_default/sse_algorithm",
-                  "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm"
+                  "rule/apply_server_side_encryption_by_default/sse_algorithm"
                 ]
               },
               {
@@ -5278,8 +5278,8 @@
                   150
                 ],
                 "evaluated_keys": [
-                  "resource_type",
-                  "logging"
+                  "logging",
+                  "resource_type"
                 ]
               },
               {
@@ -5382,8 +5382,8 @@
             ]
           }
         ],
-        "attack_scenario_llm": "S3 버킷 퍼블릭 접근 차단 및 엣지 보안 설정이 누락되어 인터넷에서 자산이 노출된 상태에서, S3 버킷에 퍼블릭 접근 차단 설정 역시 적용되지 않아 외부 노출 범위가 넓어진 후, 로깅이 비활성화되어 침해 징후 탐지와 사후 분석이 어려우며, 최종적으로 저장 데이터의 암호화까지 누락되어 민감 정보가 노출될 위험이 있는 시나리오입니다.",
-        "mitigation_llm": "S3 버킷과 퍼블릭 접근 차단 설정에서 인터넷 노출을 차단하고, 로깅 및 모니터링을 활성화하며, 저장 데이터에 대해 KMS 등을 통한 암호화를 반드시 적용해야 합니다."
+        "attack_scenario_llm": "S3 퍼블릭 접근 차단(Restrict Public Buckets 등) 및 버킷 단위 Public Access Block 설정이 미흡한 상태에서, S3 버킷 접근 로깅이 비활성화되어 탐지·감사 가시성이 저하되고, 저장 데이터의 기본 KMS 암호화가 적용되지 않아 버킷 내 데이터가 노출·유출될 수 있다.",
+        "mitigation_llm": "aws_s3_bucket_public_access_block 및 aws_s3_bucket에서 Public Access Block(특히 restrict_public_buckets 포함)을 명시적으로 활성화하고, S3 access logging을 켜서 가시성을 확보하며, S3 기본 서버사이드 암호화를 KMS(CMK 권장)로 적용하여 데이터 노출 위험을 저감한다."
       }
     ]
   },

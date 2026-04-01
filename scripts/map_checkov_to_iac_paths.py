@@ -136,7 +136,7 @@ SEVERITY_RANK: dict[str, int] = {
     "INFO": 0,
 }
 
-DEFAULT_LLM_MODEL = "gpt-4.1"
+DEFAULT_LLM_MODEL = "gpt-5.2"
 
 
 def _build_llm_payload(representative: dict[str, Any]) -> dict[str, Any]:
@@ -174,6 +174,7 @@ def summarize_with_llm(representative: dict[str, Any]) -> dict[str, str]:
         "주어진 순서를 바꾸지 말고, evidence에 없는 사실은 추가하지 말라.\n"
         "개별 finding을 나열하기보다 capability/stage 흐름을 연결해서 "
         "사람이 읽기 쉬운 한국어 한 문장 공격 시나리오와 한 문장 대응 방안을 작성하라.\n\n"
+        "한국어가 어색하지 않아야하며, 문어체를 쓰고, 보고서양식에 맞춰서 작성하라.\n"
         "반드시 아래 JSON 형식으로만 답하라.\n"
         "{\n"
         '  "attack_scenario_one_liner": "...",\n'
