@@ -28,12 +28,11 @@ pip install sec-gate
 # 실행
 python3 main.py run --tf ./inputs/terraform --out ./artifacts
 
-## 선택적 LLM 요약
+## LLM 요약 (옵션)
 SecuGate는 최종 공격 경로 보고서에 대해 OpenAI 기반 한 줄 요약을 선택적으로 추가할 수 있습니다.
 
 이 기능은 다음 원칙으로 동작합니다.
 - Checkov evidence와 내부 capability/stage 매핑 결과를 그대로 사용합니다
-- ATT&CK 순서나 경로 유효성을 새로 판단하지 않습니다
 - 이미 검증된 경로를 더 읽기 쉬운 자연어로 요약합니다
 
 ### 설정 방법
