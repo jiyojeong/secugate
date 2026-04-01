@@ -27,6 +27,46 @@ source .venv/bin/activate
 # command
 python3 main.py run --tf ./inputs/terraform --out ./artifacts
 
+## Optional LLM Summaries
+SecuGate can optionally add OpenAI-based one-line summaries for validated attack paths in the final path report.
+
+This feature:
+- uses existing Checkov evidence and internal capability/stage mappings
+- does not re-decide ATT&CK ordering or path validity
+- rewrites already validated paths into more readable text
+
+### Setup
+Install the OpenAI Python package:
+
+```bash
+pip install openai
+```
+
+Set your API key:
+
+```bash
+export OPENAI_API_KEY="YOUR_API_KEY"
+```
+
+Optionally choose a model:
+
+```bash
+export OPENAI_MODEL="gpt-4.1"
+```
+
+Run SecuGate as usual:
+
+```bash
+python3 main.py run --tf ./inputs/terraform --out ./artifacts
+```
+
+If LLM summarization succeeds, `artifacts/iac_graph_checkov_paths.md` will include:
+- `Summary`
+- `Scenario (LLM)`
+- `Mitigation (LLM)`
+
+If OpenAI is not configured or a request fails, SecuGate keeps the existing rule-based report and omits the LLM summary block.
+
 # Analysis Flow
 ```
 Terraform / tfplan
